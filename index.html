@@ -187,7 +187,6 @@
 
     <div class="gallery-container" id="gallery"></div>
 
-    <!-- Modal Node View -->
     <div class="modal" id="node-modal">
         <button class="close-btn" id="close-modal">[ CLOSE ]</button>
         <div class="modal-content">
@@ -201,8 +200,7 @@
                     <h2 class="node-title" id="modal-title">NODE TITLE</h2>
                     
                     <div class="audio-wrapper" id="audio-container">
-                        <div class="sys-text">> CARRIER_WAVE: ACTIVE</div>
-                        <audio id="modal-audio" controls controlsList="nodownload"></audio>
+                        <!-- Audio injected via JS -->
                     </div>
                 </div>
 
@@ -226,10 +224,8 @@
     </div>
 
     <script>
-        // --- CONFIGURATION ---
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxUkkWNOG0XJFlH6zNoooOydB1EFVTAXxFV1B2zzhK3wlahwr46pZckkSmPmShDvaNL/exec"; 
-        const SYSTEM_TOKEN = "NEUROMICON_SIGMA_2026"; // System security token
-        // ---------------------
+        const SYSTEM_TOKEN = "NEUROMICON_SIGMA_2026";
 
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -237,6 +233,7 @@
             });
         }
 
+        // Updated Database: Node 17 file points to 17_Genesis_Creativity
         const repoData =[
             { id: "01", sector: "A_The_Source_Code", title: "Purpose", folder: "01_Purpose", file: "01_Purpose" },
             { id: "02", sector: "A_The_Source_Code", title: "Identity", folder: "02_Identity", file: "02_Identity" },
@@ -268,7 +265,6 @@
         const gallery = document.getElementById('gallery');
         const modal = document.getElementById('node-modal');
         const modalImg = document.getElementById('modal-img');
-        const modalAudio = document.getElementById('modal-audio');
         const modalTitle = document.getElementById('modal-title');
         const sectorInfo = document.getElementById('sector-info');
         const audioContainer = document.getElementById('audio-container');
@@ -279,10 +275,11 @@
             const card = document.createElement('div');
             card.className = 'node-card';
             
-            const imgPath = `./Sector_${node.sector}/${node.folder}/${node.file}.jpg`;
+            // encodeURI prevents broken links if there are spaces in the folder/file names
+            const imgPath = encodeURI(`./Sector_${node.sector}/${node.folder}/${node.file}.jpg`);
             
             card.innerHTML = `
-                <img src="${imgPath}" loading="lazy" alt="Node ${node.id}">
+                <img src="${imgPath}" loading="lazy" alt="Node ${node.id}" onerror="this.src='./icon-512.png'">
                 <div class="node-id">[${node.id}]</div>
             `;
             card.addEventListener('click', () => openNode(node, imgPath));
@@ -297,8 +294,13 @@
             if (node.noAudio) {
                 audioContainer.innerHTML = `<div class="sys-text">> CARRIER_WAVE: NULL. <br>> EXTERNAL INPUT OFFLINE. <br>> YOU ARE THE CARRIER.</div>`;
             } else {
-                const audioPath = `./Sector_${node.sector}/${node.folder}/${node.file}.mp3`;
-                audioContainer.innerHTML = `<div class="sys-text">> CARRIER_WAVE: ACTIVE</div><audio id="modal-audio" controls controlsList="nodownload" src="${audioPath}"></audio>`;
+                const audioPath = encodeURI(`./Sector_${node.sector}/${node.folder}/${node.file}.mp3`);
+                audioContainer.innerHTML = `
+                    <div class="sys-text">> CARRIER_WAVE: ACTIVE</div>
+                    <audio id="modal-audio" controls controlsList="nodownload">
+                        <source src="${audioPath}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>`;
             }
             
             terminalOut.innerText = "";
@@ -332,19 +334,16 @@
             terminalOut.innerText = "> ESTABLISHING SECURE UPLINK TO ARCHIVE...\n> COMPILING SIGNAL...";
 
             const payload = {
-                token: SYSTEM_TOKEN, // Added Security Token
+                token: SYSTEM_TOKEN,
                 phone: phone,
                 amount: amount,
                 nodeId: nodeId
             };
 
             try {
-                // We use text/plain content type to avoid CORS preflight errors in Google Apps Script
                 const response = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'text/plain;charset=utf-8'
-                    },
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(payload)
                 });
 
@@ -355,9 +354,8 @@
                     document.getElementById('payment-form').reset();
                     btn.innerText = "TRANSMISSION COMPLETE";
                 } else {
-                    throw new Error(result.message); // Handles token mismatch or payload errors from backend
+                    throw new Error(result.message);
                 }
-
             } catch (error) {
                 terminalOut.innerHTML = `> [SYSTEM ERROR] TRANSMISSION FAILED.\n> DETAILS: ${error.message}`;
                 btn.disabled = false;
