@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEUROMICON | The Archive</title>
-    <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#030303">
+    <title>NEUROMICON 25 | The Archive</title>
+    <link rel="manifest" href="./manifest.json">
     <style>
         :root {
             --bg-color: #030303;
@@ -13,7 +13,7 @@
             --text-color: #e0e0e0;
             --text-muted: #888888;
             --accent-color: #ff2a2a;
-            --grid-border: #222222;
+            --grid-border: #1a1a1a;
             --input-bg: #111111;
             --font-mono: 'Courier New', Courier, monospace;
         }
@@ -30,26 +30,56 @@
         }
 
         header {
-            padding: 30px 20px;
+            padding: 35px 20px 25px;
             border-bottom: 1px solid var(--grid-border);
             text-align: center;
-            letter-spacing: 3px;
             background: #000;
+            position: relative;
         }
 
-        h1 { font-size: 1.6rem; font-weight: normal; color: #ffffff; }
-        .sys-text { color: var(--accent-color); font-size: 0.8rem; letter-spacing: 1px; margin-top: 10px; }
-        .log-text { color: var(--text-muted); font-size: 0.75rem; margin-top: 5px; }
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+            opacity: 0.3;
+        }
 
-        /* Gallery Grid */
+        h1 {
+            font-size: 2rem;
+            font-weight: normal;
+            letter-spacing: 6px;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+
+        .sys-text {
+            color: var(--accent-color);
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            margin-top: 8px;
+            opacity: 0.9;
+        }
+
+        .log-text {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin-top: 6px;
+            letter-spacing: 1px;
+        }
+
+        /* === SEAMLESS GALLERY GRID === */
         .gallery-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1px;
-            background-color: var(--grid-border);
-            border: 1px solid var(--grid-border);
-            max-width: 1000px;
-            margin: 40px auto;
+            grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+            gap: 0;
+            background-color: #000;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0;
         }
 
         .node-card {
@@ -58,217 +88,310 @@
             aspect-ratio: 1 / 1;
             position: relative;
             overflow: hidden;
+            border: 1px solid var(--grid-border);
+            transition: all 0.3s ease;
+        }
+
+        .node-card:hover {
+            border-color: var(--accent-color);
+            transform: scale(1.03);
+            z-index: 2;
         }
 
         .node-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.5;
-            transition: opacity 0.4s ease, transform 0.6s ease;
+            opacity: 0.65;
+            transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
         }
 
         .node-card:hover img {
             opacity: 1;
-            transform: scale(1.05);
-        }
-        
-        .node-id {
-            position: absolute;
-            bottom: 8px;
-            right: 8px;
-            font-size: 0.75rem;
-            color: #ffffff;
-            background: rgba(0,0,0,0.85);
-            padding: 3px 8px;
-            border: 1px solid var(--grid-border);
+            transform: scale(1.08);
         }
 
-        /* Modal / Node Viewer */
+        .node-id {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.8rem;
+            color: #fff;
+            background: rgba(0,0,0,0.9);
+            padding: 4px 10px;
+            border: 1px solid var(--accent-color);
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px rgba(255, 42, 42, 0.3);
+        }
+
+        /* === MODAL === */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 1000;
-            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.96);
+            z-index: 10000;
             align-items: center;
             justify-content: center;
+            padding: 20px 10px;
+            overflow-y: auto;
         }
 
         .modal.active { display: flex; }
 
         .modal-content {
             background: var(--panel-bg);
-            border: 1px solid var(--grid-border);
-            max-width: 1000px;
-            width: 95%;
+            border: 2px solid var(--grid-border);
+            max-width: 1100px;
+            width: 100%;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
-            margin: 20px 0;
+            box-shadow: 0 20px 60px rgba(255, 42, 42, 0.15);
+            overflow: hidden;
         }
 
         @media (max-width: 768px) {
             .modal-content { grid-template-columns: 1fr; }
         }
 
-        .art-display { position: relative; border-right: 1px solid var(--grid-border); background: #000; }
-        .art-display img { width: 100%; height: 100%; object-fit: cover; display: block; max-height: 50vh; }
-        
-        @media (min-width: 769px) {
-            .art-display img { max-height: none; }
+        .art-display {
+            position: relative;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .interaction-panel { 
-            padding: 40px 30px; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: flex-start; 
+        .art-display img {
+            width: 100%;
+            height: 100%;
+            max-height: 65vh;
+            object-fit: contain;
+            display: block;
         }
 
-        /* Return Button */
+        .interaction-panel {
+            padding: 40px 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100%;
+        }
+
+        /* Close / Return Button */
         .return-btn {
             background: transparent;
             border: 1px solid var(--grid-border);
             color: var(--text-muted);
-            padding: 10px 15px;
+            padding: 12px 20px;
             font-family: var(--font-mono);
             cursor: pointer;
-            transition: all 0.3s;
-            text-align: left;
-            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            text-align: center;
+            letter-spacing: 2px;
             font-size: 0.85rem;
-            letter-spacing: 1px;
+            align-self: flex-start;
         }
 
         .return-btn:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            background: rgba(255,42,42,0.1);
+        }
+
+        .node-title {
+            font-size: 1.65rem;
             color: #ffffff;
-            border-color: #ffffff;
-            background: #1a1a1a;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin: 15px 0 8px;
+            line-height: 1.2;
         }
 
-        .node-title { font-size: 1.4rem; color: #ffffff; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
-
-        /* Audio Player */
-        .audio-wrapper { margin-top: 25px; padding-bottom: 25px; border-bottom: 1px solid var(--grid-border); }
-        audio { 
-            width: 100%; 
-            height: 40px; 
-            outline: none; 
-            margin-top: 15px; 
-            filter: invert(90%) hue-rotate(180deg) grayscale(100%); 
+        /* Audio */
+        .audio-wrapper {
+            margin-top: 30px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--grid-border);
         }
 
-        /* Intent Protocol (Form) */
-        .payment-wrapper { margin-top: 25px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; letter-spacing: 1px; }
-        
+        audio {
+            width: 100%;
+            height: 48px;
+            outline: none;
+            margin-top: 12px;
+            filter: invert(92%) hue-rotate(170deg) grayscale(80%);
+        }
+
+        /* Intent Form */
+        .payment-wrapper { margin-top: 30px; }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+
         input {
             width: 100%;
             background: var(--input-bg);
             border: 1px solid var(--grid-border);
             color: #ffffff;
             font-family: var(--font-mono);
-            padding: 12px 15px;
+            padding: 14px 16px;
             font-size: 1.1rem;
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
         }
 
-        input:focus { outline: none; border-color: var(--accent-color); background: #000; }
+        input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(255, 42, 42, 0.2);
+        }
 
         .submit-btn {
             width: 100%;
             background: transparent;
-            border: 1px solid var(--accent-color);
+            border: 2px solid var(--accent-color);
             color: var(--accent-color);
-            padding: 15px;
-            margin-top: 10px;
+            padding: 18px;
             font-family: var(--font-mono);
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.4s ease;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.9rem;
+            letter-spacing: 3px;
+            font-size: 0.95rem;
             font-weight: bold;
         }
 
-        .submit-btn:hover { background: var(--accent-color); color: #000; }
-        .submit-btn:disabled { border-color: #444; color: #444; cursor: not-allowed; background: transparent; }
+        .submit-btn:hover {
+            background: var(--accent-color);
+            color: #000;
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
 
         #terminal-output {
-            margin-top: 20px;
-            font-size: 0.8rem;
+            margin-top: 18px;
+            font-size: 0.85rem;
             color: var(--accent-color);
-            min-height: 40px;
+            min-height: 48px;
             white-space: pre-wrap;
+            line-height: 1.4;
+        }
+
+        /* Success State */
+        #intent-success {
+            display: none;
+            margin-top: 25px;
+            padding: 25px;
+            background: rgba(255,42,42,0.08);
+            border: 1px solid var(--accent-color);
+            text-align: center;
+        }
+
+        #intent-success .log-text {
+            color: #fff;
+            font-size: 1.05rem;
+            line-height: 1.5;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>NEUROMICON</h1>
-        <div class="sys-text">> SYSTEM_PROTOCOL: DEFRAGMENTATION_ACTIVE</div>
-        <div class="log-text">E = M × C²</div>
+        <h1>NEUROMICON 25</h1>
+        <div class="sys-text">EVOLUTION_PROTOCOL: ACTIVE</div>
+        <div class="log-text">E = M × C² • YOU ARE THE CARRIER</div>
     </header>
 
     <div class="gallery-container" id="gallery"></div>
 
-    <!-- Modal Node View -->
+    <!-- MODAL -->
     <div class="modal" id="node-modal">
         <div class="modal-content">
+            
+            <!-- Art -->
             <div class="art-display">
-                <img id="modal-img" src="" alt="Anchor">
+                <img id="modal-img" src="" alt="Visual Anchor">
             </div>
 
+            <!-- Interaction -->
             <div class="interaction-panel">
-                <button class="return-btn" id="return-btn">[ < RETURN TO ARCHIVE ]</button>
+                
+                <button class="return-btn" id="return-btn">[ ← RETURN TO ARCHIVE ]</button>
                 
                 <div>
-                    <div class="sys-text" id="sector-info">> SECTOR IDENTIFIED</div>
+                    <div class="sys-text" id="sector-info">SECTOR IDENTIFIED</div>
                     <h2 class="node-title" id="modal-title">NODE TITLE</h2>
                     
                     <div class="audio-wrapper" id="audio-container">
-                        <div class="sys-text" id="audio-status">> CARRIER_WAVE: ACTIVE</div>
+                        <div class="sys-text" id="audio-status">CARRIER_WAVE: LOADING...</div>
                         <audio id="modal-audio" controls controlsList="nodownload"></audio>
                     </div>
                 </div>
 
-                <div class="payment-wrapper">
-                    <div class="log-text" style="margin-bottom:15px; line-height: 1.4;">> DECLARE YOUR INTENT. VALUE IS SUBJECTIVE.<br>> THE SIGNAL WILL BE LOGGED IN THE ARCHIVE.</div>
-                    <form class="payment-form" id="payment-form">
+                <!-- INTENT FORM -->
+                <div class="payment-wrapper" id="payment-wrapper">
+                    <div class="log-text" style="margin-bottom:20px; line-height:1.4;">
+                        DECLARE YOUR INTENT.<br>
+                        VALUE IS SUBJECTIVE.
+                    </div>
+                    
+                    <form id="payment-form">
                         <div class="form-group">
-                            <label>> IDENTIFIER[PHONE / TELEGRAM]</label>
-                            <input type="text" id="user-phone" placeholder="e.g. +1 000 0000 or @user" required>
+                            <label>IDENTIFIER [PHONE / TELEGRAM]</label>
+                            <input type="text" id="user-phone" placeholder="+1 000 000 0000 or @username" required>
                         </div>
                         <div class="form-group">
-                            <label>> INTENT [DECLARED VALUE]</label>
+                            <label>INTENT [DECLARED VALUE]</label>
                             <input type="number" id="user-amount" placeholder="0.00" min="0" step="0.01" required>
                         </div>
                         <button type="submit" class="submit-btn" id="submit-btn">TRANSMIT INTENT</button>
                     </form>
+
                     <div id="terminal-output"></div>
+
+                    <!-- SUCCESS STATE -->
+                    <div id="intent-success">
+                        <div class="log-text">
+                            > TRANSMISSION COMPLETE<br>
+                            > YOUR INTENT HAS BEEN SAVED<br>
+                            > YOU ARE NOW PART OF THE ARCHIVE<br><br>
+                            <span style="color:#ff2a2a; font-size:0.9rem;">THE SIGNAL LIVES.</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- CONFIGURATION ---
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxUkkWNOG0XJFlH6zNoooOydB1EFVTAXxFV1B2zzhK3wlahwr46pZckkSmPmShDvaNL/exec"; 
+        // ==================== CONFIG ====================
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxUkkWNOG0XJFlH6zNoooOydB1EFVTAXxFV1B2zzhK3wlahwr46pZckkSmPmShDvaNL/exec";
         const SYSTEM_TOKEN = "NEUROMICON_SIGMA_2026";
-        // ---------------------
 
+        // PWA Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch(err => console.error('> SW_ERROR:', err));
+                navigator.serviceWorker.register('./sw.js')
+                    .catch(err => console.log('> SW registration failed:', err));
             });
         }
 
-        // Updated Database: Fixed Node 17 and Node 25 paths
-        const repoData =[
+        // ==================== NODE DATABASE ====================
+        // Updated with correct audio paths based on your repo feedback
+        const repoData = [
             { id: "01", sector: "A_The_Source_Code", title: "Purpose", folder: "01_Purpose", file: "01_Purpose" },
             { id: "02", sector: "A_The_Source_Code", title: "Identity", folder: "02_Identity", file: "02_Identity" },
             { id: "03", sector: "A_The_Source_Code", title: "Legacy", folder: "03_Legacy", file: "03_Legacy" },
@@ -293,9 +416,10 @@
             { id: "22", sector: "C_The_Upgrade", title: "Merge", folder: "22_Merge", file: "22_Merge" },
             { id: "23", sector: "C_The_Upgrade", title: "Witness", folder: "23_Witness", file: "23_Witness" },
             { id: "24", sector: "C_The_Upgrade", title: "Unity", folder: "24_Unity", file: "24_Unity" },
-            { id: "25", sector: "D_The_Mirror", title: "The Mirror", folder: "25_The_Mirror", file: "25_The_Mirror", audioFile: "26_ MIRROR (Node 25)" }
+            { id: "25", sector: "D_The_Mirror", title: "The Mirror", folder: "25_The_Mirror", file: "25_The_Mirror", audioFile: "26_The_Mirror" }
         ];
 
+        // ==================== DOM ELEMENTS ====================
         const gallery = document.getElementById('gallery');
         const modal = document.getElementById('node-modal');
         const modalImg = document.getElementById('modal-img');
@@ -304,70 +428,95 @@
         const modalTitle = document.getElementById('modal-title');
         const sectorInfo = document.getElementById('sector-info');
         const terminalOut = document.getElementById('terminal-output');
+        const paymentForm = document.getElementById('payment-form');
+        const paymentWrapper = document.getElementById('payment-wrapper');
+        const intentSuccess = document.getElementById('intent-success');
+        const submitBtn = document.getElementById('submit-btn');
 
-        // Render Grid
+        // ==================== RENDER SEAMLESS GRID ====================
         repoData.forEach(node => {
             const card = document.createElement('div');
             card.className = 'node-card';
+            
             const imgPath = encodeURI(`./Sector_${node.sector}/${node.folder}/${node.file}.jpg`);
             
             card.innerHTML = `
-                <img src="${imgPath}" loading="lazy" alt="Node ${node.id}" onerror="this.src='./icon-512.png'">
+                <img src="${imgPath}" loading="lazy" alt="Node ${node.id}" onerror="this.src='./icon-512.png'; this.style.opacity='0.3';">
                 <div class="node-id">[${node.id}]</div>
             `;
+            
             card.addEventListener('click', () => openNode(node, imgPath));
             gallery.appendChild(card);
         });
 
-        // 404 Error handler for audio
-        modalAudio.onerror = function() {
-            audioStatus.innerHTML = `> [ERROR 404] CARRIER_WAVE NOT FOUND.<br>> CHECK GITHUB REPO FILE PATH.`;
-        };
-
+        // ==================== OPEN NODE ====================
         function openNode(node, imgPath) {
+            // Reset modal
             modalImg.src = imgPath;
-            sectorInfo.innerText = `> SECTOR ${node.sector.split('_')[0]}`;
-            modalTitle.innerText = `${node.id} - ${node.title}`;
-            
-            // Resolve Audio Path (uses audioFile override if it exists, otherwise defaults to file name)
-            const audioName = node.audioFile ? node.audioFile : node.file;
+            sectorInfo.textContent = `> SECTOR ${node.sector.split('_')[0]}`;
+            modalTitle.textContent = `${node.id} — ${node.title.toUpperCase()}`;
+
+            // Audio path (special handling for Node 25 + general fallback)
+            const audioName = node.audioFile || node.file;
             const audioPath = encodeURI(`./Sector_${node.sector}/${node.folder}/${audioName}.mp3`);
-            
+
             audioStatus.innerHTML = `> CARRIER_WAVE: ACTIVE`;
             modalAudio.style.display = 'block';
             modalAudio.src = audioPath;
-            modalAudio.load(); 
-            
-            terminalOut.innerText = "";
+            modalAudio.load();
+
+            // Reset form & success state
+            resetIntentForm();
+
+            terminalOut.innerHTML = "";
             modal.classList.add('active');
+            modalAudio.play().catch(() => {}); // Autoplay attempt
         }
 
-        // Dedicated Return Button Logic (Removed background click closure)
-        document.getElementById('return-btn').addEventListener('click', closeModalLogic);
-
+        // ==================== CLOSE LOGIC ====================
         function closeModalLogic() {
             modal.classList.remove('active');
             modalAudio.pause();
             modalAudio.currentTime = 0;
-            document.getElementById('payment-form').reset();
-            document.getElementById('submit-btn').disabled = false;
-            document.getElementById('submit-btn').innerText = "TRANSMIT INTENT";
-            terminalOut.innerText = "";
+            resetIntentForm();
         }
 
-        // Database Injection Logic
-        document.getElementById('payment-form').addEventListener('submit', async (e) => {
+        function resetIntentForm() {
+            paymentForm.style.display = 'block';
+            intentSuccess.style.display = 'none';
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `TRANSMIT INTENT`;
+            terminalOut.innerHTML = "";
+            paymentForm.reset();
+        }
+
+        // Return button
+        document.getElementById('return-btn').addEventListener('click', closeModalLogic);
+
+        // Audio error handler
+        modalAudio.onerror = () => {
+            audioStatus.innerHTML = `> [ERROR] CARRIER_WAVE NOT FOUND<br>> CHECK REPO OR CONTACT ARCHITECT`;
+        };
+
+        // ==================== INTENT TRANSMISSION ====================
+        paymentForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const phone = document.getElementById('user-phone').value;
+
+            const phone = document.getElementById('user-phone').value.trim();
             const amount = document.getElementById('user-amount').value;
-            const nodeId = modalTitle.innerText;
-            const btn = document.getElementById('submit-btn');
+            const nodeId = modalTitle.textContent;
 
-            btn.disabled = true;
-            btn.innerText = "TRANSMITTING...";
-            terminalOut.innerText = "> ESTABLISHING SECURE UPLINK TO ARCHIVE...\n> COMPILING SIGNAL...";
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `TRANSMITTING...`;
 
-            const payload = { token: SYSTEM_TOKEN, phone: phone, amount: amount, nodeId: nodeId };
+            terminalOut.innerHTML = `> ESTABLISHING SECURE UPLINK...\n> COMPILING SIGNAL...`;
+
+            const payload = {
+                token: SYSTEM_TOKEN,
+                phone: phone,
+                amount: amount,
+                nodeId: nodeId
+            };
 
             try {
                 const response = await fetch(APPS_SCRIPT_URL, {
@@ -375,18 +524,30 @@
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(payload)
                 });
+
                 const result = await response.json();
-                if(result.status === "success") {
-                    terminalOut.innerHTML = `> SIGNAL DELIVERED.\n> INTENT LOGGED IN SECTOR ARCHIVE.\n<span style="color:#ffffff;">> THANK YOU, ARCHITECT.</span>`;
-                    document.getElementById('payment-form').reset();
-                    btn.innerText = "TRANSMISSION COMPLETE";
+
+                if (result.status === "success") {
+                    // SUCCESS ANIMATION
+                    paymentForm.style.display = 'none';
+                    intentSuccess.style.display = 'block';
+                    terminalOut.innerHTML = `> SIGNAL DELIVERED\n> INTENT PERMANENTLY LOGGED`;
+
+                    submitBtn.disabled = false;
                 } else {
-                    throw new Error(result.message);
+                    throw new Error(result.message || "Unknown error");
                 }
             } catch (error) {
-                terminalOut.innerHTML = `> [SYSTEM ERROR] TRANSMISSION FAILED.\n> DETAILS: ${error.message}`;
-                btn.disabled = false;
-                btn.innerText = "RETRY TRANSMISSION";
+                terminalOut.innerHTML = `> TRANSMISSION FAILED\n> ${error.message}`;
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `RETRY TRANSMISSION`;
+            }
+        });
+
+        // Keyboard escape support
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape" && modal.classList.contains('active')) {
+                closeModalLogic();
             }
         });
     </script>
