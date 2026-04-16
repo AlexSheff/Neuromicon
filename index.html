@@ -10,10 +10,10 @@
         :root {
             --bg-color: #030303;
             --panel-bg: #0a0a0a;
-            --text-color: #e0e0e0;
-            --text-muted: #888888;
+            --text-color: #f0f0f0;
+            --text-muted: #b0b0b0;
             --accent-color: #ff2a2a;
-            --grid-border: #1a1a1a;
+            --grid-border: #222222;
             --input-bg: #111111;
             --font-mono: 'Courier New', Courier, monospace;
         }
@@ -24,13 +24,13 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: var(--font-mono);
-            line-height: 1.65;
+            line-height: 1.75;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
         header {
-            padding: 40px 20px 30px;
+            padding: 42px 20px 32px;
             border-bottom: 1px solid var(--grid-border);
             text-align: center;
             background: #000;
@@ -45,36 +45,37 @@
             right: 0;
             height: 1px;
             background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
-            opacity: 0.25;
+            opacity: 0.3;
         }
 
         h1 {
-            font-size: 2.2rem;
+            font-size: 2.35rem;
             font-weight: normal;
-            letter-spacing: 8px;
+            letter-spacing: 9px;
             color: #ffffff;
             text-transform: uppercase;
+            text-shadow: 0 0 15px rgba(255, 42, 42, 0.4);
         }
 
         .sys-text {
             color: var(--accent-color);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             letter-spacing: 4px;
-            margin-top: 10px;
-            opacity: 0.95;
+            margin-top: 12px;
+            text-shadow: 0 0 12px var(--accent-color);
         }
 
         .log-text {
             color: var(--text-muted);
-            font-size: 0.8rem;
-            margin-top: 8px;
+            font-size: 0.85rem;
+            margin-top: 9px;
             letter-spacing: 2px;
         }
 
         /* === SEAMLESS GALLERY GRID === */
         .gallery-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(172px, 1fr));
             gap: 0;
             background-color: #000;
             max-width: 100%;
@@ -102,7 +103,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.7;
+            opacity: 0.75;
             transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
@@ -115,13 +116,13 @@
             position: absolute;
             bottom: 12px;
             right: 12px;
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             color: #fff;
-            background: rgba(0,0,0,0.92);
-            padding: 4px 12px;
+            background: rgba(0,0,0,0.9);
+            padding: 5px 13px;
             border: 1px solid var(--accent-color);
             letter-spacing: 1.5px;
-            box-shadow: 0 0 12px rgba(255, 42, 42, 0.25);
+            box-shadow: 0 0 12px rgba(255, 42, 42, 0.3);
         }
 
         /* === MODAL === */
@@ -146,7 +147,7 @@
             width: 100%;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            box-shadow: 0 25px 70px rgba(255, 42, 42, 0.18);
+            box-shadow: 0 25px 70px rgba(255, 42, 42, 0.2);
             overflow: hidden;
             border-radius: 4px;
         }
@@ -170,80 +171,90 @@
             max-height: 68vh;
             object-fit: contain;
             display: block;
-            box-shadow: inset 0 0 80px rgba(0,0,0,0.6);
+            box-shadow: inset 0 0 80px rgba(0,0,0,0.7);
         }
 
         .interaction-panel {
-            padding: 45px 40px;
+            padding: 48px 42px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 30px;
+            gap: 32px;
         }
 
-        /* Close button */
+        /* RETURN BUTTON WITH NEON GLOW */
         .return-btn {
             background: transparent;
             border: 1px solid var(--grid-border);
             color: var(--text-muted);
-            padding: 14px 24px;
+            padding: 15px 28px;
             font-family: var(--font-mono);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             text-align: center;
-            letter-spacing: 2px;
-            font-size: 0.9rem;
+            letter-spacing: 2.5px;
+            font-size: 0.92rem;
             align-self: flex-start;
             border-radius: 2px;
+            /* Base soft glow */
+            box-shadow: 
+                0 0 8px rgba(255, 42, 42, 0.3),
+                0 0 16px rgba(255, 42, 42, 0.2);
         }
 
         .return-btn:hover {
             border-color: var(--accent-color);
-            color: var(--accent-color);
+            color: #ffffff;
             background: rgba(255,42,42,0.08);
+            /* Strong neon glow on hover */
+            box-shadow: 
+                0 0 12px var(--accent-color),
+                0 0 24px var(--accent-color),
+                0 0 36px rgba(255, 42, 42, 0.5);
+            transform: translateY(-1px);
         }
 
         .node-title {
-            font-size: 1.75rem;
+            font-size: 1.85rem;
             color: #ffffff;
             letter-spacing: 5px;
             text-transform: uppercase;
             line-height: 1.25;
+            text-shadow: 0 0 18px rgba(255, 42, 42, 0.45);
         }
 
         .sector-label {
-            font-size: 0.95rem;
+            font-size: 0.98rem;
             color: var(--accent-color);
-            letter-spacing: 3px;
-            margin-bottom: 6px;
+            letter-spacing: 3.5px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 10px var(--accent-color);
         }
 
         /* Audio player */
         .audio-wrapper {
-            padding-bottom: 25px;
+            padding-bottom: 28px;
             border-bottom: 1px solid var(--grid-border);
         }
 
         audio {
             width: 100%;
-            height: 52px;
+            height: 54px;
             outline: none;
-            margin-top: 12px;
-            filter: invert(90%) hue-rotate(165deg) grayscale(70%);
+            margin-top: 14px;
+            filter: invert(90%) hue-rotate(165deg) grayscale(65%);
         }
 
         /* Intent section */
-        .payment-wrapper { }
-
         .form-group {
-            margin-bottom: 24px;
+            margin-bottom: 26px;
         }
 
         .form-group label {
             display: block;
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             color: var(--text-muted);
-            margin-bottom: 9px;
+            margin-bottom: 10px;
             letter-spacing: 2px;
             text-transform: uppercase;
         }
@@ -254,8 +265,8 @@
             border: 1px solid var(--grid-border);
             color: #ffffff;
             font-family: var(--font-mono);
-            padding: 15px 18px;
-            font-size: 1.15rem;
+            padding: 16px 20px;
+            font-size: 1.18rem;
             transition: all 0.3s ease;
             border-radius: 2px;
         }
@@ -263,7 +274,7 @@
         input:focus {
             outline: none;
             border-color: var(--accent-color);
-            box-shadow: 0 0 0 4px rgba(255, 42, 42, 0.15);
+            box-shadow: 0 0 0 4px rgba(255, 42, 42, 0.2);
         }
 
         .submit-btn {
@@ -271,13 +282,13 @@
             background: transparent;
             border: 2px solid var(--accent-color);
             color: var(--accent-color);
-            padding: 18px 20px;
+            padding: 19px 20px;
             font-family: var(--font-mono);
             cursor: pointer;
             transition: all 0.4s ease;
             text-transform: uppercase;
             letter-spacing: 3px;
-            font-size: 1rem;
+            font-size: 1.02rem;
             font-weight: bold;
             border-radius: 2px;
         }
@@ -294,20 +305,21 @@
         }
 
         #terminal-output {
-            margin-top: 16px;
-            font-size: 0.9rem;
+            margin-top: 18px;
+            font-size: 0.92rem;
             color: var(--accent-color);
-            min-height: 52px;
+            min-height: 56px;
             white-space: pre-wrap;
-            line-height: 1.5;
+            line-height: 1.55;
+            text-shadow: 0 0 8px rgba(255, 42, 42, 0.3);
         }
 
         /* Success state */
         #intent-success {
             display: none;
-            margin-top: 20px;
-            padding: 32px 24px;
-            background: rgba(255,42,42,0.07);
+            margin-top: 22px;
+            padding: 34px 26px;
+            background: rgba(255,42,42,0.08);
             border: 1px solid var(--accent-color);
             text-align: center;
             border-radius: 4px;
@@ -315,8 +327,9 @@
 
         #intent-success .log-text {
             color: #fff;
-            font-size: 1.1rem;
-            line-height: 1.6;
+            font-size: 1.15rem;
+            line-height: 1.65;
+            text-shadow: 0 0 12px rgba(255, 42, 42, 0.4);
         }
     </style>
 </head>
@@ -349,14 +362,14 @@
                     <h2 class="node-title" id="modal-title">NODE TITLE</h2>
                     
                     <div class="audio-wrapper" id="audio-container">
-                        <div class="log-text" id="audio-status">CARRIER_WAVE • LOADING</div>
+                        <div class="log-text" id="audio-status">CARRIER_WAVE • ACTIVE</div>
                         <audio id="modal-audio" controls controlsList="nodownload"></audio>
                     </div>
                 </div>
 
                 <!-- Intent Form -->
                 <div class="payment-wrapper" id="payment-wrapper">
-                    <div class="log-text" style="margin-bottom: 22px; line-height: 1.5;">
+                    <div class="log-text" style="margin-bottom: 24px; line-height: 1.6;">
                         DECLARE YOUR INTENT.<br>
                         VALUE IS SUBJECTIVE.<br>
                         THE SIGNAL WILL BE LOGGED.
@@ -395,7 +408,6 @@
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxUkkWNOG0XJFlH6zNoooOydB1EFVTAXxFV1B2zzhK3wlahwr46pZckkSmPmShDvaNL/exec";
         const SYSTEM_TOKEN = "NEUROMICON_SIGMA_2026";
 
-        // PWA Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
@@ -461,14 +473,12 @@
             gallery.appendChild(card);
         });
 
-        // ==================== OPEN NODE (AUTOMATIC AUDIO DETECTION) ====================
+        // ==================== OPEN NODE ====================
         function openNode(node, imgPath) {
-            // Reset everything
             modalImg.src = imgPath;
             sectorInfo.textContent = `SECTOR ${node.sector.split('_')[0]}`;
             modalTitle.textContent = `${node.id} — ${node.title.toUpperCase()}`;
 
-            // Automatic audio path — exact match to real repo structure
             const audioPath = encodeURI(`./Sector_${node.sector}/${node.folder}/${node.file}.mp3`);
 
             audioStatus.textContent = "CARRIER_WAVE • ACTIVE";
@@ -476,17 +486,12 @@
             modalAudio.src = audioPath;
             modalAudio.load();
 
-            // Reset form
             resetIntentForm();
-
             terminalOut.innerHTML = "";
             modal.classList.add('active');
-            
-            // Try to autoplay
             modalAudio.play().catch(() => {});
         }
 
-        // ==================== CLOSE & RESET ====================
         function closeModalLogic() {
             modal.classList.remove('active');
             modalAudio.pause();
@@ -505,9 +510,8 @@
 
         document.getElementById('return-btn').addEventListener('click', closeModalLogic);
 
-        // Audio error handling (user-friendly)
         modalAudio.onerror = () => {
-            audioStatus.innerHTML = `CARRIER_WAVE NOT FOUND<br><span style="font-size:0.8rem;">Check repo or contact the Architect</span>`;
+            audioStatus.innerHTML = `CARRIER_WAVE NOT FOUND<br><span style="font-size:0.82rem;">Check repo or contact the Architect</span>`;
         };
 
         // ==================== INTENT SUBMISSION ====================
@@ -552,7 +556,6 @@
             }
         });
 
-        // Escape key support
         document.addEventListener('keydown', (e) => {
             if (e.key === "Escape" && modal.classList.contains('active')) closeModalLogic();
         });
