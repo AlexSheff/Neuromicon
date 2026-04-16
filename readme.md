@@ -22,6 +22,14 @@ A transmedia architecture: `text` + `audio carrier` + `visual anchor`.
 Designed to interrupt the biological autopilot. To expose inherited code. To force a system reboot. The human cognitive system runs on background scripts—written by culture, trauma, and algorithms. Most operate on these patterns without question, executing them until a critical failure occurs.  
 
 **NEUROMICON is the debugger.**
+---
+
+## 🚀 INTERFACE ACCESS
+> **`STATUS: PWA_READY`**
+
+To initialize the protocol and access the media archive (art + audio), use the distributed web interface:
+
+[**🔗 RUN NEUROMICON 25 (PWA INTERFACE)**](https://alexsheff.github.io/Neuromicon/)
 
 ---
 
