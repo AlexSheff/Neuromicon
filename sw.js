@@ -1,13 +1,10 @@
-const CACHE_NAME = 'neuromicon-core-v2';
+const CACHE_NAME = 'neuromicon-core-v3';
 const CORE_ASSETS =[
     './',
     './index.html',
-    './manifest.json',
-    './icon-192.png',
-    './icon-512.png'
+    './manifest.json'
 ];
 
-// Install: Cache only the shell/core UI
 self.addEventListener('install', event => {
     self.skipWaiting();
     event.waitUntil(
@@ -19,7 +16,6 @@ self.addEventListener('install', event => {
     );
 });
 
-// Activate: Clear old caches
 self.addEventListener('activate', event => {
     event.waitUntil(
         caches.keys().then(keys => {
@@ -32,21 +28,20 @@ self.addEventListener('activate', event => {
     self.clients.claim();
 });
 
-// Fetch: Stale-While-Revalidate for images, Network-First for Audio
 self.addEventListener('fetch', event => {
     const req = event.request;
 
-    // Do not cache MP3s to save device memory, stream them instead.
-    if (req.url.endsWith('.mp3')) {
-        event.respondWith(fetch(req));
-        return;
+    // СИСТЕМНЫЙ БАЙПАС ДЛЯ АУДИО:
+    // Мы полностью пропускаем MP3 файлы мимо Service Worker-а, 
+    // чтобы не ломать Range Requests в браузерах.
+    if (req.url.match(/\.(mp3|MP3)$/)) {
+        return; 
     }
 
-    // Cache-First strategy for Images and UI
+    // Для остальных ресурсов (HTML, изображения) используем кэш
     event.respondWith(
         caches.match(req).then(cachedResponse => {
             if (cachedResponse) {
-                // Fetch in background to update cache
                 fetch(req).then(networkResponse => {
                     caches.open(CACHE_NAME).then(cache => {
                         cache.put(req, networkResponse.clone());
