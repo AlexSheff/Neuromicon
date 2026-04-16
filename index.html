@@ -223,16 +223,16 @@
             box-shadow: 0 0 10px rgba(0,208,255,0.4);
         }
 
-        /* ─── MODAL ───────────────────────────────────────────── */
+        /* ─── MODAL (FIXED ARCHITECTURE) ──────────────────────── */
         .modal {
             display: none;
             position: fixed;
             inset: 0;
             background: rgba(0, 0, 0, 0.92);
             z-index: 10000;
-            align-items: center;
+            align-items: flex-start; /* FIX: Предотвращает уход контента вверх */
             justify-content: center;
-            padding: 16px;
+            padding: 4vh 16px; /* FIX: Динамический отступ сверху и снизу */
             overflow-y: auto;
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
@@ -262,13 +262,14 @@
             border: 1px solid #2a2a2a;
             max-width: 1100px;
             width: 100%;
+            margin: auto; /* FIX: Возвращает центрирование, если контент короче экрана */
             display: grid;
             grid-template-columns: 1fr 1fr;
             box-shadow: 0 30px 80px rgba(0,0,0,0.9), 0 0 0 1px rgba(0,208,255,0.08);
-            overflow: hidden;
             border-radius: 4px;
             animation: content-in 0.35s cubic-bezier(0.23, 1, 0.32, 1) forwards;
             position: relative;
+            overflow: hidden;
         }
 
         @keyframes content-in {
@@ -279,8 +280,8 @@
         @media (max-width: 768px) {
             .modal-content {
                 grid-template-columns: 1fr;
-                max-height: 92vh;
-                overflow-y: auto;
+                max-height: none; /* FIX: Отдаем контроль прокрутки родительскому .modal */
+                overflow-y: visible;
             }
         }
 
@@ -294,27 +295,28 @@
             min-height: 320px;
         }
 
-        @media (min-width: 769px) {
-        .art-display {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            max-height: 100vh;
-        }
-                }
-
-         .art-display img {
-            max-width: 100%;
-            max-height: 100vh;
-            width: auto;
+        .art-display img {
+            width: 100%;
             height: auto;
+            max-height: 100vh;
             object-fit: contain;
+            display: block;
+        }
+
+        @media (min-width: 769px) {
+            .art-display {
+                max-height: 100vh;
+            }
         }
 
         @media (max-width: 768px) {
             .art-display {
-                min-height: 52vw;
-                max-height: 60vw;
+                min-height: auto;
+                max-height: 50vh; /* FIX: Жесткий лимит высоты картинки для мобильных (половина экрана) */
+                padding: 0;
+            }
+            .art-display img {
+                max-height: 50vh; /* FIX: Запрет выталкивания контейнера */
             }
         }
 
@@ -345,6 +347,7 @@
         @media (max-width: 768px) {
             .interaction-panel {
                 padding: 28px 22px;
+                overflow-y: visible; /* FIX: Убираем двойной скролл на мобильном */
             }
         }
 
@@ -581,7 +584,6 @@
 
     <div id="gallery-root"></div>
 
-    <!-- MODAL -->
     <div class="modal" id="node-modal" role="dialog" aria-modal="true">
         <div class="modal-content" id="modal-inner">
 
@@ -658,7 +660,6 @@
 
         // ════════════════════════════════════════════════
         //  NODE DATABASE
-        //  FIX: Node 25 audioFile "26_The_Mirror" removed — actual file is 25_The_Mirror.mp3
         // ════════════════════════════════════════════════
         const SECTORS = [
             {
@@ -707,7 +708,6 @@
                 key: "D_The_Mirror",
                 label: "SECTOR D — THE MIRROR",
                 nodes: [
-                    // BUG FIX: was audioFile: "26_The_Mirror" — file is 25_The_Mirror.mp3 per repo tree
                     { id: "25", title: "The Mirror", folder: "25_The_Mirror", file: "25_The_Mirror" },
                 ]
             }
@@ -719,13 +719,11 @@
         const galleryRoot = document.getElementById('gallery-root');
 
         SECTORS.forEach(sector => {
-            // Sector label divider
             const divider = document.createElement('div');
             divider.className = 'sector-divider';
             divider.innerHTML = `<span class="sector-label-tag">${sector.label}</span>`;
             galleryRoot.appendChild(divider);
 
-            // Grid for this sector
             const grid = document.createElement('div');
             grid.className = 'gallery-grid gallery-section';
 
@@ -785,16 +783,13 @@
         //  OPEN NODE
         // ════════════════════════════════════════════════
         function openNode(node, sectorKey, imgPath) {
-            // Image
             modalImg.style.opacity = '0';
             modalImg.src = imgPath;
             modalImg.onload = () => { modalImg.style.opacity = '1'; };
 
-            // Labels
             sectorInfo.textContent = `SECTOR ${sectorKey.split('_')[0]}`;
             modalTitle.textContent = `${node.id} — ${node.title.toUpperCase()}`;
 
-            // Audio — use node.audioFile override if present, else default to node.file
             const audioName = node.audioFile || node.file;
             const audioPath = encodeURI(
                 `./Sector_${sectorKey}/${node.folder}/${audioName}.mp3`
@@ -813,7 +808,6 @@
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
 
-            // Autoplay (browsers may block it)
             modalAudio.play().catch(() => {
                 autoplayHint.classList.add('visible');
             });
@@ -843,20 +837,16 @@
             paymentForm.reset();
         }
 
-        // Close button
         document.getElementById('return-btn').addEventListener('click', closeModal);
 
-        // Click outside modal content to close
         modal.addEventListener('click', e => {
             if (e.target === modal) closeModal();
         });
 
-        // Keyboard close
         document.addEventListener('keydown', e => {
             if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
         });
 
-        // Audio error
         modalAudio.addEventListener('error', () => {
             audioDot.classList.add('inactive');
             audioStatusTxt.textContent = 'CARRIER_WAVE · NOT FOUND';
