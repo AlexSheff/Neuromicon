@@ -96,7 +96,7 @@ The final variable. There is no external input here.
 
 | ID | Node Directory     | Theme                                      |
 |----|--------------------|--------------------------------------------|
-| 25 | 25_The_Mirror     | You are the 25th element. The carrier.    |
+| 25 | 25_The_Mirror     | The 25th element.   |
 
 ---
 
@@ -117,8 +117,6 @@ The final variable. There is no external input here.
 ```
 Neuromicon 25/
 ├── readme.md
-├── neuromicon.md
-├── THE NEUROMICON TRANSMISSION.pdf
 ├── Sector_A_The_Source_Code/
 │   ├── 01_Purpose/          (.md + .jpg + .mp3)
 │   ├── 02_Identity/         ...
@@ -126,7 +124,6 @@ Neuromicon 25/
 ├── Sector_B_The_Operating_System/
 ├── Sector_C_The_Upgrade/
 ├── Sector_D_The_Mirror/
-├── _project/                (certificates, manifests, whitepapers)
 ├── Outro/
 ├
 ```
