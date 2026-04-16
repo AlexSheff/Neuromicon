@@ -187,6 +187,7 @@
 
     <div class="gallery-container" id="gallery"></div>
 
+    <!-- Modal Node View -->
     <div class="modal" id="node-modal">
         <button class="close-btn" id="close-modal">[ CLOSE ]</button>
         <div class="modal-content">
@@ -200,7 +201,8 @@
                     <h2 class="node-title" id="modal-title">NODE TITLE</h2>
                     
                     <div class="audio-wrapper" id="audio-container">
-                        <!-- Audio injected via JS -->
+                        <div class="sys-text" id="audio-status">> CARRIER_WAVE: ACTIVE</div>
+                        <audio id="modal-audio" controls controlsList="nodownload"></audio>
                     </div>
                 </div>
 
@@ -208,7 +210,7 @@
                     <div class="sys-text" style="color: #666; margin-bottom:10px;">> DECLARE YOUR INTENT. VALUE IS SUBJECTIVE. THE SIGNAL WILL BE LOGGED IN THE ARCHIVE.</div>
                     <form class="payment-form" id="payment-form">
                         <div class="form-group">
-                            <label>> IDENTIFIER [PHONE / TELEGRAM]</label>
+                            <label>> IDENTIFIER[PHONE / TELEGRAM]</label>
                             <input type="text" id="user-phone" placeholder="e.g. +1 000 0000 or @username" required>
                         </div>
                         <div class="form-group">
@@ -224,8 +226,10 @@
     </div>
 
     <script>
+        // --- CONFIGURATION ---
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxUkkWNOG0XJFlH6zNoooOydB1EFVTAXxFV1B2zzhK3wlahwr46pZckkSmPmShDvaNL/exec"; 
         const SYSTEM_TOKEN = "NEUROMICON_SIGMA_2026";
+        // ---------------------
 
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -233,7 +237,7 @@
             });
         }
 
-        // Updated Database: Node 17 file points to 17_Genesis_Creativity
+        // CORRECTED NODE 17
         const repoData =[
             { id: "01", sector: "A_The_Source_Code", title: "Purpose", folder: "01_Purpose", file: "01_Purpose" },
             { id: "02", sector: "A_The_Source_Code", title: "Identity", folder: "02_Identity", file: "02_Identity" },
@@ -251,7 +255,7 @@
             { id: "14", sector: "B_The_Operating_System", title: "Authenticity", folder: "14_Authenticity", file: "14_Authenticity" },
             { id: "15", sector: "B_The_Operating_System", title: "Responsibility", folder: "15_Responsibility", file: "15_Responsibility" },
             { id: "16", sector: "B_The_Operating_System", title: "Trust", folder: "16_Trust", file: "16_Trust" },
-            { id: "17", sector: "B_The_Operating_System", title: "Creativity", folder: "17_Creativity", file: "17_Genesis_Creativity" },
+            { id: "17", sector: "B_The_Operating_System", title: "Creativity", folder: "17_Creativity", file: "17_Creativity" },
             { id: "18", sector: "B_The_Operating_System", title: "Play", folder: "18_Play", file: "18_Play" },
             { id: "19", sector: "B_The_Operating_System", title: "Algorithm", folder: "19_Algorithm", file: "19_Algorithm" },
             { id: "20", sector: "C_The_Upgrade", title: "Signal vs Noise", folder: "20_Signal_vs_Noise", file: "20_Signal_vs_Noise" },
@@ -265,17 +269,16 @@
         const gallery = document.getElementById('gallery');
         const modal = document.getElementById('node-modal');
         const modalImg = document.getElementById('modal-img');
+        const modalAudio = document.getElementById('modal-audio');
+        const audioStatus = document.getElementById('audio-status');
         const modalTitle = document.getElementById('modal-title');
         const sectorInfo = document.getElementById('sector-info');
-        const audioContainer = document.getElementById('audio-container');
         const terminalOut = document.getElementById('terminal-output');
 
         // Render Grid
         repoData.forEach(node => {
             const card = document.createElement('div');
             card.className = 'node-card';
-            
-            // encodeURI prevents broken links if there are spaces in the folder/file names
             const imgPath = encodeURI(`./Sector_${node.sector}/${node.folder}/${node.file}.jpg`);
             
             card.innerHTML = `
@@ -286,21 +289,26 @@
             gallery.appendChild(card);
         });
 
+        // 404 Error handler for audio
+        modalAudio.onerror = function() {
+            audioStatus.innerHTML = `> [ERROR 404] CARRIER_WAVE NOT FOUND.<br>> CHECK GITHUB REPO FILE PATH.`;
+        };
+
         function openNode(node, imgPath) {
             modalImg.src = imgPath;
             sectorInfo.innerText = `> SECTOR ${node.sector.split('_')[0]}`;
             modalTitle.innerText = `${node.id} - ${node.title}`;
             
             if (node.noAudio) {
-                audioContainer.innerHTML = `<div class="sys-text">> CARRIER_WAVE: NULL. <br>> EXTERNAL INPUT OFFLINE. <br>> YOU ARE THE CARRIER.</div>`;
+                audioStatus.innerHTML = `> CARRIER_WAVE: NULL. <br>> YOU ARE THE CARRIER.`;
+                modalAudio.style.display = 'none';
+                modalAudio.removeAttribute('src');
             } else {
-                const audioPath = encodeURI(`./Sector_${node.sector}/${node.folder}/${node.file}.mp3`);
-                audioContainer.innerHTML = `
-                    <div class="sys-text">> CARRIER_WAVE: ACTIVE</div>
-                    <audio id="modal-audio" controls controlsList="nodownload">
-                        <source src="${audioPath}" type="audio/mpeg">
-                        Your browser does not support the audio element.
-                    </audio>`;
+                audioStatus.innerHTML = `> CARRIER_WAVE: ACTIVE`;
+                modalAudio.style.display = 'block';
+                // Force browser to load the new file
+                modalAudio.src = encodeURI(`./Sector_${node.sector}/${node.folder}/${node.file}.mp3`);
+                modalAudio.load(); 
             }
             
             terminalOut.innerText = "";
@@ -312,8 +320,8 @@
 
         function closeModalLogic() {
             modal.classList.remove('active');
-            const currentAudio = document.getElementById('modal-audio');
-            if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
+            modalAudio.pause();
+            modalAudio.currentTime = 0;
             document.getElementById('payment-form').reset();
             document.getElementById('submit-btn').disabled = false;
             document.getElementById('submit-btn').innerText = "TRANSMIT INTENT";
@@ -323,7 +331,6 @@
         // Database Injection Logic
         document.getElementById('payment-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-
             const phone = document.getElementById('user-phone').value;
             const amount = document.getElementById('user-amount').value;
             const nodeId = modalTitle.innerText;
@@ -333,12 +340,7 @@
             btn.innerText = "TRANSMITTING...";
             terminalOut.innerText = "> ESTABLISHING SECURE UPLINK TO ARCHIVE...\n> COMPILING SIGNAL...";
 
-            const payload = {
-                token: SYSTEM_TOKEN,
-                phone: phone,
-                amount: amount,
-                nodeId: nodeId
-            };
+            const payload = { token: SYSTEM_TOKEN, phone: phone, amount: amount, nodeId: nodeId };
 
             try {
                 const response = await fetch(APPS_SCRIPT_URL, {
@@ -346,9 +348,7 @@
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(payload)
                 });
-
                 const result = await response.json();
-
                 if(result.status === "success") {
                     terminalOut.innerHTML = `> SIGNAL DELIVERED.\n> INTENT LOGGED IN SECTOR ARCHIVE.\n<span style="color:#fff;">> THANK YOU, ARCHITECT.</span>`;
                     document.getElementById('payment-form').reset();
