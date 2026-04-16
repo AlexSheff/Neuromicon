@@ -12,7 +12,7 @@
             --panel-bg: #0a0a0a;
             --text-color: #f0f0f0;
             --text-muted: #b0b0b0;
-            --accent-color: #00d0ff;           /* ← КИБЕРПАНК НЕОНОВЫЙ ГОЛУБОЙ */
+            --accent-color: #00d0ff;
             --grid-border: #222222;
             --input-bg: #111111;
             --font-mono: 'Courier New', Courier, monospace;
@@ -72,7 +72,7 @@
             letter-spacing: 2px;
         }
 
-        /* === GALLERY === */
+        /* GALLERY */
         .gallery-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(172px, 1fr));
@@ -124,7 +124,7 @@
             box-shadow: 0 0 12px rgba(0, 208, 255, 0.3);
         }
 
-        /* === MODAL === */
+        /* MODAL */
         .modal {
             display: none;
             position: fixed;
@@ -155,34 +155,39 @@
             .modal-content { grid-template-columns: 1fr; }
         }
 
+        /* ART DISPLAY — ИСПРАВЛЕНО ДЛЯ МОБИЛЬНЫХ */
         .art-display {
             position: relative;
             background: #000;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 420px;
-            overflow: auto;                     /* ← позволяет свайпать / скроллить картинку */
-            touch-action: pan-y pan-x;          /* ← улучшает свайп на мобильных */
+            overflow: auto;                    /* позволяет свайпать картинку */
+            touch-action: pan-y pan-x;
+            -webkit-overflow-scrolling: touch;
+            max-height: 58vh;                  /* увеличено для мобильных */
+            min-height: 42vh;
         }
 
         .art-display img {
             width: 100%;
             height: auto;
-            max-height: 68vh;
-            object-fit: contain;
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;               /* полностью помещается без обрезки */
             display: block;
             box-shadow: inset 0 0 80px rgba(0,0,0,0.7);
         }
 
-        /* МОБИЛЬНАЯ КОРРЕКЦИЯ — картинка теперь полностью видна и свайпается */
+        /* Ещё более мягкая настройка именно для мобильных */
         @media (max-width: 768px) {
             .art-display {
-                min-height: 42vh;
-                max-height: 52vh;
+                max-height: 55vh;
+                min-height: 45vh;
             }
             .art-display img {
-                max-height: 50vh;
+                max-height: 100%;
+                max-width: 100%;
             }
         }
 
@@ -194,7 +199,7 @@
             gap: 32px;
         }
 
-        /* RETURN BUTTON — НЕОНОВЫЙ ГЛОУ */
+        /* RETURN BUTTON */
         .return-btn {
             background: transparent;
             border: 1px solid var(--grid-border);
@@ -254,7 +259,7 @@
             filter: invert(90%) hue-rotate(170deg) grayscale(60%);
         }
 
-        /* INTENT FORM — НЕОНОВЫЙ ГОЛУБОЙ */
+        /* FORM */
         .form-group {
             margin-bottom: 26px;
         }
@@ -355,7 +360,7 @@
     <div class="modal" id="node-modal">
         <div class="modal-content">
             
-            <!-- Visual Anchor (теперь полностью виден и свайпается на мобильных) -->
+            <!-- ART DISPLAY — теперь полностью виден на мобильных -->
             <div class="art-display">
                 <img id="modal-img" src="" alt="Visual Anchor">
             </div>
@@ -421,7 +426,7 @@
             });
         }
 
-        // ==================== NODE DATABASE (с исправлением Node 25) ====================
+        // ==================== NODE DATABASE (Node 25 теперь с ТОЧНЫМ именем аудио) ====================
         const repoData = [
             { id: "01", sector: "A_The_Source_Code", title: "Purpose",        folder: "01_Purpose",        file: "01_Purpose" },
             { id: "02", sector: "A_The_Source_Code", title: "Identity",       folder: "02_Identity",       file: "02_Identity" },
@@ -447,8 +452,8 @@
             { id: "22", sector: "C_The_Upgrade", title: "Merge",           folder: "22_Merge",           file: "22_Merge" },
             { id: "23", sector: "C_The_Upgrade", title: "Witness",         folder: "23_Witness",         file: "23_Witness" },
             { id: "24", sector: "C_The_Upgrade", title: "Unity",           folder: "24_Unity",           file: "24_Unity" },
-            // Node 25 — специальное имя аудио (исправлено по реальному файлу в репозитории)
-            { id: "25", sector: "D_The_Mirror", title: "The Mirror", folder: "25_The_Mirror", file: "25_The_Mirror", audioFile: "25_The_Mirror" }
+            // Node 25 — ТОЧНОЕ имя аудиофайла из твоего репозитория
+            { id: "25", sector: "D_The_Mirror", title: "The Mirror", folder: "25_The_Mirror", file: "25_The_Mirror", audioFile: "26_The_Mirror" }
         ];
 
         const gallery = document.getElementById('gallery');
@@ -463,7 +468,7 @@
         const intentSuccess = document.getElementById('intent-success');
         const submitBtn = document.getElementById('submit-btn');
 
-        // ==================== RENDER GALLERY ====================
+        // RENDER GALLERY
         repoData.forEach(node => {
             const card = document.createElement('div');
             card.className = 'node-card';
@@ -477,13 +482,13 @@
             gallery.appendChild(card);
         });
 
-        // ==================== OPEN NODE (авто-определение аудио + исправление 25) ====================
+        // OPEN NODE
         function openNode(node, imgPath) {
             modalImg.src = imgPath;
             sectorInfo.textContent = `SECTOR ${node.sector.split('_')[0]}`;
             modalTitle.textContent = `${node.id} — ${node.title.toUpperCase()}`;
 
-            // Автоматическое имя аудио (для Node 25 берём точное имя файла)
+            // Автоматическое имя аудио + исправление для Node 25
             const audioName = node.audioFile || node.file;
             const audioPath = encodeURI(`./Sector_${node.sector}/${node.folder}/${audioName}.mp3`);
 
@@ -516,10 +521,10 @@
         document.getElementById('return-btn').addEventListener('click', closeModalLogic);
 
         modalAudio.onerror = () => {
-            audioStatus.innerHTML = `CARRIER_WAVE NOT FOUND<br><span style="font-size:0.82rem;">Check file name in repo</span>`;
+            audioStatus.innerHTML = `CARRIER_WAVE NOT FOUND<br><span style="font-size:0.82rem;">Check repo file name</span>`;
         };
 
-        // ==================== INTENT SUBMISSION ====================
+        // INTENT SUBMISSION
         paymentForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const phone = document.getElementById('user-phone').value.trim();
