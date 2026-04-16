@@ -9,9 +9,12 @@
     <style>
         :root {
             --bg-color: #030303;
-            --text-color: #d1d1d1;
+            --panel-bg: #0a0a0a;
+            --text-color: #e0e0e0;
+            --text-muted: #888888;
             --accent-color: #ff2a2a;
-            --grid-border: #1f1f1f;
+            --grid-border: #222222;
+            --input-bg: #111111;
             --font-mono: 'Courier New', Courier, monospace;
         }
 
@@ -34,14 +37,14 @@
             background: #000;
         }
 
-        h1 { font-size: 1.5rem; font-weight: normal; color: #fff; }
-        .sys-text { color: var(--accent-color); font-size: 0.75rem; letter-spacing: 1px; margin-top: 10px; }
-        .log-text { color: #555; font-size: 0.7rem; }
+        h1 { font-size: 1.6rem; font-weight: normal; color: #ffffff; }
+        .sys-text { color: var(--accent-color); font-size: 0.8rem; letter-spacing: 1px; margin-top: 10px; }
+        .log-text { color: var(--text-muted); font-size: 0.75rem; margin-top: 5px; }
 
         /* Gallery Grid */
         .gallery-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 1px;
             background-color: var(--grid-border);
             border: 1px solid var(--grid-border);
@@ -61,7 +64,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.4;
+            opacity: 0.5;
             transition: opacity 0.4s ease, transform 0.6s ease;
         }
 
@@ -74,10 +77,10 @@
             position: absolute;
             bottom: 8px;
             right: 8px;
-            font-size: 0.7rem;
-            color: var(--text-color);
+            font-size: 0.75rem;
+            color: #ffffff;
             background: rgba(0,0,0,0.85);
-            padding: 2px 6px;
+            padding: 3px 8px;
             border: 1px solid var(--grid-border);
         }
 
@@ -86,91 +89,117 @@
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(3, 3, 3, 0.98);
+            background: rgba(0, 0, 0, 0.95);
             z-index: 1000;
             overflow-y: auto;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(5px);
         }
 
         .modal.active { display: flex; }
 
         .modal-content {
-            background: #000;
+            background: var(--panel-bg);
             border: 1px solid var(--grid-border);
-            max-width: 900px;
+            max-width: 1000px;
             width: 95%;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            box-shadow: 0 0 30px rgba(255, 42, 42, 0.05);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            margin: 20px 0;
         }
 
         @media (max-width: 768px) {
             .modal-content { grid-template-columns: 1fr; }
         }
 
-        .close-btn {
-            position: absolute;
-            top: 15px; right: 20px;
-            color: #888;
-            cursor: pointer;
-            font-size: 1rem;
-            background: none; border: none; font-family: var(--font-mono);
-            z-index: 10;
-        }
-        .close-btn:hover { color: var(--accent-color); }
-
-        .art-display { position: relative; border-right: 1px solid var(--grid-border); background: #050505; }
-        .art-display img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .art-display { position: relative; border-right: 1px solid var(--grid-border); background: #000; }
+        .art-display img { width: 100%; height: 100%; object-fit: cover; display: block; max-height: 50vh; }
         
-        .interaction-panel { padding: 40px 30px; display: flex; flex-direction: column; justify-content: space-between; }
-        .node-title { font-size: 1.2rem; color: #fff; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
+        @media (min-width: 769px) {
+            .art-display img { max-height: none; }
+        }
+
+        .interaction-panel { 
+            padding: 40px 30px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+        }
+
+        /* Return Button */
+        .return-btn {
+            background: transparent;
+            border: 1px solid var(--grid-border);
+            color: var(--text-muted);
+            padding: 10px 15px;
+            font-family: var(--font-mono);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            margin-bottom: 25px;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .return-btn:hover {
+            color: #ffffff;
+            border-color: #ffffff;
+            background: #1a1a1a;
+        }
+
+        .node-title { font-size: 1.4rem; color: #ffffff; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
 
         /* Audio Player */
-        .audio-wrapper { margin-top: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--grid-border); }
-        audio { width: 100%; height: 35px; outline: none; margin-top: 10px; filter: invert(90%) hue-rotate(180deg) grayscale(100%); }
+        .audio-wrapper { margin-top: 25px; padding-bottom: 25px; border-bottom: 1px solid var(--grid-border); }
+        audio { 
+            width: 100%; 
+            height: 40px; 
+            outline: none; 
+            margin-top: 15px; 
+            filter: invert(90%) hue-rotate(180deg) grayscale(100%); 
+        }
 
-        /* Intent Protocol */
-        .payment-form { margin-top: 30px; }
+        /* Intent Protocol (Form) */
+        .payment-wrapper { margin-top: 25px; }
         .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-size: 0.75rem; color: #666; margin-bottom: 8px; letter-spacing: 1px; }
+        .form-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; letter-spacing: 1px; }
         
         input {
             width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid #333;
-            color: #fff;
+            background: var(--input-bg);
+            border: 1px solid var(--grid-border);
+            color: #ffffff;
             font-family: var(--font-mono);
-            padding: 8px 0;
-            font-size: 1rem;
+            padding: 12px 15px;
+            font-size: 1.1rem;
             transition: border-color 0.3s;
         }
 
-        input:focus { outline: none; border-bottom-color: var(--accent-color); }
+        input:focus { outline: none; border-color: var(--accent-color); background: #000; }
 
         .submit-btn {
             width: 100%;
             background: transparent;
             border: 1px solid var(--accent-color);
             color: var(--accent-color);
-            padding: 12px;
+            padding: 15px;
             margin-top: 10px;
             font-family: var(--font-mono);
             cursor: pointer;
             transition: all 0.3s;
             text-transform: uppercase;
             letter-spacing: 2px;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
+            font-weight: bold;
         }
 
         .submit-btn:hover { background: var(--accent-color); color: #000; }
-        .submit-btn:disabled { border-color: #555; color: #555; cursor: not-allowed; background: transparent; }
+        .submit-btn:disabled { border-color: #444; color: #444; cursor: not-allowed; background: transparent; }
 
         #terminal-output {
-            margin-top: 15px;
-            font-size: 0.75rem;
+            margin-top: 20px;
+            font-size: 0.8rem;
             color: var(--accent-color);
             min-height: 40px;
             white-space: pre-wrap;
@@ -189,13 +218,14 @@
 
     <!-- Modal Node View -->
     <div class="modal" id="node-modal">
-        <button class="close-btn" id="close-modal">[ CLOSE ]</button>
         <div class="modal-content">
             <div class="art-display">
                 <img id="modal-img" src="" alt="Anchor">
             </div>
 
             <div class="interaction-panel">
+                <button class="return-btn" id="return-btn">[ < RETURN TO ARCHIVE ]</button>
+                
                 <div>
                     <div class="sys-text" id="sector-info">> SECTOR IDENTIFIED</div>
                     <h2 class="node-title" id="modal-title">NODE TITLE</h2>
@@ -207,11 +237,11 @@
                 </div>
 
                 <div class="payment-wrapper">
-                    <div class="sys-text" style="color: #666; margin-bottom:10px;">> DECLARE YOUR INTENT. VALUE IS SUBJECTIVE. THE SIGNAL WILL BE LOGGED IN THE ARCHIVE.</div>
+                    <div class="log-text" style="margin-bottom:15px; line-height: 1.4;">> DECLARE YOUR INTENT. VALUE IS SUBJECTIVE.<br>> THE SIGNAL WILL BE LOGGED IN THE ARCHIVE.</div>
                     <form class="payment-form" id="payment-form">
                         <div class="form-group">
                             <label>> IDENTIFIER[PHONE / TELEGRAM]</label>
-                            <input type="text" id="user-phone" placeholder="e.g. +1 000 0000 or @username" required>
+                            <input type="text" id="user-phone" placeholder="e.g. +1 000 0000 or @user" required>
                         </div>
                         <div class="form-group">
                             <label>> INTENT [DECLARED VALUE]</label>
@@ -237,7 +267,7 @@
             });
         }
 
-        // CORRECTED NODE 17
+        // Updated Database: Fixed Node 17 and Node 25 paths
         const repoData =[
             { id: "01", sector: "A_The_Source_Code", title: "Purpose", folder: "01_Purpose", file: "01_Purpose" },
             { id: "02", sector: "A_The_Source_Code", title: "Identity", folder: "02_Identity", file: "02_Identity" },
@@ -263,7 +293,7 @@
             { id: "22", sector: "C_The_Upgrade", title: "Merge", folder: "22_Merge", file: "22_Merge" },
             { id: "23", sector: "C_The_Upgrade", title: "Witness", folder: "23_Witness", file: "23_Witness" },
             { id: "24", sector: "C_The_Upgrade", title: "Unity", folder: "24_Unity", file: "24_Unity" },
-            { id: "25", sector: "D_The_Mirror", title: "The Mirror", folder: "25_The_Mirror", file: "25_The_Mirror", noAudio: true }
+            { id: "25", sector: "D_The_Mirror", title: "The Mirror", folder: "25_The_Mirror", file: "25_The_Mirror", audioFile: "26_ MIRROR (Node 25)" }
         ];
 
         const gallery = document.getElementById('gallery');
@@ -299,24 +329,21 @@
             sectorInfo.innerText = `> SECTOR ${node.sector.split('_')[0]}`;
             modalTitle.innerText = `${node.id} - ${node.title}`;
             
-            if (node.noAudio) {
-                audioStatus.innerHTML = `> CARRIER_WAVE: NULL. <br>> YOU ARE THE CARRIER.`;
-                modalAudio.style.display = 'none';
-                modalAudio.removeAttribute('src');
-            } else {
-                audioStatus.innerHTML = `> CARRIER_WAVE: ACTIVE`;
-                modalAudio.style.display = 'block';
-                // Force browser to load the new file
-                modalAudio.src = encodeURI(`./Sector_${node.sector}/${node.folder}/${node.file}.mp3`);
-                modalAudio.load(); 
-            }
+            // Resolve Audio Path (uses audioFile override if it exists, otherwise defaults to file name)
+            const audioName = node.audioFile ? node.audioFile : node.file;
+            const audioPath = encodeURI(`./Sector_${node.sector}/${node.folder}/${audioName}.mp3`);
+            
+            audioStatus.innerHTML = `> CARRIER_WAVE: ACTIVE`;
+            modalAudio.style.display = 'block';
+            modalAudio.src = audioPath;
+            modalAudio.load(); 
             
             terminalOut.innerText = "";
             modal.classList.add('active');
         }
 
-        document.getElementById('close-modal').addEventListener('click', closeModalLogic);
-        modal.addEventListener('click', (e) => { if (e.target === modal) closeModalLogic(); });
+        // Dedicated Return Button Logic (Removed background click closure)
+        document.getElementById('return-btn').addEventListener('click', closeModalLogic);
 
         function closeModalLogic() {
             modal.classList.remove('active');
@@ -350,7 +377,7 @@
                 });
                 const result = await response.json();
                 if(result.status === "success") {
-                    terminalOut.innerHTML = `> SIGNAL DELIVERED.\n> INTENT LOGGED IN SECTOR ARCHIVE.\n<span style="color:#fff;">> THANK YOU, ARCHITECT.</span>`;
+                    terminalOut.innerHTML = `> SIGNAL DELIVERED.\n> INTENT LOGGED IN SECTOR ARCHIVE.\n<span style="color:#ffffff;">> THANK YOU, ARCHITECT.</span>`;
                     document.getElementById('payment-form').reset();
                     btn.innerText = "TRANSMISSION COMPLETE";
                 } else {
