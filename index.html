@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NEUROMICON | The Archive</title>
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#030303">
+    <style>
+        :root {
+            --bg-color: #030303;
+            --text-color: #d1d1d1;
+            --accent-color: #ff2a2a;
+            --grid-border: #1f1f1f;
+            --font-mono: 'Courier New', Courier, monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-mono);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header {
+            padding: 30px 20px;
+            border-bottom: 1px solid var(--grid-border);
+            text-align: center;
+            letter-spacing: 3px;
+            background: #000;
+        }
+
+        h1 { font-size: 1.5rem; font-weight: normal; color: #fff; }
+        .sys-text { color: var(--accent-color); font-size: 0.75rem; letter-spacing: 1px; margin-top: 10px; }
+        .log-text { color: #555; font-size: 0.7rem; }
+
+        /* Gallery Grid */
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1px;
+            background-color: var(--grid-border);
+            border: 1px solid var(--grid-border);
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+        .node-card {
+            background: #080808;
+            cursor: pointer;
+            aspect-ratio: 1 / 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .node-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+            transition: opacity 0.4s ease, transform 0.6s ease;
+        }
+
+        .node-card:hover img {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .node-id {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            font-size: 0.7rem;
+            color: var(--text-color);
+            background: rgba(0,0,0,0.85);
+            padding: 2px 6px;
+            border: 1px solid var(--grid-border);
+        }
+
+        /* Modal / Node Viewer */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 3, 3, 0.98);
+            z-index: 1000;
+            overflow-y: auto;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active { display: flex; }
+
+        .modal-content {
+            background: #000;
+            border: 1px solid var(--grid-border);
+            max-width: 900px;
+            width: 95%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            box-shadow: 0 0 30px rgba(255, 42, 42, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            .modal-content { grid-template-columns: 1fr; }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            color: #888;
+            cursor: pointer;
+            font-size: 1rem;
+            background: none; border: none; font-family: var(--font-mono);
+            z-index: 10;
+        }
+        .close-btn:hover { color: var(--accent-color); }
+
+        .art-display { position: relative; border-right: 1px solid var(--grid-border); background: #050505; }
+        .art-display img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        
+        .interaction-panel { padding: 40px 30px; display: flex; flex-direction: column; justify-content: space-between; }
+        .node-title { font-size: 1.2rem; color: #fff; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
+
+        /* Audio Player */
+        .audio-wrapper { margin-top: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--grid-border); }
+        audio { width: 100%; height: 35px; outline: none; margin-top: 10px; filter: invert(90%) hue-rotate(180deg) grayscale(100%); }
+
+        /* Intent Protocol */
+        .payment-form { margin-top: 30px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 0.75rem; color: #666; margin-bottom: 8px; letter-spacing: 1px; }
+        
+        input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #333;
+            color: #fff;
+            font-family: var(--font-mono);
+            padding: 8px 0;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus { outline: none; border-bottom-color: var(--accent-color); }
+
+        .submit-btn {
+            width: 100%;
+            background: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 12px;
+            margin-top: 10px;
+            font-family: var(--font-mono);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+        }
+
+        .submit-btn:hover { background: var(--accent-color); color: #000; }
+        .submit-btn:disabled { border-color: #555; color: #555; cursor: not-allowed; background: transparent; }
+
+        #terminal-output {
+            margin-top: 15px;
+            font-size: 0.75rem;
+            color: var(--accent-color);
+            min-height: 40px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>NEUROMICON</h1>
+        <div class="sys-text">> SYSTEM_PROTOCOL: DEFRAGMENTATION_ACTIVE</div>
+        <div class="log-text">E = M × C²</div>
+    </header>
+
+    <div class="gallery-container" id="gallery"></div>
+
+    <!-- Modal Node View -->
+    <div class="modal" id="node-modal">
+        <button class="close-btn" id="close-modal">[ CLOSE ]</button>
+        <div class="modal-content">
+            <div class="art-display">
+                <img id="modal-img" src="" alt="Anchor">
+            </div>
+
+            <div class="interaction-panel">
+                <div>
+                    <div class="sys-text" id="sector-info">> SECTOR IDENTIFIED</div>
+                    <h2 class="node-title" id="modal-title">NODE TITLE</h2>
+                    
+                    <div class="audio-wrapper" id="audio-container">
+                        <div class="sys-text">> CARRIER_WAVE: ACTIVE</div>
+                        <audio id="modal-audio" controls controlsList="nodownload"></audio>
+                    </div>
+                </div>
+
+                <div class="payment-wrapper">
+                    <div class="sys-text" style="color: #666; margin-bottom:10px;">> DECLARE YOUR INTENT. VALUE IS SUBJECTIVE. THE SIGNAL WILL BE LOGGED IN THE ARCHIVE.</div>
+                    <form class="payment-form" id="payment-form">
+                        <div class="form-group">
+                            <label>> IDENTIFIER [PHONE / TELEGRAM]</label>
+                            <input type="text" id="user-phone" placeholder="e.g. +1 000 0000 or @username" required>
+                        </div>
+                        <div class="form-group">
+                            <label>> INTENT [DECLARED VALUE]</label>
+                            <input type="number" id="user-amount" placeholder="0.00" min="0" step="0.01" required>
+                        </div>
+                        <button type="submit" class="submit-btn" id="submit-btn">TRANSMIT INTENT</button>
+                    </form>
+                    <div id="terminal-output"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxUkkWNOG0XJFlH6zNoooOydB1EFVTAXxFV1B2zzhK3wlahwr46pZckkSmPmShDvaNL/exec"; 
+        const SYSTEM_TOKEN = "NEUROMICON_SIGMA_2026"; // System security token
+        // ---------------------
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(err => console.error('> SW_ERROR:', err));
+            });
+        }
+
+        const repoData =[
+            { id: "01", sector: "A_The_Source_Code", title: "Purpose", folder: "01_Purpose", file: "01_Purpose" },
+            { id: "02", sector: "A_The_Source_Code", title: "Identity", folder: "02_Identity", file: "02_Identity" },
+            { id: "03", sector: "A_The_Source_Code", title: "Legacy", folder: "03_Legacy", file: "03_Legacy" },
+            { id: "04", sector: "A_The_Source_Code", title: "Connection", folder: "04_Connection", file: "04_Connection" },
+            { id: "05", sector: "A_The_Source_Code", title: "Freedom", folder: "05_Freedom", file: "05_Freedom" },
+            { id: "06", sector: "A_The_Source_Code", title: "Suffering", folder: "06_Suffering", file: "06_Suffering" },
+            { id: "07", sector: "A_The_Source_Code", title: "Mortality", folder: "07_Mortality", file: "07_Mortality" },
+            { id: "08", sector: "A_The_Source_Code", title: "Love", folder: "08_Love", file: "08_Love" },
+            { id: "09", sector: "A_The_Source_Code", title: "Growth", folder: "09_Growth", file: "09_Growth" },
+            { id: "10", sector: "A_The_Source_Code", title: "Transcendence", folder: "10_Transcendence", file: "10_Transcendence" },
+            { id: "11", sector: "A_The_Source_Code", title: "Action", folder: "11_Action", file: "11_Action" },
+            { id: "12", sector: "B_The_Operating_System", title: "Solitude", folder: "12_Solitude", file: "12_Solitude" },
+            { id: "13", sector: "B_The_Operating_System", title: "Meaning", folder: "13_Meaning", file: "13_Meaning" },
+            { id: "14", sector: "B_The_Operating_System", title: "Authenticity", folder: "14_Authenticity", file: "14_Authenticity" },
+            { id: "15", sector: "B_The_Operating_System", title: "Responsibility", folder: "15_Responsibility", file: "15_Responsibility" },
+            { id: "16", sector: "B_The_Operating_System", title: "Trust", folder: "16_Trust", file: "16_Trust" },
+            { id: "17", sector: "B_The_Operating_System", title: "Creativity", folder: "17_Creativity", file: "17_Creativity" },
+            { id: "18", sector: "B_The_Operating_System", title: "Play", folder: "18_Play", file: "18_Play" },
+            { id: "19", sector: "B_The_Operating_System", title: "Algorithm", folder: "19_Algorithm", file: "19_Algorithm" },
+            { id: "20", sector: "C_The_Upgrade", title: "Signal vs Noise", folder: "20_Signal_vs_Noise", file: "20_Signal_vs_Noise" },
+            { id: "21", sector: "C_The_Upgrade", title: "Upgrade", folder: "21_Upgrade", file: "21_Upgrade" },
+            { id: "22", sector: "C_The_Upgrade", title: "Merge", folder: "22_Merge", file: "22_Merge" },
+            { id: "23", sector: "C_The_Upgrade", title: "Witness", folder: "23_Witness", file: "23_Witness" },
+            { id: "24", sector: "C_The_Upgrade", title: "Unity", folder: "24_Unity", file: "24_Unity" },
+            { id: "25", sector: "D_The_Mirror", title: "The Mirror", folder: "25_The_Mirror", file: "25_The_Mirror", noAudio: true }
+        ];
+
+        const gallery = document.getElementById('gallery');
+        const modal = document.getElementById('node-modal');
+        const modalImg = document.getElementById('modal-img');
+        const modalAudio = document.getElementById('modal-audio');
+        const modalTitle = document.getElementById('modal-title');
+        const sectorInfo = document.getElementById('sector-info');
+        const audioContainer = document.getElementById('audio-container');
+        const terminalOut = document.getElementById('terminal-output');
+
+        // Render Grid
+        repoData.forEach(node => {
+            const card = document.createElement('div');
+            card.className = 'node-card';
+            
+            const imgPath = `./Sector_${node.sector}/${node.folder}/${node.file}.jpg`;
+            
+            card.innerHTML = `
+                <img src="${imgPath}" loading="lazy" alt="Node ${node.id}">
+                <div class="node-id">[${node.id}]</div>
+            `;
+            card.addEventListener('click', () => openNode(node, imgPath));
+            gallery.appendChild(card);
+        });
+
+        function openNode(node, imgPath) {
+            modalImg.src = imgPath;
+            sectorInfo.innerText = `> SECTOR ${node.sector.split('_')[0]}`;
+            modalTitle.innerText = `${node.id} - ${node.title}`;
+            
+            if (node.noAudio) {
+                audioContainer.innerHTML = `<div class="sys-text">> CARRIER_WAVE: NULL. <br>> EXTERNAL INPUT OFFLINE. <br>> YOU ARE THE CARRIER.</div>`;
+            } else {
+                const audioPath = `./Sector_${node.sector}/${node.folder}/${node.file}.mp3`;
+                audioContainer.innerHTML = `<div class="sys-text">> CARRIER_WAVE: ACTIVE</div><audio id="modal-audio" controls controlsList="nodownload" src="${audioPath}"></audio>`;
+            }
+            
+            terminalOut.innerText = "";
+            modal.classList.add('active');
+        }
+
+        document.getElementById('close-modal').addEventListener('click', closeModalLogic);
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModalLogic(); });
+
+        function closeModalLogic() {
+            modal.classList.remove('active');
+            const currentAudio = document.getElementById('modal-audio');
+            if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
+            document.getElementById('payment-form').reset();
+            document.getElementById('submit-btn').disabled = false;
+            document.getElementById('submit-btn').innerText = "TRANSMIT INTENT";
+            terminalOut.innerText = "";
+        }
+
+        // Database Injection Logic
+        document.getElementById('payment-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const phone = document.getElementById('user-phone').value;
+            const amount = document.getElementById('user-amount').value;
+            const nodeId = modalTitle.innerText;
+            const btn = document.getElementById('submit-btn');
+
+            btn.disabled = true;
+            btn.innerText = "TRANSMITTING...";
+            terminalOut.innerText = "> ESTABLISHING SECURE UPLINK TO ARCHIVE...\n> COMPILING SIGNAL...";
+
+            const payload = {
+                token: SYSTEM_TOKEN, // Added Security Token
+                phone: phone,
+                amount: amount,
+                nodeId: nodeId
+            };
+
+            try {
+                // We use text/plain content type to avoid CORS preflight errors in Google Apps Script
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if(result.status === "success") {
+                    terminalOut.innerHTML = `> SIGNAL DELIVERED.\n> INTENT LOGGED IN SECTOR ARCHIVE.\n<span style="color:#fff;">> THANK YOU, ARCHITECT.</span>`;
+                    document.getElementById('payment-form').reset();
+                    btn.innerText = "TRANSMISSION COMPLETE";
+                } else {
+                    throw new Error(result.message); // Handles token mismatch or payload errors from backend
+                }
+
+            } catch (error) {
+                terminalOut.innerHTML = `> [SYSTEM ERROR] TRANSMISSION FAILED.\n> DETAILS: ${error.message}`;
+                btn.disabled = false;
+                btn.innerText = "RETRY TRANSMISSION";
+            }
+        });
+    </script>
+</body>
+</html>
