@@ -8,341 +8,567 @@
     <link rel="manifest" href="./manifest.json">
     <style>
         :root {
-            --bg-color: #030303;
-            --panel-bg: #0a0a0a;
-            --text-color: #f0f0f0;
-            --text-muted: #b0b0b0;
-            --accent-color: #00d0ff;
-            --grid-border: #222222;
-            --input-bg: #111111;
-            --font-mono: 'Courier New', Courier, monospace;
+            --bg:         #030303;
+            --panel-bg:   #0a0a0a;
+            --text:       #f0f0f0;
+            --muted:      #888888;
+            --accent:     #00d0ff;
+            --accent-dim: rgba(0, 208, 255, 0.15);
+            --border:     #1e1e1e;
+            --input-bg:   #111111;
+            --mono:       'Courier New', Courier, monospace;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: var(--font-mono);
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--mono);
             line-height: 1.75;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
+        /* ─── HEADER ──────────────────────────────────────────── */
         header {
-            padding: 42px 20px 32px;
-            border-bottom: 1px solid var(--grid-border);
+            padding: 52px 20px 36px;
+            border-bottom: 1px solid var(--border);
             text-align: center;
             background: #000;
             position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 60% 40% at 50% 0%, rgba(0,208,255,0.06) 0%, transparent 70%);
+            pointer-events: none;
         }
 
         header::after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            bottom: 0; left: 0; right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
-            opacity: 0.3;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.4;
         }
 
         h1 {
-            font-size: 2.35rem;
+            font-size: clamp(1.6rem, 5vw, 2.6rem);
             font-weight: normal;
-            letter-spacing: 9px;
-            color: #ffffff;
+            letter-spacing: clamp(6px, 2vw, 12px);
+            color: #fff;
             text-transform: uppercase;
-            text-shadow: 0 0 15px rgba(0, 208, 255, 0.5);
+            text-shadow: 0 0 30px rgba(0,208,255,0.4);
+            position: relative;
         }
 
         .sys-text {
-            color: var(--accent-color);
-            font-size: 0.95rem;
+            color: var(--accent);
+            font-size: 0.9rem;
             letter-spacing: 4px;
-            margin-top: 12px;
-            text-shadow: 0 0 12px var(--accent-color);
+            margin-top: 14px;
+            text-shadow: 0 0 12px var(--accent);
+            position: relative;
         }
 
-        .log-text {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-top: 9px;
+        .log-text-header {
+            color: var(--muted);
+            font-size: 0.78rem;
+            margin-top: 10px;
             letter-spacing: 2px;
+            position: relative;
         }
 
-        /* GALLERY */
-        .gallery-container {
+        /* ─── SECTOR DIVIDER ──────────────────────────────────── */
+        .sector-divider {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 22px 20px 14px;
+            background: #000;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sector-divider::before,
+        .sector-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border));
+        }
+
+        .sector-divider::after {
+            background: linear-gradient(270deg, transparent, var(--border));
+        }
+
+        .sector-label-tag {
+            font-size: 0.72rem;
+            color: var(--accent);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            text-shadow: 0 0 8px var(--accent);
+            opacity: 0.8;
+        }
+
+        /* ─── GALLERY ─────────────────────────────────────────── */
+        .gallery-section {
+            background: #000;
+        }
+
+        .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(172px, 1fr));
-            gap: 0;
-            background-color: #000;
-            max-width: 100%;
-            margin: 0 auto;
-            padding: 0;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
         }
 
+        /* ─── NODE CARD ───────────────────────────────────────── */
         .node-card {
-            background: #080808;
+            background: #050505;
             cursor: pointer;
             aspect-ratio: 1 / 1;
             position: relative;
             overflow: hidden;
-            border: 1px solid var(--grid-border);
-            transition: all 0.35s ease;
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            transition: border-color 0.3s ease;
+            z-index: 0;
         }
 
         .node-card:hover {
-            border-color: var(--accent-color);
-            transform: scale(1.04);
+            border-color: var(--accent);
+            z-index: 1;
         }
 
         .node-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.75;
-            transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.23, 1, 0.32, 1);
+            transform: scale(1.0);
+            display: block;
+        }
+
+        .node-card img.loaded {
+            opacity: 0.7;
         }
 
         .node-card:hover img {
             opacity: 1;
-            transform: scale(1.1);
+            transform: scale(1.08);
+        }
+
+        /* Shimmer while loading */
+        .node-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #0a0a0a 25%, #141414 50%, #0a0a0a 75%);
+            background-size: 200% 200%;
+            animation: shimmer 1.6s infinite linear;
+            z-index: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .node-card.img-ready::before {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            0%   { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Hover glow overlay */
+        .node-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 60%, rgba(0,208,255,0.08) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .node-card:hover::after {
+            opacity: 1;
         }
 
         .node-id {
             position: absolute;
-            bottom: 12px;
-            right: 12px;
-            font-size: 0.88rem;
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.78rem;
             color: #fff;
-            background: rgba(0,0,0,0.9);
-            padding: 5px 13px;
-            border: 1px solid var(--accent-color);
+            background: rgba(0,0,0,0.85);
+            padding: 4px 10px;
+            border: 1px solid rgba(0,208,255,0.5);
             letter-spacing: 1.5px;
-            box-shadow: 0 0 12px rgba(0, 208, 255, 0.3);
+            z-index: 3;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
 
-        /* MODAL */
+        .node-card:hover .node-id {
+            border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(0,208,255,0.4);
+        }
+
+        /* ─── MODAL ───────────────────────────────────────────── */
         .modal {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(3, 3, 3, 0.97);
+            background: rgba(0, 0, 0, 0.92);
             z-index: 10000;
             align-items: center;
             justify-content: center;
-            padding: 15px;
+            padding: 16px;
             overflow-y: auto;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
         }
 
-        .modal.active { display: flex; }
+        .modal.active {
+            display: flex;
+            animation: modal-in 0.3s ease forwards;
+        }
+
+        .modal.closing {
+            animation: modal-out 0.25s ease forwards;
+        }
+
+        @keyframes modal-in {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        @keyframes modal-out {
+            from { opacity: 1; }
+            to   { opacity: 0; }
+        }
 
         .modal-content {
             background: var(--panel-bg);
-            border: 2px solid var(--grid-border);
-            max-width: 1150px;
+            border: 1px solid #2a2a2a;
+            max-width: 1100px;
             width: 100%;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            box-shadow: 0 25px 70px rgba(0, 208, 255, 0.2);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.9), 0 0 0 1px rgba(0,208,255,0.08);
             overflow: hidden;
             border-radius: 4px;
+            animation: content-in 0.35s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            position: relative;
+        }
+
+        @keyframes content-in {
+            from { transform: translateY(18px) scale(0.98); opacity: 0; }
+            to   { transform: translateY(0) scale(1); opacity: 1; }
         }
 
         @media (max-width: 768px) {
-            .modal-content { grid-template-columns: 1fr; }
+            .modal-content {
+                grid-template-columns: 1fr;
+                max-height: 92vh;
+                overflow-y: auto;
+            }
         }
 
-        /* ART DISPLAY — ИСПРАВЛЕНО ДЛЯ МОБИЛЬНЫХ */
+        /* ─── ART DISPLAY ─────────────────────────────────────── */
         .art-display {
-            position: relative;
             background: #000;
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: auto;                    /* позволяет свайпать картинку */
-            touch-action: pan-y pan-x;
-            -webkit-overflow-scrolling: touch;
-            max-height: 58vh;                  /* увеличено для мобильных */
-            min-height: 42vh;
+            min-height: 320px;
+        }
+
+        @media (min-width: 769px) {
+            .art-display {
+                /* Sticky on desktop so image stays in view while scrolling form */
+                position: sticky;
+                top: 0;
+                max-height: 100vh;
+                overflow: hidden;
+            }
         }
 
         .art-display img {
             width: 100%;
-            height: auto;
-            max-height: 100%;
-            max-width: 100%;
-            object-fit: contain;               /* полностью помещается без обрезки */
+            height: 100%;
+            object-fit: cover;
             display: block;
-            box-shadow: inset 0 0 80px rgba(0,0,0,0.7);
+            transition: opacity 0.4s ease;
         }
 
-        /* Ещё более мягкая настройка именно для мобильных */
         @media (max-width: 768px) {
             .art-display {
-                max-height: 55vh;
-                min-height: 45vh;
-            }
-            .art-display img {
-                max-height: 100%;
-                max-width: 100%;
+                min-height: 52vw;
+                max-height: 60vw;
             }
         }
 
+        /* Scanline overlay for art */
+        .art-display::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,0.07) 2px,
+                rgba(0,0,0,0.07) 4px
+            );
+            pointer-events: none;
+        }
+
+        /* ─── INTERACTION PANEL ───────────────────────────────── */
         .interaction-panel {
-            padding: 48px 42px;
+            padding: 40px 36px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            gap: 32px;
+            gap: 28px;
+            overflow-y: auto;
         }
 
-        /* RETURN BUTTON */
+        @media (max-width: 768px) {
+            .interaction-panel {
+                padding: 28px 22px;
+            }
+        }
+
+        /* ─── RETURN BTN ──────────────────────────────────────── */
         .return-btn {
             background: transparent;
-            border: 1px solid var(--grid-border);
-            color: var(--text-muted);
-            padding: 15px 28px;
-            font-family: var(--font-mono);
+            border: 1px solid #333;
+            color: var(--muted);
+            padding: 12px 22px;
+            font-family: var(--mono);
             cursor: pointer;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
             text-align: center;
-            letter-spacing: 2.5px;
-            font-size: 0.92rem;
+            letter-spacing: 2px;
+            font-size: 0.82rem;
             align-self: flex-start;
             border-radius: 2px;
-            box-shadow: 
-                0 0 8px rgba(0, 208, 255, 0.4),
-                0 0 16px rgba(0, 208, 255, 0.2);
         }
 
         .return-btn:hover {
-            border-color: var(--accent-color);
-            color: #ffffff;
-            background: rgba(0, 208, 255, 0.08);
-            box-shadow: 
-                0 0 14px var(--accent-color),
-                0 0 28px var(--accent-color),
-                0 0 42px rgba(0, 208, 255, 0.6);
-            transform: translateY(-1px);
+            border-color: var(--accent);
+            color: #fff;
+            background: var(--accent-dim);
+            box-shadow: 0 0 18px rgba(0,208,255,0.25);
+        }
+
+        /* ─── NODE INFO ───────────────────────────────────────── */
+        .node-sector-tag {
+            font-size: 0.75rem;
+            color: var(--accent);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            text-shadow: 0 0 8px var(--accent);
         }
 
         .node-title {
-            font-size: 1.85rem;
-            color: #ffffff;
-            letter-spacing: 5px;
+            font-size: clamp(1.3rem, 3vw, 1.75rem);
+            color: #fff;
+            letter-spacing: 4px;
             text-transform: uppercase;
-            line-height: 1.25;
-            text-shadow: 0 0 18px var(--accent-color);
+            line-height: 1.2;
+            text-shadow: 0 0 20px rgba(0,208,255,0.3);
         }
 
-        .sector-label {
-            font-size: 0.98rem;
-            color: var(--accent-color);
-            letter-spacing: 3.5px;
-            margin-bottom: 8px;
-            text-shadow: 0 0 10px var(--accent-color);
-        }
-
+        /* ─── AUDIO ───────────────────────────────────────────── */
         .audio-wrapper {
-            padding-bottom: 28px;
-            border-bottom: 1px solid var(--grid-border);
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .audio-status {
+            font-size: 0.72rem;
+            color: var(--muted);
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .audio-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+            animation: pulse 1.8s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+
+        .audio-dot.inactive {
+            background: #444;
+            box-shadow: none;
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
         audio {
             width: 100%;
-            height: 54px;
+            height: 48px;
             outline: none;
-            margin-top: 14px;
-            filter: invert(90%) hue-rotate(170deg) grayscale(60%);
+            filter: invert(90%) hue-rotate(170deg) brightness(0.85) grayscale(40%);
         }
 
-        /* FORM */
+        .autoplay-hint {
+            display: none;
+            margin-top: 8px;
+            font-size: 0.72rem;
+            color: #555;
+            letter-spacing: 1.5px;
+        }
+
+        .autoplay-hint.visible { display: block; }
+
+        /* ─── FORM ────────────────────────────────────────────── */
+        .form-intro {
+            font-size: 0.8rem;
+            color: #555;
+            letter-spacing: 1.5px;
+            line-height: 1.7;
+            border-left: 2px solid #1e1e1e;
+            padding-left: 14px;
+        }
+
         .form-group {
-            margin-bottom: 26px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
-            font-size: 0.88rem;
-            color: var(--text-muted);
-            margin-bottom: 10px;
+            font-size: 0.72rem;
+            color: var(--muted);
+            margin-bottom: 8px;
             letter-spacing: 2px;
             text-transform: uppercase;
         }
 
-        input {
+        input[type="text"],
+        input[type="number"] {
             width: 100%;
             background: var(--input-bg);
-            border: 1px solid var(--grid-border);
-            color: #ffffff;
-            font-family: var(--font-mono);
-            padding: 16px 20px;
-            font-size: 1.18rem;
-            transition: all 0.3s ease;
+            border: 1px solid #2a2a2a;
+            color: #fff;
+            font-family: var(--mono);
+            padding: 14px 16px;
+            font-size: 1.05rem;
+            transition: all 0.25s ease;
             border-radius: 2px;
         }
 
-        input:focus {
+        input[type="text"]:focus,
+        input[type="number"]:focus {
             outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 4px rgba(0, 208, 255, 0.25);
+            border-color: var(--accent);
+            background: #131313;
+            box-shadow: 0 0 0 3px rgba(0,208,255,0.12);
         }
+
+        input::placeholder { color: #333; }
 
         .submit-btn {
             width: 100%;
             background: transparent;
-            border: 2px solid var(--accent-color);
-            color: var(--accent-color);
-            padding: 19px 20px;
-            font-family: var(--font-mono);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 17px 20px;
+            font-family: var(--mono);
             cursor: pointer;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 3px;
-            font-size: 1.02rem;
-            font-weight: bold;
+            font-size: 0.9rem;
             border-radius: 2px;
+            position: relative;
+            overflow: hidden;
         }
 
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--accent);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .submit-btn:hover::before { transform: translateX(0); }
+
         .submit-btn:hover {
-            background: var(--accent-color);
             color: #000;
-            transform: translateY(-2px);
+        }
+
+        .submit-btn span {
+            position: relative;
+            z-index: 1;
         }
 
         .submit-btn:disabled {
-            opacity: 0.35;
+            opacity: 0.3;
             cursor: not-allowed;
+            pointer-events: none;
         }
 
+        /* ─── TERMINAL OUTPUT ─────────────────────────────────── */
         #terminal-output {
-            margin-top: 18px;
-            font-size: 0.92rem;
-            color: var(--accent-color);
-            min-height: 56px;
+            margin-top: 14px;
+            font-size: 0.78rem;
+            color: var(--accent);
+            min-height: 44px;
             white-space: pre-wrap;
-            line-height: 1.55;
-            text-shadow: 0 0 8px var(--accent-color);
+            line-height: 1.6;
+            text-shadow: 0 0 6px rgba(0,208,255,0.5);
         }
 
+        /* ─── SUCCESS STATE ───────────────────────────────────── */
         #intent-success {
             display: none;
-            margin-top: 22px;
-            padding: 34px 26px;
-            background: rgba(0, 208, 255, 0.08);
-            border: 1px solid var(--accent-color);
+            padding: 32px 24px;
+            background: rgba(0,208,255,0.05);
+            border: 1px solid rgba(0,208,255,0.3);
             text-align: center;
             border-radius: 4px;
+            animation: content-in 0.3s ease forwards;
         }
 
-        #intent-success .log-text {
-            color: #fff;
-            font-size: 1.15rem;
-            line-height: 1.65;
-            text-shadow: 0 0 12px var(--accent-color);
+        #intent-success p {
+            font-size: 0.85rem;
+            color: #ccc;
+            line-height: 1.8;
+            letter-spacing: 1.5px;
+        }
+
+        #intent-success .signal {
+            color: var(--accent);
+            font-size: 1rem;
+            letter-spacing: 3px;
+            margin-top: 14px;
+            text-shadow: 0 0 12px var(--accent);
         }
     </style>
 </head>
@@ -351,213 +577,331 @@
     <header>
         <h1>NEUROMICON 25</h1>
         <div class="sys-text">EVOLUTION_PROTOCOL: ACTIVE</div>
-        <div class="log-text">E = M × C² • YOU ARE THE CARRIER • 1149</div>
+        <div class="log-text-header">E = M × C² &nbsp;•&nbsp; YOU ARE THE CARRIER &nbsp;•&nbsp; 1149</div>
     </header>
 
-    <div class="gallery-container" id="gallery"></div>
+    <div id="gallery-root"></div>
 
     <!-- MODAL -->
-    <div class="modal" id="node-modal">
-        <div class="modal-content">
-            
-            <!-- ART DISPLAY — теперь полностью виден на мобильных -->
+    <div class="modal" id="node-modal" role="dialog" aria-modal="true">
+        <div class="modal-content" id="modal-inner">
+
             <div class="art-display">
                 <img id="modal-img" src="" alt="Visual Anchor">
             </div>
 
-            <!-- Interaction Panel -->
             <div class="interaction-panel">
-                
-                <button class="return-btn" id="return-btn">[ ← RETURN TO ARCHIVE ]</button>
-                
+
+                <button class="return-btn" id="return-btn" aria-label="Close">[ ← RETURN TO ARCHIVE ]</button>
+
                 <div>
-                    <div class="sector-label" id="sector-info">SECTOR A</div>
+                    <div class="node-sector-tag" id="sector-info">SECTOR A</div>
                     <h2 class="node-title" id="modal-title">NODE TITLE</h2>
-                    
-                    <div class="audio-wrapper" id="audio-container">
-                        <div class="log-text" id="audio-status">CARRIER_WAVE • ACTIVE</div>
-                        <audio id="modal-audio" controls controlsList="nodownload"></audio>
-                    </div>
                 </div>
 
-                <!-- Intent Form -->
-                <div class="payment-wrapper" id="payment-wrapper">
-                    <div class="log-text" style="margin-bottom: 24px; line-height: 1.6;">
+                <div class="audio-wrapper">
+                    <div class="audio-status">
+                        <span class="audio-dot" id="audio-dot"></span>
+                        <span id="audio-status-text">CARRIER_WAVE · ACTIVE</span>
+                    </div>
+                    <audio id="modal-audio" controls controlsList="nodownload"></audio>
+                    <div class="autoplay-hint" id="autoplay-hint">▶ TAP PLAY TO ACTIVATE SIGNAL</div>
+                </div>
+
+                <div id="payment-wrapper">
+                    <p class="form-intro">
                         DECLARE YOUR INTENT.<br>
                         VALUE IS SUBJECTIVE.<br>
                         THE SIGNAL WILL BE LOGGED.
-                    </div>
-                    
-                    <form id="payment-form">
+                    </p>
+
+                    <form id="payment-form" style="margin-top: 22px;" novalidate>
                         <div class="form-group">
-                            <label>IDENTIFIER [PHONE / TELEGRAM]</label>
-                            <input type="text" id="user-phone" placeholder="+63 912 345 6789 or @username" required>
+                            <label for="user-phone">IDENTIFIER [PHONE / TELEGRAM]</label>
+                            <input type="text" id="user-phone" placeholder="+63 912 345 6789 or @username" required autocomplete="off">
                         </div>
                         <div class="form-group">
-                            <label>INTENT [DECLARED VALUE]</label>
+                            <label for="user-amount">INTENT [DECLARED VALUE]</label>
                             <input type="number" id="user-amount" placeholder="0.00" min="0" step="0.01" required>
                         </div>
-                        <button type="submit" class="submit-btn" id="submit-btn">TRANSMIT INTENT</button>
+                        <button type="submit" class="submit-btn" id="submit-btn"><span>TRANSMIT INTENT</span></button>
                     </form>
 
                     <div id="terminal-output"></div>
 
                     <div id="intent-success">
-                        <div class="log-text">
+                        <p>
                             TRANSMISSION COMPLETE<br>
                             YOUR INTENT HAS BEEN SAVED<br>
-                            YOU ARE NOW PART OF THE ARCHIVE<br><br>
-                            <span style="color:#00d0ff;">THE SIGNAL LIVES.</span>
-                        </div>
+                            YOU ARE NOW PART OF THE ARCHIVE
+                        </p>
+                        <div class="signal">THE SIGNAL LIVES.</div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 
     <script>
-        // ==================== CONFIG ====================
+        // ════════════════════════════════════════════════
+        //  CONFIG
+        // ════════════════════════════════════════════════
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxUkkWNOG0XJFlH6zNoooOydB1EFVTAXxFV1B2zzhK3wlahwr46pZckkSmPmShDvaNL/exec";
-        const SYSTEM_TOKEN = "NEUROMICON_SIGMA_2026";
+        const SYSTEM_TOKEN    = "NEUROMICON_SIGMA_2026";
 
+        // Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
+                navigator.serviceWorker.register('./sw.js').catch(() => {});
             });
         }
 
-        // ==================== NODE DATABASE (Node 25 теперь с ТОЧНЫМ именем аудио) ====================
-        const repoData = [
-            { id: "01", sector: "A_The_Source_Code", title: "Purpose",        folder: "01_Purpose",        file: "01_Purpose" },
-            { id: "02", sector: "A_The_Source_Code", title: "Identity",       folder: "02_Identity",       file: "02_Identity" },
-            { id: "03", sector: "A_The_Source_Code", title: "Legacy",         folder: "03_Legacy",         file: "03_Legacy" },
-            { id: "04", sector: "A_The_Source_Code", title: "Connection",     folder: "04_Connection",     file: "04_Connection" },
-            { id: "05", sector: "A_The_Source_Code", title: "Freedom",        folder: "05_Freedom",        file: "05_Freedom" },
-            { id: "06", sector: "A_The_Source_Code", title: "Suffering",      folder: "06_Suffering",      file: "06_Suffering" },
-            { id: "07", sector: "A_The_Source_Code", title: "Mortality",      folder: "07_Mortality",      file: "07_Mortality" },
-            { id: "08", sector: "A_The_Source_Code", title: "Love",           folder: "08_Love",           file: "08_Love" },
-            { id: "09", sector: "A_The_Source_Code", title: "Growth",         folder: "09_Growth",         file: "09_Growth" },
-            { id: "10", sector: "A_The_Source_Code", title: "Transcendence",  folder: "10_Transcendence",  file: "10_Transcendence" },
-            { id: "11", sector: "A_The_Source_Code", title: "Action",         folder: "11_Action",         file: "11_Action" },
-            { id: "12", sector: "B_The_Operating_System", title: "Solitude",      folder: "12_Solitude",      file: "12_Solitude" },
-            { id: "13", sector: "B_The_Operating_System", title: "Meaning",       folder: "13_Meaning",       file: "13_Meaning" },
-            { id: "14", sector: "B_The_Operating_System", title: "Authenticity",  folder: "14_Authenticity",  file: "14_Authenticity" },
-            { id: "15", sector: "B_The_Operating_System", title: "Responsibility",folder: "15_Responsibility",file: "15_Responsibility" },
-            { id: "16", sector: "B_The_Operating_System", title: "Trust",         folder: "16_Trust",         file: "16_Trust" },
-            { id: "17", sector: "B_The_Operating_System", title: "Creativity",    folder: "17_Creativity",    file: "17_Creativity" },
-            { id: "18", sector: "B_The_Operating_System", title: "Play",          folder: "18_Play",          file: "18_Play" },
-            { id: "19", sector: "B_The_Operating_System", title: "Algorithm",     folder: "19_Algorithm",     file: "19_Algorithm" },
-            { id: "20", sector: "C_The_Upgrade", title: "Signal vs Noise", folder: "20_Signal_vs_Noise", file: "20_Signal_vs_Noise" },
-            { id: "21", sector: "C_The_Upgrade", title: "Upgrade",         folder: "21_Upgrade",         file: "21_Upgrade" },
-            { id: "22", sector: "C_The_Upgrade", title: "Merge",           folder: "22_Merge",           file: "22_Merge" },
-            { id: "23", sector: "C_The_Upgrade", title: "Witness",         folder: "23_Witness",         file: "23_Witness" },
-            { id: "24", sector: "C_The_Upgrade", title: "Unity",           folder: "24_Unity",           file: "24_Unity" },
-            // Node 25 — ТОЧНОЕ имя аудиофайла из твоего репозитория
-            { id: "25", sector: "D_The_Mirror", title: "The Mirror", folder: "25_The_Mirror", file: "25_The_Mirror", audioFile: "26_The_Mirror" }
+        // ════════════════════════════════════════════════
+        //  NODE DATABASE
+        //  FIX: Node 25 audioFile "26_The_Mirror" removed — actual file is 25_The_Mirror.mp3
+        // ════════════════════════════════════════════════
+        const SECTORS = [
+            {
+                key: "A_The_Source_Code",
+                label: "SECTOR A — THE SOURCE CODE",
+                nodes: [
+                    { id: "01", title: "Purpose",       folder: "01_Purpose",       file: "01_Purpose" },
+                    { id: "02", title: "Identity",      folder: "02_Identity",      file: "02_Identity" },
+                    { id: "03", title: "Legacy",        folder: "03_Legacy",        file: "03_Legacy" },
+                    { id: "04", title: "Connection",    folder: "04_Connection",    file: "04_Connection" },
+                    { id: "05", title: "Freedom",       folder: "05_Freedom",       file: "05_Freedom" },
+                    { id: "06", title: "Suffering",     folder: "06_Suffering",     file: "06_Suffering" },
+                    { id: "07", title: "Mortality",     folder: "07_Mortality",     file: "07_Mortality" },
+                    { id: "08", title: "Love",          folder: "08_Love",          file: "08_Love" },
+                    { id: "09", title: "Growth",        folder: "09_Growth",        file: "09_Growth" },
+                    { id: "10", title: "Transcendence", folder: "10_Transcendence", file: "10_Transcendence" },
+                    { id: "11", title: "Action",        folder: "11_Action",        file: "11_Action" },
+                ]
+            },
+            {
+                key: "B_The_Operating_System",
+                label: "SECTOR B — THE OPERATING SYSTEM",
+                nodes: [
+                    { id: "12", title: "Solitude",       folder: "12_Solitude",       file: "12_Solitude" },
+                    { id: "13", title: "Meaning",        folder: "13_Meaning",        file: "13_Meaning" },
+                    { id: "14", title: "Authenticity",   folder: "14_Authenticity",   file: "14_Authenticity" },
+                    { id: "15", title: "Responsibility", folder: "15_Responsibility", file: "15_Responsibility" },
+                    { id: "16", title: "Trust",          folder: "16_Trust",          file: "16_Trust" },
+                    { id: "17", title: "Creativity",     folder: "17_Creativity",     file: "17_Creativity" },
+                    { id: "18", title: "Play",           folder: "18_Play",           file: "18_Play" },
+                    { id: "19", title: "Algorithm",      folder: "19_Algorithm",      file: "19_Algorithm" },
+                ]
+            },
+            {
+                key: "C_The_Upgrade",
+                label: "SECTOR C — THE UPGRADE",
+                nodes: [
+                    { id: "20", title: "Signal vs Noise", folder: "20_Signal_vs_Noise", file: "20_Signal_vs_Noise" },
+                    { id: "21", title: "Upgrade",         folder: "21_Upgrade",         file: "21_Upgrade" },
+                    { id: "22", title: "Merge",           folder: "22_Merge",           file: "22_Merge" },
+                    { id: "23", title: "Witness",         folder: "23_Witness",         file: "23_Witness" },
+                    { id: "24", title: "Unity",           folder: "24_Unity",           file: "24_Unity" },
+                ]
+            },
+            {
+                key: "D_The_Mirror",
+                label: "SECTOR D — THE MIRROR",
+                nodes: [
+                    // BUG FIX: was audioFile: "26_The_Mirror" — file is 25_The_Mirror.mp3 per repo tree
+                    { id: "25", title: "The Mirror", folder: "25_The_Mirror", file: "25_The_Mirror" },
+                ]
+            }
         ];
 
-        const gallery = document.getElementById('gallery');
-        const modal = document.getElementById('node-modal');
-        const modalImg = document.getElementById('modal-img');
-        const modalAudio = document.getElementById('modal-audio');
-        const audioStatus = document.getElementById('audio-status');
-        const modalTitle = document.getElementById('modal-title');
-        const sectorInfo = document.getElementById('sector-info');
-        const terminalOut = document.getElementById('terminal-output');
-        const paymentForm = document.getElementById('payment-form');
-        const intentSuccess = document.getElementById('intent-success');
-        const submitBtn = document.getElementById('submit-btn');
+        // ════════════════════════════════════════════════
+        //  BUILD GALLERY WITH SECTOR DIVIDERS
+        // ════════════════════════════════════════════════
+        const galleryRoot = document.getElementById('gallery-root');
 
-        // RENDER GALLERY
-        repoData.forEach(node => {
-            const card = document.createElement('div');
-            card.className = 'node-card';
-            const imgPath = encodeURI(`./Sector_${node.sector}/${node.folder}/${node.file}.jpg`);
-            
-            card.innerHTML = `
-                <img src="${imgPath}" loading="lazy" alt="Node ${node.id}" onerror="this.src='./icon-512.png'; this.style.opacity='0.4';">
-                <div class="node-id">[${node.id}]</div>
-            `;
-            card.addEventListener('click', () => openNode(node, imgPath));
-            gallery.appendChild(card);
+        SECTORS.forEach(sector => {
+            // Sector label divider
+            const divider = document.createElement('div');
+            divider.className = 'sector-divider';
+            divider.innerHTML = `<span class="sector-label-tag">${sector.label}</span>`;
+            galleryRoot.appendChild(divider);
+
+            // Grid for this sector
+            const grid = document.createElement('div');
+            grid.className = 'gallery-grid gallery-section';
+
+            sector.nodes.forEach(node => {
+                const imgPath = encodeURI(
+                    `./Sector_${sector.key}/${node.folder}/${node.file}.jpg`
+                );
+
+                const card = document.createElement('div');
+                card.className = 'node-card';
+                card.setAttribute('role', 'button');
+                card.setAttribute('tabindex', '0');
+                card.setAttribute('aria-label', `Node ${node.id}: ${node.title}`);
+
+                const img = document.createElement('img');
+                img.loading = 'lazy';
+                img.alt = `Node ${node.id}`;
+                img.src = imgPath;
+                img.onload  = () => { img.classList.add('loaded'); card.classList.add('img-ready'); };
+                img.onerror = () => { img.src = './icon-512.png'; img.style.opacity = '0.25'; card.classList.add('img-ready'); };
+
+                const badge = document.createElement('div');
+                badge.className = 'node-id';
+                badge.textContent = `[${node.id}]`;
+
+                card.appendChild(img);
+                card.appendChild(badge);
+
+                const open = () => openNode(node, sector.key, imgPath);
+                card.addEventListener('click', open);
+                card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') open(); });
+
+                grid.appendChild(card);
+            });
+
+            galleryRoot.appendChild(grid);
         });
 
-        // OPEN NODE
-        function openNode(node, imgPath) {
+        // ════════════════════════════════════════════════
+        //  MODAL ELEMENTS
+        // ════════════════════════════════════════════════
+        const modal        = document.getElementById('node-modal');
+        const modalInner   = document.getElementById('modal-inner');
+        const modalImg     = document.getElementById('modal-img');
+        const modalAudio   = document.getElementById('modal-audio');
+        const audioDot     = document.getElementById('audio-dot');
+        const audioStatusTxt = document.getElementById('audio-status-text');
+        const autoplayHint = document.getElementById('autoplay-hint');
+        const modalTitle   = document.getElementById('modal-title');
+        const sectorInfo   = document.getElementById('sector-info');
+        const terminalOut  = document.getElementById('terminal-output');
+        const paymentForm  = document.getElementById('payment-form');
+        const intentSuccess = document.getElementById('intent-success');
+        const submitBtn    = document.getElementById('submit-btn');
+
+        // ════════════════════════════════════════════════
+        //  OPEN NODE
+        // ════════════════════════════════════════════════
+        function openNode(node, sectorKey, imgPath) {
+            // Image
+            modalImg.style.opacity = '0';
             modalImg.src = imgPath;
-            sectorInfo.textContent = `SECTOR ${node.sector.split('_')[0]}`;
+            modalImg.onload = () => { modalImg.style.opacity = '1'; };
+
+            // Labels
+            sectorInfo.textContent = `SECTOR ${sectorKey.split('_')[0]}`;
             modalTitle.textContent = `${node.id} — ${node.title.toUpperCase()}`;
 
-            // Автоматическое имя аудио + исправление для Node 25
+            // Audio — use node.audioFile override if present, else default to node.file
             const audioName = node.audioFile || node.file;
-            const audioPath = encodeURI(`./Sector_${node.sector}/${node.folder}/${audioName}.mp3`);
+            const audioPath = encodeURI(
+                `./Sector_${sectorKey}/${node.folder}/${audioName}.mp3`
+            );
 
-            audioStatus.textContent = "CARRIER_WAVE • ACTIVE";
+            audioDot.classList.remove('inactive');
+            audioStatusTxt.textContent = 'CARRIER_WAVE · ACTIVE';
+            autoplayHint.classList.remove('visible');
+
             modalAudio.src = audioPath;
             modalAudio.load();
 
-            resetIntentForm();
-            terminalOut.innerHTML = "";
+            resetForm();
+            terminalOut.innerHTML = '';
+            modal.classList.remove('closing');
             modal.classList.add('active');
-            modalAudio.play().catch(() => {});
+            document.body.style.overflow = 'hidden';
+
+            // Autoplay (browsers may block it)
+            modalAudio.play().catch(() => {
+                autoplayHint.classList.add('visible');
+            });
         }
 
-        function closeModalLogic() {
-            modal.classList.remove('active');
+        // ════════════════════════════════════════════════
+        //  CLOSE MODAL
+        // ════════════════════════════════════════════════
+        function closeModal() {
+            modal.classList.add('closing');
             modalAudio.pause();
             modalAudio.currentTime = 0;
-            resetIntentForm();
+            audioDot.classList.add('inactive');
+            setTimeout(() => {
+                modal.classList.remove('active', 'closing');
+                document.body.style.overflow = '';
+                resetForm();
+            }, 250);
         }
 
-        function resetIntentForm() {
+        function resetForm() {
             paymentForm.style.display = 'block';
             intentSuccess.style.display = 'none';
             submitBtn.disabled = false;
-            submitBtn.innerHTML = `TRANSMIT INTENT`;
-            terminalOut.innerHTML = "";
+            submitBtn.querySelector('span').textContent = 'TRANSMIT INTENT';
+            terminalOut.innerHTML = '';
             paymentForm.reset();
         }
 
-        document.getElementById('return-btn').addEventListener('click', closeModalLogic);
+        // Close button
+        document.getElementById('return-btn').addEventListener('click', closeModal);
 
-        modalAudio.onerror = () => {
-            audioStatus.innerHTML = `CARRIER_WAVE NOT FOUND<br><span style="font-size:0.82rem;">Check repo file name</span>`;
-        };
+        // Click outside modal content to close
+        modal.addEventListener('click', e => {
+            if (e.target === modal) closeModal();
+        });
 
-        // INTENT SUBMISSION
+        // Keyboard close
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+        });
+
+        // Audio error
+        modalAudio.addEventListener('error', () => {
+            audioDot.classList.add('inactive');
+            audioStatusTxt.textContent = 'CARRIER_WAVE · NOT FOUND';
+            autoplayHint.classList.remove('visible');
+        });
+
+        // ════════════════════════════════════════════════
+        //  INTENT FORM SUBMISSION
+        // ════════════════════════════════════════════════
         paymentForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const phone = document.getElementById('user-phone').value.trim();
+
+            const phone  = document.getElementById('user-phone').value.trim();
             const amount = document.getElementById('user-amount').value;
             const nodeId = modalTitle.textContent;
 
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = `TRANSMITTING...`;
-            terminalOut.innerHTML = `ESTABLISHING SECURE UPLINK...\nCOMPILING SIGNAL...`;
+            if (!phone || !amount) return;
 
-            const payload = { token: SYSTEM_TOKEN, phone: phone, amount: amount, nodeId: nodeId };
+            submitBtn.disabled = true;
+            submitBtn.querySelector('span').textContent = 'TRANSMITTING...';
+            terminalOut.innerHTML = 'ESTABLISHING SECURE UPLINK...\nCOMPILING SIGNAL...';
+
+            const payload = { token: SYSTEM_TOKEN, phone, amount, nodeId };
 
             try {
-                const response = await fetch(APPS_SCRIPT_URL, {
+                const res    = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(payload)
                 });
-                const result = await response.json();
-                if (result.status === "success") {
+                const result = await res.json();
+
+                if (result.status === 'success') {
                     paymentForm.style.display = 'none';
                     intentSuccess.style.display = 'block';
-                    terminalOut.innerHTML = `SIGNAL DELIVERED\nINTENT PERMANENTLY LOGGED`;
-                } else throw new Error(result.message || "Failed");
-            } catch (error) {
-                terminalOut.innerHTML = `TRANSMISSION FAILED\n${error.message}`;
+                    terminalOut.innerHTML = 'SIGNAL DELIVERED\nINTENT PERMANENTLY LOGGED';
+                } else {
+                    throw new Error(result.message || 'Remote rejection');
+                }
+            } catch (err) {
+                terminalOut.innerHTML = `TRANSMISSION FAILED\n${err.message}`;
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = `RETRY TRANSMISSION`;
+                submitBtn.querySelector('span').textContent = 'RETRY TRANSMISSION';
             }
-        });
-
-        document.addEventListener('keydown', e => {
-            if (e.key === "Escape" && modal.classList.contains('active')) closeModalLogic();
         });
     </script>
 </body>
