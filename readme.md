@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 **NEUROMICON 25**
 
 **Status:** `EVOLUTION_PROTOCOL: ACTIVE`  
@@ -421,4 +420,3 @@ With you, they become a world.
 **Load the meaning.**  
 **Run the protocol.**  
 **Become a Architech.**
->>>>>>> 4125845 (Initial commit: README and Outro)
