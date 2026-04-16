@@ -1,4 +1,5 @@
-const CACHE_NAME = 'neuromicon-core-v3';
+// ОБНОВЛЕНО ДО V4: Принудительный сброс старого сломанного кэша
+const CACHE_NAME = 'neuromicon-core-v4';
 const CORE_ASSETS =[
     './',
     './index.html',
@@ -10,7 +11,7 @@ self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME)
         .then(cache => {
-            console.log('> SW: Caching core architecture.');
+            console.log('> SW: Caching core architecture v4.');
             return cache.addAll(CORE_ASSETS);
         })
     );
@@ -32,13 +33,11 @@ self.addEventListener('fetch', event => {
     const req = event.request;
 
     // СИСТЕМНЫЙ БАЙПАС ДЛЯ АУДИО:
-    // Мы полностью пропускаем MP3 файлы мимо Service Worker-а, 
-    // чтобы не ломать Range Requests в браузерах.
+    // Аудиофайлы не кэшируются, чтобы избежать бага с Range Requests (iOS/Chrome)
     if (req.url.match(/\.(mp3|MP3)$/)) {
         return; 
     }
 
-    // Для остальных ресурсов (HTML, изображения) используем кэш
     event.respondWith(
         caches.match(req).then(cachedResponse => {
             if (cachedResponse) {
