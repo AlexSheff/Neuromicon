@@ -12,7 +12,7 @@
             --panel-bg: #0a0a0a;
             --text-color: #f0f0f0;
             --text-muted: #b0b0b0;
-            --accent-color: #ff2a2a;
+            --accent-color: #00d0ff;           /* ← КИБЕРПАНК НЕОНОВЫЙ ГОЛУБОЙ */
             --grid-border: #222222;
             --input-bg: #111111;
             --font-mono: 'Courier New', Courier, monospace;
@@ -54,7 +54,7 @@
             letter-spacing: 9px;
             color: #ffffff;
             text-transform: uppercase;
-            text-shadow: 0 0 15px rgba(255, 42, 42, 0.4);
+            text-shadow: 0 0 15px rgba(0, 208, 255, 0.5);
         }
 
         .sys-text {
@@ -72,7 +72,7 @@
             letter-spacing: 2px;
         }
 
-        /* === SEAMLESS GALLERY GRID === */
+        /* === GALLERY === */
         .gallery-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(172px, 1fr));
@@ -96,7 +96,6 @@
         .node-card:hover {
             border-color: var(--accent-color);
             transform: scale(1.04);
-            z-index: 2;
         }
 
         .node-card img {
@@ -122,19 +121,19 @@
             padding: 5px 13px;
             border: 1px solid var(--accent-color);
             letter-spacing: 1.5px;
-            box-shadow: 0 0 12px rgba(255, 42, 42, 0.3);
+            box-shadow: 0 0 12px rgba(0, 208, 255, 0.3);
         }
 
         /* === MODAL === */
         .modal {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            inset: 0;
             background: rgba(3, 3, 3, 0.97);
             z-index: 10000;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 15px;
             overflow-y: auto;
         }
 
@@ -147,7 +146,7 @@
             width: 100%;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            box-shadow: 0 25px 70px rgba(255, 42, 42, 0.2);
+            box-shadow: 0 25px 70px rgba(0, 208, 255, 0.2);
             overflow: hidden;
             border-radius: 4px;
         }
@@ -162,16 +161,29 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 480px;
+            min-height: 420px;
+            overflow: auto;                     /* ← позволяет свайпать / скроллить картинку */
+            touch-action: pan-y pan-x;          /* ← улучшает свайп на мобильных */
         }
 
         .art-display img {
             width: 100%;
-            height: 100%;
+            height: auto;
             max-height: 68vh;
             object-fit: contain;
             display: block;
             box-shadow: inset 0 0 80px rgba(0,0,0,0.7);
+        }
+
+        /* МОБИЛЬНАЯ КОРРЕКЦИЯ — картинка теперь полностью видна и свайпается */
+        @media (max-width: 768px) {
+            .art-display {
+                min-height: 42vh;
+                max-height: 52vh;
+            }
+            .art-display img {
+                max-height: 50vh;
+            }
         }
 
         .interaction-panel {
@@ -182,7 +194,7 @@
             gap: 32px;
         }
 
-        /* RETURN BUTTON WITH NEON GLOW */
+        /* RETURN BUTTON — НЕОНОВЫЙ ГЛОУ */
         .return-btn {
             background: transparent;
             border: 1px solid var(--grid-border);
@@ -196,21 +208,19 @@
             font-size: 0.92rem;
             align-self: flex-start;
             border-radius: 2px;
-            /* Base soft glow */
             box-shadow: 
-                0 0 8px rgba(255, 42, 42, 0.3),
-                0 0 16px rgba(255, 42, 42, 0.2);
+                0 0 8px rgba(0, 208, 255, 0.4),
+                0 0 16px rgba(0, 208, 255, 0.2);
         }
 
         .return-btn:hover {
             border-color: var(--accent-color);
             color: #ffffff;
-            background: rgba(255,42,42,0.08);
-            /* Strong neon glow on hover */
+            background: rgba(0, 208, 255, 0.08);
             box-shadow: 
-                0 0 12px var(--accent-color),
-                0 0 24px var(--accent-color),
-                0 0 36px rgba(255, 42, 42, 0.5);
+                0 0 14px var(--accent-color),
+                0 0 28px var(--accent-color),
+                0 0 42px rgba(0, 208, 255, 0.6);
             transform: translateY(-1px);
         }
 
@@ -220,7 +230,7 @@
             letter-spacing: 5px;
             text-transform: uppercase;
             line-height: 1.25;
-            text-shadow: 0 0 18px rgba(255, 42, 42, 0.45);
+            text-shadow: 0 0 18px var(--accent-color);
         }
 
         .sector-label {
@@ -231,7 +241,6 @@
             text-shadow: 0 0 10px var(--accent-color);
         }
 
-        /* Audio player */
         .audio-wrapper {
             padding-bottom: 28px;
             border-bottom: 1px solid var(--grid-border);
@@ -242,10 +251,10 @@
             height: 54px;
             outline: none;
             margin-top: 14px;
-            filter: invert(90%) hue-rotate(165deg) grayscale(65%);
+            filter: invert(90%) hue-rotate(170deg) grayscale(60%);
         }
 
-        /* Intent section */
+        /* INTENT FORM — НЕОНОВЫЙ ГОЛУБОЙ */
         .form-group {
             margin-bottom: 26px;
         }
@@ -274,7 +283,7 @@
         input:focus {
             outline: none;
             border-color: var(--accent-color);
-            box-shadow: 0 0 0 4px rgba(255, 42, 42, 0.2);
+            box-shadow: 0 0 0 4px rgba(0, 208, 255, 0.25);
         }
 
         .submit-btn {
@@ -311,15 +320,14 @@
             min-height: 56px;
             white-space: pre-wrap;
             line-height: 1.55;
-            text-shadow: 0 0 8px rgba(255, 42, 42, 0.3);
+            text-shadow: 0 0 8px var(--accent-color);
         }
 
-        /* Success state */
         #intent-success {
             display: none;
             margin-top: 22px;
             padding: 34px 26px;
-            background: rgba(255,42,42,0.08);
+            background: rgba(0, 208, 255, 0.08);
             border: 1px solid var(--accent-color);
             text-align: center;
             border-radius: 4px;
@@ -329,7 +337,7 @@
             color: #fff;
             font-size: 1.15rem;
             line-height: 1.65;
-            text-shadow: 0 0 12px rgba(255, 42, 42, 0.4);
+            text-shadow: 0 0 12px var(--accent-color);
         }
     </style>
 </head>
@@ -347,7 +355,7 @@
     <div class="modal" id="node-modal">
         <div class="modal-content">
             
-            <!-- Visual Anchor -->
+            <!-- Visual Anchor (теперь полностью виден и свайпается на мобильных) -->
             <div class="art-display">
                 <img id="modal-img" src="" alt="Visual Anchor">
             </div>
@@ -389,13 +397,12 @@
 
                     <div id="terminal-output"></div>
 
-                    <!-- Success message -->
                     <div id="intent-success">
                         <div class="log-text">
                             TRANSMISSION COMPLETE<br>
                             YOUR INTENT HAS BEEN SAVED<br>
                             YOU ARE NOW PART OF THE ARCHIVE<br><br>
-                            <span style="color:#ff2a2a;">THE SIGNAL LIVES.</span>
+                            <span style="color:#00d0ff;">THE SIGNAL LIVES.</span>
                         </div>
                     </div>
                 </div>
@@ -410,12 +417,11 @@
 
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .catch(err => console.log('Service Worker registration failed:', err));
+                navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
             });
         }
 
-        // ==================== NODE DATABASE (EXACT REPO MATCH) ====================
+        // ==================== NODE DATABASE (с исправлением Node 25) ====================
         const repoData = [
             { id: "01", sector: "A_The_Source_Code", title: "Purpose",        folder: "01_Purpose",        file: "01_Purpose" },
             { id: "02", sector: "A_The_Source_Code", title: "Identity",       folder: "02_Identity",       file: "02_Identity" },
@@ -441,10 +447,10 @@
             { id: "22", sector: "C_The_Upgrade", title: "Merge",           folder: "22_Merge",           file: "22_Merge" },
             { id: "23", sector: "C_The_Upgrade", title: "Witness",         folder: "23_Witness",         file: "23_Witness" },
             { id: "24", sector: "C_The_Upgrade", title: "Unity",           folder: "24_Unity",           file: "24_Unity" },
-            { id: "25", sector: "D_The_Mirror",  title: "The Mirror",      folder: "25_The_Mirror",      file: "25_The_Mirror" }
+            // Node 25 — специальное имя аудио (исправлено по реальному файлу в репозитории)
+            { id: "25", sector: "D_The_Mirror", title: "The Mirror", folder: "25_The_Mirror", file: "25_The_Mirror", audioFile: "25_The_Mirror" }
         ];
 
-        // ==================== DOM REFERENCES ====================
         const gallery = document.getElementById('gallery');
         const modal = document.getElementById('node-modal');
         const modalImg = document.getElementById('modal-img');
@@ -461,28 +467,27 @@
         repoData.forEach(node => {
             const card = document.createElement('div');
             card.className = 'node-card';
-            
             const imgPath = encodeURI(`./Sector_${node.sector}/${node.folder}/${node.file}.jpg`);
             
             card.innerHTML = `
                 <img src="${imgPath}" loading="lazy" alt="Node ${node.id}" onerror="this.src='./icon-512.png'; this.style.opacity='0.4';">
                 <div class="node-id">[${node.id}]</div>
             `;
-            
             card.addEventListener('click', () => openNode(node, imgPath));
             gallery.appendChild(card);
         });
 
-        // ==================== OPEN NODE ====================
+        // ==================== OPEN NODE (авто-определение аудио + исправление 25) ====================
         function openNode(node, imgPath) {
             modalImg.src = imgPath;
             sectorInfo.textContent = `SECTOR ${node.sector.split('_')[0]}`;
             modalTitle.textContent = `${node.id} — ${node.title.toUpperCase()}`;
 
-            const audioPath = encodeURI(`./Sector_${node.sector}/${node.folder}/${node.file}.mp3`);
+            // Автоматическое имя аудио (для Node 25 берём точное имя файла)
+            const audioName = node.audioFile || node.file;
+            const audioPath = encodeURI(`./Sector_${node.sector}/${node.folder}/${audioName}.mp3`);
 
             audioStatus.textContent = "CARRIER_WAVE • ACTIVE";
-            modalAudio.style.display = 'block';
             modalAudio.src = audioPath;
             modalAudio.load();
 
@@ -511,13 +516,12 @@
         document.getElementById('return-btn').addEventListener('click', closeModalLogic);
 
         modalAudio.onerror = () => {
-            audioStatus.innerHTML = `CARRIER_WAVE NOT FOUND<br><span style="font-size:0.82rem;">Check repo or contact the Architect</span>`;
+            audioStatus.innerHTML = `CARRIER_WAVE NOT FOUND<br><span style="font-size:0.82rem;">Check file name in repo</span>`;
         };
 
         // ==================== INTENT SUBMISSION ====================
         paymentForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-
             const phone = document.getElementById('user-phone').value.trim();
             const amount = document.getElementById('user-amount').value;
             const nodeId = modalTitle.textContent;
@@ -526,12 +530,7 @@
             submitBtn.innerHTML = `TRANSMITTING...`;
             terminalOut.innerHTML = `ESTABLISHING SECURE UPLINK...\nCOMPILING SIGNAL...`;
 
-            const payload = {
-                token: SYSTEM_TOKEN,
-                phone: phone,
-                amount: amount,
-                nodeId: nodeId
-            };
+            const payload = { token: SYSTEM_TOKEN, phone: phone, amount: amount, nodeId: nodeId };
 
             try {
                 const response = await fetch(APPS_SCRIPT_URL, {
@@ -539,16 +538,12 @@
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(payload)
                 });
-
                 const result = await response.json();
-
                 if (result.status === "success") {
                     paymentForm.style.display = 'none';
                     intentSuccess.style.display = 'block';
                     terminalOut.innerHTML = `SIGNAL DELIVERED\nINTENT PERMANENTLY LOGGED`;
-                } else {
-                    throw new Error(result.message || "Transmission failed");
-                }
+                } else throw new Error(result.message || "Failed");
             } catch (error) {
                 terminalOut.innerHTML = `TRANSMISSION FAILED\n${error.message}`;
                 submitBtn.disabled = false;
@@ -556,7 +551,7 @@
             }
         });
 
-        document.addEventListener('keydown', (e) => {
+        document.addEventListener('keydown', e => {
             if (e.key === "Escape" && modal.classList.contains('active')) closeModalLogic();
         });
     </script>
