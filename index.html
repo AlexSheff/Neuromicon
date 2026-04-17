@@ -11,10 +11,9 @@
             --bg:         #030303;
             --panel-bg:   #0a0a0a;
             --text:       #f0f0f0;
-            --muted:      #888888;
+            --muted:      #aaaaaa;
             --accent:     #00d0ff;
             --accent-dim: rgba(0, 208, 255, 0.10);
-            --accent-glow:rgba(0, 208, 255, 0.35);
             --border:     #1e1e1e;
             --input-bg:   #111111;
             --mono:       'Courier New', Courier, monospace;
@@ -43,73 +42,70 @@
         }
         header::before {
             content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(0,208,255,0.06) 0%, transparent 70%);
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(0,208,255,0.08) 0%, transparent 70%);
             pointer-events: none;
         }
         header::after {
             content: '';
             position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 1px;
+            bottom: 0; left: 0; right: 0; height: 1px;
             background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            opacity: 0.4;
+            opacity: 0.5;
         }
         h1 {
-            font-size: clamp(1.5rem, 5vw, 2.6rem);
-            font-weight: normal;
-            letter-spacing: clamp(6px, 2vw, 12px);
+            font-size: clamp(1.8rem, 6vw, 2.8rem);
+            font-weight: 700;
+            letter-spacing: clamp(6px, 2vw, 14px);
             color: #fff;
             text-transform: uppercase;
-            text-shadow: 0 0 30px rgba(0,208,255,0.4);
+            text-shadow: 0 0 40px rgba(0,208,255,0.5);
             position: relative;
         }
         .sys-text {
             color: var(--accent);
-            font-size: 0.9rem;
+            font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+            font-weight: 700;
             letter-spacing: 4px;
             margin-top: 14px;
-            text-shadow: 0 0 12px var(--accent);
+            text-shadow: 0 0 16px var(--accent);
             position: relative;
         }
         .log-text-header {
-            color: var(--muted);
-            font-size: 0.78rem;
+            color: #bbb;
+            font-size: clamp(0.72rem, 2vw, 0.82rem);
+            font-weight: 600;
             margin-top: 10px;
             letter-spacing: 2px;
             position: relative;
         }
 
-        /* ─── ROLE BADGE (shown after init) ─────────────────────── */
-        #role-badge {
-            display: none;
-            margin-top: 18px;
-            position: relative;
-        }
+        /* ─── ROLE BADGE ─────────────────────────────────────────── */
+        #role-badge { display: none; margin-top: 18px; }
         #role-badge .badge-inner {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            border: 1px solid rgba(0,208,255,0.4);
-            padding: 6px 20px;
-            font-size: 0.75rem;
+            border: 1px solid rgba(0,208,255,0.5);
+            padding: 7px 22px;
+            font-size: 0.8rem;
+            font-weight: 700;
             letter-spacing: 3px;
             color: var(--accent);
-            background: rgba(0,208,255,0.05);
+            background: rgba(0,208,255,0.07);
         }
         #role-badge .badge-dot {
-            width: 6px; height: 6px;
+            width: 7px; height: 7px;
             border-radius: 50%;
             background: var(--accent);
-            box-shadow: 0 0 8px var(--accent);
+            box-shadow: 0 0 10px var(--accent);
             animation: pulse 1.8s ease-in-out infinite;
         }
         #reset-link {
             display: block;
             margin-top: 8px;
-            font-size: 0.68rem;
-            color: #444;
+            font-size: 0.7rem;
+            color: #555;
             cursor: pointer;
             letter-spacing: 2px;
             transition: color 0.2s;
@@ -118,7 +114,7 @@
 
         /* ─── ENTRY LAYER ────────────────────────────────────────── */
         #entry-layer {
-            padding: 70px 20px 60px;
+            padding: 64px 20px 56px;
             text-align: center;
             background: #000;
             border-bottom: 1px solid var(--border);
@@ -127,57 +123,55 @@
         }
         #entry-layer::before {
             content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,208,255,0.04) 0%, transparent 70%);
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,208,255,0.05) 0%, transparent 70%);
             pointer-events: none;
         }
         .entry-tag {
             color: var(--accent);
-            letter-spacing: 4px;
-            font-size: 0.72rem;
+            letter-spacing: 5px;
+            font-size: 0.75rem;
+            font-weight: 700;
             margin-bottom: 20px;
-            text-shadow: 0 0 10px var(--accent);
+            text-shadow: 0 0 12px var(--accent);
         }
         .entry-title {
-            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            font-size: clamp(1.2rem, 4vw, 1.7rem);
+            font-weight: 700;
             letter-spacing: 5px;
             color: #fff;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
             text-transform: uppercase;
-        }
-        .entry-desc {
-            color: var(--muted);
-            font-size: 0.85rem;
-            line-height: 2;
-            max-width: 540px;
-            margin: 0 auto 18px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.2);
         }
         .entry-what {
             display: inline-block;
-            background: rgba(0,208,255,0.05);
-            border: 1px solid #1a1a1a;
-            padding: 20px 28px;
+            background: rgba(0,208,255,0.04);
+            border: 1px solid #222;
+            border-left: 3px solid rgba(0,208,255,0.4);
+            padding: 22px 28px;
             margin: 0 auto 32px;
             max-width: 620px;
             text-align: left;
+            width: 100%;
         }
         .entry-what p {
-            font-size: 0.8rem;
-            color: #666;
-            line-height: 1.9;
+            font-size: clamp(0.82rem, 2.5vw, 0.9rem);
+            color: #ccc;
+            font-weight: 500;
+            line-height: 2;
             margin-bottom: 6px;
         }
-        .entry-what p:last-child { margin-bottom: 0; }
-        .entry-what .eq {
-            font-size: 0.7rem;
-            color: #444;
-            letter-spacing: 1px;
+        .entry-what p:last-child { margin-bottom: 0; color: #666; font-size: 0.78rem; }
+        .entry-desc {
+            color: #aaa;
+            font-size: clamp(0.82rem, 2.5vw, 0.9rem);
+            font-weight: 500;
+            line-height: 2;
+            max-width: 480px;
+            margin: 0 auto 32px;
         }
-        #start-btn {
-            max-width: 320px;
-            margin: 0 auto;
-        }
+        #start-btn { max-width: 320px; margin: 0 auto; }
 
         /* ─── SECTOR DIVIDER ─────────────────────────────────────── */
         .sector-divider {
@@ -190,29 +184,25 @@
         }
         .sector-divider::before,
         .sector-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border));
+            content: ''; flex: 1; height: 1px;
         }
-        .sector-divider::after {
-            background: linear-gradient(270deg, transparent, var(--border));
-        }
+        .sector-divider::before { background: linear-gradient(90deg, transparent, var(--border)); }
+        .sector-divider::after  { background: linear-gradient(270deg, transparent, var(--border)); }
         .sector-label-tag {
-            font-size: 0.72rem;
+            font-size: 0.75rem;
+            font-weight: 700;
             color: var(--accent);
             letter-spacing: 3px;
             text-transform: uppercase;
             white-space: nowrap;
-            text-shadow: 0 0 8px var(--accent);
-            opacity: 0.8;
+            text-shadow: 0 0 10px var(--accent);
         }
 
         /* ─── GALLERY ────────────────────────────────────────────── */
         .gallery-section { background: #000; }
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
         }
         @media (min-width: 480px) {
             .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
@@ -232,20 +222,17 @@
         }
         .node-card:hover { border-color: var(--accent); z-index: 1; }
         .node-card img {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             object-fit: cover;
             opacity: 0;
             transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.23, 1, 0.32, 1);
-            transform: scale(1.0);
             display: block;
         }
-        .node-card img.loaded { opacity: 0.7; }
+        .node-card img.loaded { opacity: 0.75; }
         .node-card:hover img { opacity: 1; transform: scale(1.08); }
         .node-card::before {
             content: '';
-            position: absolute;
-            inset: 0;
+            position: absolute; inset: 0;
             background: linear-gradient(135deg, #0a0a0a 25%, #141414 50%, #0a0a0a 75%);
             background-size: 200% 200%;
             animation: shimmer 1.6s infinite linear;
@@ -259,9 +246,8 @@
         }
         .node-card::after {
             content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, transparent 60%, rgba(0,208,255,0.08) 100%);
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, transparent 60%, rgba(0,208,255,0.1) 100%);
             opacity: 0;
             transition: opacity 0.3s ease;
             pointer-events: none;
@@ -270,11 +256,11 @@
         .node-card:hover::after { opacity: 1; }
         .node-id {
             position: absolute;
-            bottom: 10px;
-            right: 10px;
-            font-size: 0.78rem;
+            bottom: 10px; right: 10px;
+            font-size: 0.8rem;
+            font-weight: 700;
             color: #fff;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0,0,0,0.88);
             padding: 4px 10px;
             border: 1px solid rgba(0,208,255,0.5);
             letter-spacing: 1.5px;
@@ -283,7 +269,7 @@
         }
         .node-card:hover .node-id {
             border-color: var(--accent);
-            box-shadow: 0 0 10px rgba(0,208,255,0.4);
+            box-shadow: 0 0 12px rgba(0,208,255,0.4);
         }
 
         /* ─── CONTACT SECTION ────────────────────────────────────── */
@@ -297,178 +283,157 @@
         #contact-section::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 1px;
+            top: 0; left: 0; right: 0; height: 1px;
             background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            opacity: 0.25;
+            opacity: 0.3;
         }
         .contact-tag {
-            font-size: 0.72rem;
+            font-size: 0.75rem;
+            font-weight: 700;
             color: var(--accent);
-            letter-spacing: 4px;
-            margin-bottom: 24px;
-            text-shadow: 0 0 8px var(--accent);
+            letter-spacing: 5px;
+            margin-bottom: 28px;
+            text-shadow: 0 0 10px var(--accent);
         }
         .contact-grid {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 16px;
-            max-width: 700px;
+            gap: 14px;
+            max-width: 720px;
             margin: 0 auto 32px;
         }
         .contact-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            border: 1px solid #1e1e1e;
-            padding: 14px 22px;
+            gap: 14px;
+            border: 1px solid #222;
+            padding: 16px 24px;
             background: #050505;
-            font-size: 0.82rem;
-            color: var(--muted);
+            color: #bbb;
             letter-spacing: 1.5px;
-            transition: border-color 0.3s, color 0.3s;
+            transition: border-color 0.3s, color 0.3s, background 0.3s;
             text-decoration: none;
-            min-width: 200px;
-            justify-content: flex-start;
+            min-width: 190px;
+            flex: 1;
+            max-width: 240px;
         }
         .contact-item:hover {
-            border-color: rgba(0,208,255,0.4);
-            color: var(--text);
+            border-color: rgba(0,208,255,0.5);
+            color: #fff;
+            background: rgba(0,208,255,0.04);
         }
-        .contact-icon {
-            font-size: 1rem;
-            opacity: 0.7;
-            flex-shrink: 0;
-        }
+        .contact-icon { font-size: 1.1rem; opacity: 0.8; flex-shrink: 0; }
         .contact-label {
-            font-size: 0.68rem;
-            color: #444;
-            letter-spacing: 2px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 3px;
             display: block;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
         }
         .contact-value {
-            color: inherit;
             font-size: 0.82rem;
+            font-weight: 600;
+            color: inherit;
         }
         .footer-sig {
             font-size: 0.72rem;
-            color: #333;
+            font-weight: 600;
+            color: #444;
             letter-spacing: 3px;
             margin-top: 8px;
         }
 
-        /* ─── MODAL (BASE) ───────────────────────────────────────── */
+        /* ─── MODALS BASE ────────────────────────────────────────── */
         .modal {
             display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.93);
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.94);
             z-index: 10000;
             align-items: flex-start;
             justify-content: center;
-            padding: 4vh 16px;
+            padding: 3vh 12px;
             overflow-y: auto;
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
         .modal.active {
             display: flex;
             animation: modal-in 0.3s ease forwards;
         }
-        .modal.closing {
-            animation: modal-out 0.25s ease forwards;
-        }
+        .modal.closing { animation: modal-out 0.25s ease forwards; }
         @keyframes modal-in  { from { opacity: 0; } to { opacity: 1; } }
         @keyframes modal-out { from { opacity: 1; } to { opacity: 0; } }
+        @keyframes content-in {
+            from { transform: translateY(16px) scale(0.98); opacity: 0; }
+            to   { transform: translateY(0) scale(1); opacity: 1; }
+        }
 
         /* ─── NODE MODAL ─────────────────────────────────────────── */
         #node-modal .modal-content {
             background: var(--panel-bg);
             border: 1px solid #2a2a2a;
-            max-width: 1100px;
+            max-width: 1060px;
             width: 100%;
             margin: auto;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.9), 0 0 0 1px rgba(0,208,255,0.08);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.95), 0 0 0 1px rgba(0,208,255,0.1);
             border-radius: 4px;
             animation: content-in 0.35s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-            position: relative;
             overflow: hidden;
         }
-        @media (max-width: 768px) {
+        @media (max-width: 760px) {
             #node-modal .modal-content {
                 grid-template-columns: 1fr;
-                max-height: none;
                 overflow-y: visible;
             }
         }
-        @keyframes content-in {
-            from { transform: translateY(18px) scale(0.98); opacity: 0; }
-            to   { transform: translateY(0) scale(1); opacity: 1; }
-        }
 
-        /* ─── INIT MODAL ─────────────────────────────────────────── */
-        #init-modal .modal-content {
-            background: var(--panel-bg);
-            border: 1px solid #2a2a2a;
-            max-width: 580px;
-            width: 100%;
-            margin: auto;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.9), 0 0 0 1px rgba(0,208,255,0.08);
-            border-radius: 4px;
-            animation: content-in 0.35s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-            overflow: hidden;
-        }
-
-        /* ─── ART DISPLAY ────────────────────────────────────────── */
-        .art-display {
+        /* ─── YOUTUBE EMBED ──────────────────────────────────────── */
+        .video-display {
             background: #000;
             position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 320px;
         }
-        .art-display img {
+        .video-ratio-box {
+            position: relative;
             width: 100%;
-            height: auto;
-            max-height: 100vh;
-            object-fit: contain;
-            display: block;
+            padding-top: 100%; /* square on desktop */
         }
-        @media (min-width: 769px) {
-            .art-display { max-height: 100vh; }
+        @media (max-width: 760px) {
+            .video-ratio-box { padding-top: 56.25%; } /* 16:9 on mobile */
         }
-        @media (max-width: 768px) {
-            .art-display {
-                min-height: auto;
-                max-height: 50vh;
-                padding: 0;
-            }
-            .art-display img { max-height: 50vh; }
-        }
-        .art-display::after {
-            content: '';
+        .video-ratio-box iframe {
             position: absolute;
             inset: 0;
-            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px);
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+        .video-display::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: repeating-linear-gradient(
+                0deg, transparent, transparent 3px,
+                rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 4px
+            );
             pointer-events: none;
+            z-index: 1;
         }
 
         /* ─── INTERACTION PANEL ──────────────────────────────────── */
         .interaction-panel {
-            padding: 36px 32px;
+            padding: 32px 28px;
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 22px;
             overflow-y: auto;
         }
-        @media (max-width: 768px) {
+        @media (max-width: 760px) {
             .interaction-panel {
-                padding: 24px 20px;
+                padding: 24px 18px;
                 overflow-y: visible;
             }
         }
@@ -477,12 +442,12 @@
         .return-btn {
             background: transparent;
             border: 1px solid #333;
-            color: var(--muted);
+            color: #aaa;
             padding: 11px 18px;
             font-family: var(--mono);
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            text-align: center;
             letter-spacing: 2px;
             font-size: 0.8rem;
             align-self: flex-start;
@@ -492,42 +457,41 @@
             border-color: var(--accent);
             color: #fff;
             background: var(--accent-dim);
-            box-shadow: 0 0 18px rgba(0,208,255,0.25);
+            box-shadow: 0 0 18px rgba(0,208,255,0.2);
         }
 
         /* ─── NODE INFO ──────────────────────────────────────────── */
         .node-sector-tag {
             font-size: 0.75rem;
+            font-weight: 700;
             color: var(--accent);
-            letter-spacing: 3px;
-            text-transform: uppercase;
+            letter-spacing: 4px;
             margin-bottom: 8px;
-            text-shadow: 0 0 8px var(--accent);
+            text-shadow: 0 0 10px var(--accent);
         }
         .node-title {
-            font-size: clamp(1.2rem, 3vw, 1.75rem);
+            font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+            font-weight: 700;
             color: #fff;
             letter-spacing: 4px;
             text-transform: uppercase;
             line-height: 1.2;
-            text-shadow: 0 0 20px rgba(0,208,255,0.3);
+            text-shadow: 0 0 24px rgba(0,208,255,0.35);
         }
 
-        /* ─── AUDIO ──────────────────────────────────────────────── */
-        .audio-wrapper {
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-        .audio-status {
+        /* ─── VIDEO STATUS BAR ───────────────────────────────────── */
+        .video-status {
             font-size: 0.72rem;
-            color: var(--muted);
+            font-weight: 600;
+            color: #aaa;
             letter-spacing: 2px;
-            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--border);
         }
-        .audio-dot {
+        .video-dot {
             width: 7px; height: 7px;
             border-radius: 50%;
             background: var(--accent);
@@ -535,43 +499,29 @@
             animation: pulse 1.8s ease-in-out infinite;
             flex-shrink: 0;
         }
-        .audio-dot.inactive { background: #444; box-shadow: none; animation: none; }
         @keyframes pulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+            50%       { opacity: 0.3; }
         }
-        audio {
-            width: 100%;
-            height: 44px;
-            outline: none;
-            filter: invert(90%) hue-rotate(170deg) brightness(0.85) grayscale(40%);
-        }
-        .autoplay-hint {
-            display: none;
-            margin-top: 8px;
-            font-size: 0.72rem;
-            color: #555;
-            letter-spacing: 1.5px;
-        }
-        .autoplay-hint.visible { display: block; }
 
         /* ─── FORM ───────────────────────────────────────────────── */
         .form-intro {
-            font-size: 0.8rem;
-            color: #555;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #bbb;
             letter-spacing: 1.5px;
-            line-height: 1.7;
-            border-left: 2px solid #1e1e1e;
+            line-height: 1.9;
+            border-left: 3px solid rgba(0,208,255,0.35);
             padding-left: 14px;
         }
-        .form-group { margin-bottom: 18px; }
+        .form-group { margin-bottom: 16px; }
         .form-group label {
             display: block;
             font-size: 0.7rem;
-            color: var(--muted);
+            font-weight: 700;
+            color: var(--accent);
             margin-bottom: 8px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            letter-spacing: 2.5px;
         }
         input[type="text"],
         input[type="number"],
@@ -581,6 +531,7 @@
             border: 1px solid #2a2a2a;
             color: #fff;
             font-family: var(--mono);
+            font-weight: 500;
             padding: 13px 16px;
             font-size: 0.95rem;
             transition: all 0.25s ease;
@@ -588,20 +539,17 @@
         }
         textarea {
             resize: vertical;
-            min-height: 80px;
-            font-size: 0.85rem;
+            min-height: 76px;
+            font-size: 0.88rem;
             line-height: 1.6;
         }
-        input[type="text"]:focus,
-        input[type="number"]:focus,
-        textarea:focus {
+        input:focus, textarea:focus {
             outline: none;
             border-color: var(--accent);
             background: #131313;
             box-shadow: 0 0 0 3px rgba(0,208,255,0.10);
         }
-        input::placeholder,
-        textarea::placeholder { color: #333; }
+        input::placeholder, textarea::placeholder { color: #444; }
 
         /* ─── BUTTONS ────────────────────────────────────────────── */
         .submit-btn {
@@ -611,19 +559,19 @@
             color: var(--accent);
             padding: 16px 20px;
             font-family: var(--mono);
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 3px;
-            font-size: 0.88rem;
+            font-size: 0.9rem;
             border-radius: 2px;
             position: relative;
             overflow: hidden;
         }
         .submit-btn::before {
             content: '';
-            position: absolute;
-            inset: 0;
+            position: absolute; inset: 0;
             background: var(--accent);
             transform: translateX(-100%);
             transition: transform 0.3s ease;
@@ -631,75 +579,84 @@
         .submit-btn:hover::before { transform: translateX(0); }
         .submit-btn:hover { color: #000; }
         .submit-btn span { position: relative; z-index: 1; }
-        .submit-btn:disabled {
-            opacity: 0.35;
-            cursor: not-allowed;
-            pointer-events: none;
-        }
+        .submit-btn:disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
 
-        /* ─── TERMINAL OUTPUT ────────────────────────────────────── */
+        /* ─── TERMINAL ───────────────────────────────────────────── */
         #terminal-output {
-            margin-top: 12px;
+            margin-top: 10px;
             font-size: 0.78rem;
+            font-weight: 600;
             color: var(--accent);
-            min-height: 44px;
+            min-height: 40px;
             white-space: pre-wrap;
             line-height: 1.7;
-            text-shadow: 0 0 6px rgba(0,208,255,0.5);
+            text-shadow: 0 0 6px rgba(0,208,255,0.4);
         }
-        #terminal-output.error-state { color: #ff4d4d; text-shadow: 0 0 6px rgba(255,77,77,0.5); }
+        #terminal-output.error-state {
+            color: #ff5555;
+            text-shadow: 0 0 6px rgba(255,85,85,0.4);
+        }
 
-        /* ─── SUCCESS STATE ──────────────────────────────────────── */
+        /* ─── SUCCESS ────────────────────────────────────────────── */
         #intent-success {
             display: none;
             padding: 28px 20px;
             background: rgba(0,208,255,0.05);
-            border: 1px solid rgba(0,208,255,0.3);
+            border: 1px solid rgba(0,208,255,0.35);
             text-align: center;
             border-radius: 4px;
             animation: content-in 0.3s ease forwards;
         }
         #intent-success p {
-            font-size: 0.82rem;
-            color: #ccc;
-            line-height: 1.9;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #ddd;
+            line-height: 2;
             letter-spacing: 1.5px;
         }
         #intent-success .signal {
             color: var(--accent);
-            font-size: 0.95rem;
+            font-size: 1rem;
+            font-weight: 700;
             letter-spacing: 3px;
             margin-top: 14px;
-            text-shadow: 0 0 12px var(--accent);
+            text-shadow: 0 0 14px var(--accent);
         }
 
-        /* ─── INIT MODAL INNER ───────────────────────────────────── */
-        #init-panel {
-            padding: 40px 36px;
+        /* ─── INIT MODAL ─────────────────────────────────────────── */
+        #init-modal .modal-content {
+            background: var(--panel-bg);
+            border: 1px solid #2a2a2a;
+            max-width: 560px;
+            width: 100%;
+            margin: auto;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.95), 0 0 0 1px rgba(0,208,255,0.1);
+            border-radius: 4px;
+            animation: content-in 0.35s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            overflow: hidden;
         }
-        @media (max-width: 480px) {
-            #init-panel { padding: 28px 22px; }
-        }
-        .init-header {
-            text-align: center;
-            margin-bottom: 32px;
-        }
+        #init-panel { padding: 40px 36px; }
+        @media (max-width: 480px) { #init-panel { padding: 28px 20px; } }
+
+        .init-header { text-align: center; margin-bottom: 30px; }
         .init-tag {
-            font-size: 0.7rem;
+            font-size: 0.72rem;
+            font-weight: 700;
             color: var(--accent);
-            letter-spacing: 4px;
+            letter-spacing: 5px;
             margin-bottom: 14px;
-            text-shadow: 0 0 8px var(--accent);
+            text-shadow: 0 0 10px var(--accent);
         }
         .init-title {
-            font-size: 1.2rem;
+            font-size: clamp(1.1rem, 4vw, 1.3rem);
+            font-weight: 700;
             color: #fff;
             letter-spacing: 5px;
-            text-transform: uppercase;
         }
         .init-sub {
-            font-size: 0.78rem;
-            color: #555;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #888;
             letter-spacing: 1.5px;
             margin-top: 10px;
             line-height: 1.7;
@@ -709,21 +666,23 @@
             padding: 16px;
             background: rgba(0,208,255,0.05);
             border: 1px solid rgba(0,208,255,0.2);
-            font-size: 0.82rem;
+            font-size: 0.85rem;
+            font-weight: 700;
             color: var(--accent);
             letter-spacing: 2px;
-            line-height: 1.8;
+            line-height: 1.9;
             text-align: center;
             display: none;
         }
         .role-map {
-            margin-top: 28px;
-            padding-top: 24px;
+            margin-top: 26px;
+            padding-top: 22px;
             border-top: 1px solid var(--border);
         }
         .role-map-title {
             font-size: 0.65rem;
-            color: #444;
+            font-weight: 700;
+            color: #555;
             letter-spacing: 3px;
             margin-bottom: 12px;
         }
@@ -732,25 +691,13 @@
             align-items: center;
             gap: 10px;
             margin-bottom: 8px;
-            font-size: 0.72rem;
-            color: #444;
+            font-size: 0.73rem;
+            font-weight: 600;
             letter-spacing: 1.5px;
         }
-        .role-row .rr-val {
-            color: #555;
-            min-width: 56px;
-        }
-        .role-row .rr-name {
-            color: #666;
-        }
-        .role-row .rr-arrow { color: #333; }
-
-        /* ─── UTILITY ────────────────────────────────────────────── */
-        .separator {
-            height: 1px;
-            background: var(--border);
-        }
-
+        .role-row .rr-val   { color: #777; min-width: 60px; }
+        .role-row .rr-arrow { color: #444; }
+        .role-row .rr-name  { color: #999; }
     </style>
 </head>
 <body>
@@ -773,157 +720,127 @@
     <section id="entry-layer">
         <div class="entry-tag">ENTRY PROTOCOL</div>
         <h2 class="entry-title">WHAT IS NEUROMICON?</h2>
-
         <div class="entry-what">
             <p>A system for transforming intent into signal.</p>
             <p>25 nodes. 4 sectors. Each node is a question you have not yet asked yourself.</p>
             <p>You are not browsing. You are entering.</p>
-            <p class="eq">↳ Click a node → listen → declare your value → transmit.</p>
+            <p>↳ Click a node → watch → declare your value → transmit.</p>
         </div>
-
         <p class="entry-desc">
             Before you access the archive,<br>
             the system needs to know who you are.
         </p>
-
         <button id="start-btn" class="submit-btn" style="max-width:320px; margin:0 auto;">
             <span>INITIALIZE</span>
         </button>
     </section>
 
-    <!-- ═══════════ GALLERY ROOT ═══════════ -->
+    <!-- ═══════════ GALLERY ═══════════ -->
     <div id="gallery-root"></div>
 
-    <!-- ═══════════ CONTACT SECTION ═══════════ -->
+    <!-- ═══════════ CONTACT ═══════════ -->
     <section id="contact-section">
         <div class="contact-tag">SIGNAL RELAY NODES</div>
-        
-        <div class="subscribe-banner">
-            <span class="subscribe-icon">◈</span>
-            <span class="subscribe-text">Subscribe now and return to the signal:</span>
-            <a class="subscribe-link" href="https://youtube.com/@Neuromicon" target="_blank" rel="noopener">youtube.com/@Neuromicon</a>
-        </div>
-        
-        <div class="contact-grid">            
-            <a class="contact-item" href="https://push.fm/fl/hcrvzuus" target="_blank" rel="noopener">
+        <div class="contact-grid">
+            <a class="contact-item" href="tel:+639XXXXXXXXX">
                 <span class="contact-icon">◈</span>
                 <div>
-                    <span class="contact-label">PUSH.FM</span>
-                    <span class="contact-value">/fl/hcrvzuus</span>
+                    <span class="contact-label">PHONE</span>
+                    <span class="contact-value">+63 9XX XXX XXXX</span>
                 </div>
             </a>
-            
-            <a class="contact-item" href="https://artists.spotify.com/c/artist/0qMUiGG0CSSEW7RTceyO4G" target="_blank" rel="noopener">
+            <a class="contact-item" href="mailto:contact@neuromicon.xyz">
                 <span class="contact-icon">◈</span>
                 <div>
-                    <span class="contact-label">SPOTIFY</span>
-                    <span class="contact-value">Artist Portal</span>
+                    <span class="contact-label">EMAIL</span>
+                    <span class="contact-value">contact@neuromicon.xyz</span>
                 </div>
             </a>
-            
-            <a class="contact-item" href="https://music.apple.com/gb/album/neuromicon/1822331930?at=11l65W&ct=push" target="_blank" rel="noopener">
+            <a class="contact-item" href="https://t.me/neuromicon" target="_blank" rel="noopener">
                 <span class="contact-icon">◈</span>
                 <div>
-                    <span class="contact-label">APPLE MUSIC</span>
-                    <span class="contact-value">Album Archive</span>
-                </div>
-            </a>
-            
-            <a class="contact-item" href="https://sites.google.com/view/neuromicon/home" target="_blank" rel="noopener">
-                <span class="contact-icon">◈</span>
-                <div>
-                    <span class="contact-label">HUB</span>
-                    <span class="contact-value">sites.google.com/neuromicon</span>
-                </div>
-            </a>
-            
-            <a class="contact-item" href="https://github.com/AlexSheff/Neuromicon" target="_blank" rel="noopener">
-                <span class="contact-icon">◈</span>
-                <div>
-                    <span class="contact-label">REPOSITORY</span>
-                    <span class="contact-value">github.com/AlexSheff/Neuromicon</span>
+                    <span class="contact-label">TELEGRAM</span>
+                    <span class="contact-value">@neuromicon</span>
                 </div>
             </a>
         </div>
-        
         <div class="footer-sig">NEUROMICON 25 &nbsp;•&nbsp; 1149 &nbsp;•&nbsp; THE SIGNAL LIVES</div>
     </section>
 
     <!-- ═══════════ NODE MODAL ═══════════ -->
-    <div class="modal" id="node-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-        <div class="modal-content" id="modal-inner">
+    <div class="modal" id="node-modal" role="dialog" aria-modal="true">
+        <div class="modal-content">
 
-            <div class="art-display">
-                <img id="modal-img" src="" alt="Visual Anchor">
+            <div class="video-display">
+                <div class="video-ratio-box">
+                    <iframe
+                        id="modal-iframe"
+                        src=""
+                        allow="autoplay; encrypted-media; picture-in-picture"
+                        allowfullscreen
+                        title="Node signal">
+                    </iframe>
+                </div>
             </div>
 
             <div class="interaction-panel">
-
-                <button class="return-btn" id="return-btn" aria-label="Close modal">[ ← RETURN ]</button>
+                <button class="return-btn" id="return-btn">[ ← RETURN ]</button>
 
                 <div>
                     <div class="node-sector-tag" id="sector-info">SECTOR A</div>
                     <h2 class="node-title" id="modal-title">NODE TITLE</h2>
                 </div>
 
-                <div class="audio-wrapper">
-                    <div class="audio-status">
-                        <span class="audio-dot" id="audio-dot"></span>
-                        <span id="audio-status-text">CARRIER_WAVE · ACTIVE</span>
-                    </div>
-                    <audio id="modal-audio" controls controlsList="nodownload"></audio>
-                    <div class="autoplay-hint" id="autoplay-hint">▶ TAP PLAY TO ACTIVATE SIGNAL</div>
+                <div class="video-status">
+                    <span class="video-dot"></span>
+                    <span>SIGNAL_STREAM · ACTIVE</span>
                 </div>
 
-                <div id="payment-wrapper">
-                    <p class="form-intro">
-                        DECLARE YOUR INTENT.<br>
-                        VALUE IS SUBJECTIVE.<br>
-                        THE SIGNAL WILL BE LOGGED.
+                <p class="form-intro">
+                    DECLARE YOUR INTENT.<br>
+                    VALUE IS SUBJECTIVE.<br>
+                    THE SIGNAL WILL BE LOGGED.
+                </p>
+
+                <div id="payment-form-inner">
+                    <div class="form-group">
+                        <label for="user-phone">IDENTIFIER [PHONE / TELEGRAM]</label>
+                        <input type="text" id="user-phone" placeholder="+63 912 345 6789 or @username" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-amount">INTENT [DECLARED VALUE]</label>
+                        <input type="number" id="user-amount" placeholder="0.00" min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-comment">SIGNAL [MESSAGE / COMMENT]</label>
+                        <textarea id="user-comment" placeholder="Leave a message, thought, or signal..."></textarea>
+                    </div>
+                    <button class="submit-btn" id="submit-btn"><span>TRANSMIT INTENT</span></button>
+                </div>
+
+                <div id="terminal-output"></div>
+
+                <div id="intent-success">
+                    <p>
+                        TRANSMISSION COMPLETE<br>
+                        YOUR INTENT HAS BEEN SAVED<br>
+                        YOU ARE NOW PART OF THE ARCHIVE
                     </p>
-
-                    <div id="payment-form-inner" style="margin-top: 20px;">
-                        <div class="form-group">
-                            <label for="user-phone">IDENTIFIER [PHONE / TELEGRAM]</label>
-                            <input type="text" id="user-phone" placeholder="+63 912 345 6789 or @username" autocomplete="off">
-                        </div>
-                        <div class="form-group">
-                            <label for="user-amount">INTENT [DECLARED VALUE]</label>
-                            <input type="number" id="user-amount" placeholder="0.00" min="0" step="0.01">
-                        </div>
-                        <div class="form-group">
-                            <label for="user-comment">SIGNAL [MESSAGE / COMMENT]</label>
-                            <textarea id="user-comment" placeholder="Leave a message, thought, or signal..."></textarea>
-                        </div>
-                        <button class="submit-btn" id="submit-btn"><span>TRANSMIT INTENT</span></button>
-                    </div>
-
-                    <div id="terminal-output"></div>
-
-                    <div id="intent-success">
-                        <p>
-                            TRANSMISSION COMPLETE<br>
-                            YOUR INTENT HAS BEEN SAVED<br>
-                            YOU ARE NOW PART OF THE ARCHIVE
-                        </p>
-                        <div class="signal">THE SIGNAL LIVES.</div>
-                    </div>
+                    <div class="signal">THE SIGNAL LIVES.</div>
                 </div>
-
             </div>
         </div>
     </div>
 
     <!-- ═══════════ INIT MODAL ═══════════ -->
-    <div class="modal" id="init-modal" role="dialog" aria-modal="true" aria-labelledby="init-title">
+    <div class="modal" id="init-modal" role="dialog" aria-modal="true">
         <div class="modal-content">
             <div id="init-panel">
                 <div class="init-header">
                     <div class="init-tag">INITIALIZATION SEQUENCE</div>
-                    <h2 class="init-title" id="init-title">WHO ARE YOU?</h2>
+                    <h2 class="init-title">WHO ARE YOU?</h2>
                     <p class="init-sub">Answer three questions. The system will assign your role.</p>
                 </div>
-
                 <div class="form-group">
                     <label for="init-q1">DEFINE YOUR STATE [ WHO ARE YOU? ]</label>
                     <input type="text" id="init-q1" placeholder="I am..." autocomplete="off">
@@ -936,11 +853,8 @@
                     <label for="init-q3">DEFINE YOUR ENERGY [ NUMERIC VALUE ]</label>
                     <input type="number" id="init-q3" placeholder="0 – 999" min="0" max="999" step="1">
                 </div>
-
                 <button class="submit-btn" id="init-submit"><span>COMPILE IDENTITY</span></button>
-
                 <div id="init-output"></div>
-
                 <div class="role-map">
                     <div class="role-map-title">ROLE ASSIGNMENT MAP</div>
                     <div class="role-row"><span class="rr-val">0 – 10</span><span class="rr-arrow">→</span><span class="rr-name">OBSERVER</span></div>
@@ -956,15 +870,51 @@
         // ════════════════════════════════════════════════════════════
         //  CONFIG
         // ════════════════════════════════════════════════════════════
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyPA9VOxOz3FM1tUEwbrjM2LWAPCvQQOb5lnyoVXU805oczufsbDaT5FLNOc3MLBkvV/exec";
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz5cTrwMxaHAtZnDlUVM-KNvashsuB6i2OtYNXNKRF7dRsorRSjKlopMGx4Ccnmxkyy/exec";
         const SYSTEM_TOKEN    = "NEUROMICON_SIGMA_2026";
-        const TIMEOUT_MS      = 8000; // 8s before "no response" warning
+        const TIMEOUT_MS      = 8000;
 
-        // Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js').catch(() => {});
             });
+        }
+
+        // ════════════════════════════════════════════════════════════
+        //  YOUTUBE IDs  — index matches node numeric id (1–25)
+        //  index 0 = reserved intro
+        // ════════════════════════════════════════════════════════════
+        const YT = [
+            "sYyh1uF87fo",  // 0  — intro/reserved
+            "_Sjx2qfzwIg",  // 1  → 01 Purpose
+            "J3fxxeuf33c",  // 2  → 02 Identity
+            "0ySTdJ_DP_8",  // 3  → 03 Legacy
+            "zVhpgV5e1e4",  // 4  → 04 Connection
+            "yFIWzcN24yw",  // 5  → 05 Freedom
+            "KvYjam06QXY",  // 6  → 06 Suffering
+            "FY9l9uGUTaA",  // 7  → 07 Mortality
+            "-1rzwO2SCrI",  // 8  → 08 Love
+            "_aiKZ7yFOAA",  // 9  → 09 Growth
+            "jfn-HdQCSYM",  // 10 → 10 Transcendence
+            "wPLEoWa0Fp4",  // 11 → 11 Action
+            "N42JfvBKtIs",  // 12 → 12 Solitude
+            "dY3bIQ62bMs",  // 13 → 13 Meaning
+            "ykTe6d2Ttco",  // 14 → 14 Authenticity
+            "phUasoApKBc",  // 15 → 15 Responsibility
+            "t0hhDRm0RYU",  // 16 → 16 Trust
+            "cUZykG1U8QA",  // 17 → 17 Creativity
+            "OczaY_OvSB0",  // 18 → 18 Play
+            "-9vlb-gxXWo",  // 19 → 19 Algorithm
+            "UPa70D90r30",  // 20 → 20 Signal vs Noise
+            "DtGeCwf7Ca8",  // 21 → 21 Upgrade
+            "8nMwPE7C-BI",  // 22 → 22 Merge
+            "aSeW-LzWeHc",  // 23 → 23 Witness
+            "9HlergrhJSI",  // 24 → 24 Unity
+            "cvvgNBQgzhU",  // 25 → 25 The Mirror
+        ];
+
+        function ytEmbed(videoId) {
+            return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&color=white`;
         }
 
         // ════════════════════════════════════════════════════════════
@@ -975,49 +925,49 @@
                 key: "A_The_Source_Code",
                 label: "SECTOR A — THE SOURCE CODE",
                 nodes: [
-                    { id:"01", title:"Purpose",       folder:"01_Purpose",       file:"01_Purpose" },
-                    { id:"02", title:"Identity",      folder:"02_Identity",      file:"02_Identity" },
-                    { id:"03", title:"Legacy",        folder:"03_Legacy",        file:"03_Legacy" },
-                    { id:"04", title:"Connection",    folder:"04_Connection",    file:"04_Connection" },
-                    { id:"05", title:"Freedom",       folder:"05_Freedom",       file:"05_Freedom" },
-                    { id:"06", title:"Suffering",     folder:"06_Suffering",     file:"06_Suffering" },
-                    { id:"07", title:"Mortality",     folder:"07_Mortality",     file:"07_Mortality" },
-                    { id:"08", title:"Love",          folder:"08_Love",          file:"08_Love" },
-                    { id:"09", title:"Growth",        folder:"09_Growth",        file:"09_Growth" },
-                    { id:"10", title:"Transcendence", folder:"10_Transcendence", file:"10_Transcendence" },
-                    { id:"11", title:"Action",        folder:"11_Action",        file:"11_Action" },
+                    { id:"01", title:"Purpose",       folder:"01_Purpose",       file:"01_Purpose",       yt:1  },
+                    { id:"02", title:"Identity",      folder:"02_Identity",      file:"02_Identity",      yt:2  },
+                    { id:"03", title:"Legacy",        folder:"03_Legacy",        file:"03_Legacy",        yt:3  },
+                    { id:"04", title:"Connection",    folder:"04_Connection",    file:"04_Connection",    yt:4  },
+                    { id:"05", title:"Freedom",       folder:"05_Freedom",       file:"05_Freedom",       yt:5  },
+                    { id:"06", title:"Suffering",     folder:"06_Suffering",     file:"06_Suffering",     yt:6  },
+                    { id:"07", title:"Mortality",     folder:"07_Mortality",     file:"07_Mortality",     yt:7  },
+                    { id:"08", title:"Love",          folder:"08_Love",          file:"08_Love",          yt:8  },
+                    { id:"09", title:"Growth",        folder:"09_Growth",        file:"09_Growth",        yt:9  },
+                    { id:"10", title:"Transcendence", folder:"10_Transcendence", file:"10_Transcendence", yt:10 },
+                    { id:"11", title:"Action",        folder:"11_Action",        file:"11_Action",        yt:11 },
                 ]
             },
             {
                 key: "B_The_Operating_System",
                 label: "SECTOR B — THE OPERATING SYSTEM",
                 nodes: [
-                    { id:"12", title:"Solitude",       folder:"12_Solitude",       file:"12_Solitude" },
-                    { id:"13", title:"Meaning",        folder:"13_Meaning",        file:"13_Meaning" },
-                    { id:"14", title:"Authenticity",   folder:"14_Authenticity",   file:"14_Authenticity" },
-                    { id:"15", title:"Responsibility", folder:"15_Responsibility", file:"15_Responsibility" },
-                    { id:"16", title:"Trust",          folder:"16_Trust",          file:"16_Trust" },
-                    { id:"17", title:"Creativity",     folder:"17_Creativity",     file:"17_Creativity" },
-                    { id:"18", title:"Play",           folder:"18_Play",           file:"18_Play" },
-                    { id:"19", title:"Algorithm",      folder:"19_Algorithm",      file:"19_Algorithm" },
+                    { id:"12", title:"Solitude",       folder:"12_Solitude",       file:"12_Solitude",       yt:12 },
+                    { id:"13", title:"Meaning",        folder:"13_Meaning",        file:"13_Meaning",        yt:13 },
+                    { id:"14", title:"Authenticity",   folder:"14_Authenticity",   file:"14_Authenticity",   yt:14 },
+                    { id:"15", title:"Responsibility", folder:"15_Responsibility", file:"15_Responsibility", yt:15 },
+                    { id:"16", title:"Trust",          folder:"16_Trust",          file:"16_Trust",          yt:16 },
+                    { id:"17", title:"Creativity",     folder:"17_Creativity",     file:"17_Creativity",     yt:17 },
+                    { id:"18", title:"Play",           folder:"18_Play",           file:"18_Play",           yt:18 },
+                    { id:"19", title:"Algorithm",      folder:"19_Algorithm",      file:"19_Algorithm",      yt:19 },
                 ]
             },
             {
                 key: "C_The_Upgrade",
                 label: "SECTOR C — THE UPGRADE",
                 nodes: [
-                    { id:"20", title:"Signal vs Noise", folder:"20_Signal_vs_Noise", file:"20_Signal_vs_Noise" },
-                    { id:"21", title:"Upgrade",         folder:"21_Upgrade",         file:"21_Upgrade" },
-                    { id:"22", title:"Merge",           folder:"22_Merge",           file:"22_Merge" },
-                    { id:"23", title:"Witness",         folder:"23_Witness",         file:"23_Witness" },
-                    { id:"24", title:"Unity",           folder:"24_Unity",           file:"24_Unity" },
+                    { id:"20", title:"Signal vs Noise", folder:"20_Signal_vs_Noise", file:"20_Signal_vs_Noise", yt:20 },
+                    { id:"21", title:"Upgrade",         folder:"21_Upgrade",         file:"21_Upgrade",         yt:21 },
+                    { id:"22", title:"Merge",           folder:"22_Merge",           file:"22_Merge",           yt:22 },
+                    { id:"23", title:"Witness",         folder:"23_Witness",         file:"23_Witness",         yt:23 },
+                    { id:"24", title:"Unity",           folder:"24_Unity",           file:"24_Unity",           yt:24 },
                 ]
             },
             {
                 key: "D_The_Mirror",
                 label: "SECTOR D — THE MIRROR",
                 nodes: [
-                    { id:"25", title:"The Mirror", folder:"25_The_Mirror", file:"25_The_Mirror" },
+                    { id:"25", title:"The Mirror", folder:"25_The_Mirror", file:"25_The_Mirror", yt:25 },
                 ]
             }
         ];
@@ -1048,8 +998,14 @@
                 img.loading = 'lazy';
                 img.alt = `Node ${node.id}`;
                 img.src = imgPath;
-                img.onload  = () => { img.classList.add('loaded'); card.classList.add('img-ready'); };
-                img.onerror = () => { img.src = './icon-512.png'; img.style.opacity = '0.2'; card.classList.add('img-ready'); };
+                img.onload = () => { img.classList.add('loaded'); card.classList.add('img-ready'); };
+                img.onerror = () => {
+                    // Fallback to YouTube thumbnail
+                    const thumb = `https://img.youtube.com/vi/${YT[node.yt]}/hqdefault.jpg`;
+                    img.src = thumb;
+                    img.onload  = () => { img.classList.add('loaded'); card.classList.add('img-ready'); };
+                    img.onerror = () => { card.classList.add('img-ready'); };
+                };
 
                 const badge = document.createElement('div');
                 badge.className = 'node-id';
@@ -1058,7 +1014,7 @@
                 card.appendChild(img);
                 card.appendChild(badge);
 
-                const open = () => openNode(node, sector.key, imgPath);
+                const open = () => openNode(node, sector.key);
                 card.addEventListener('click', open);
                 card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') open(); });
 
@@ -1094,19 +1050,16 @@
             entryLayer.style.display = 'none';
         }
 
-        // Auto-skip if already initialized
         window.addEventListener('load', () => {
-            const savedRole = localStorage.getItem('neuromicon_role');
-            if (savedRole) {
-                applyRole(savedRole);
-            }
+            const saved = localStorage.getItem('neuromicon_role');
+            if (saved) applyRole(saved);
         });
 
         startBtn.addEventListener('click', () => {
             initModal.classList.remove('closing');
             initModal.classList.add('active');
             document.body.style.overflow = 'hidden';
-            document.getElementById('init-q1').focus();
+            setTimeout(() => document.getElementById('init-q1').focus(), 50);
         });
 
         initSubmit.addEventListener('click', () => {
@@ -1115,33 +1068,25 @@
             const q3 = document.getElementById('init-q3').value;
 
             if (!q1 || !q2 || !q3) {
-                initOutput.style.display = 'block';
+                initOutput.style.cssText = 'display:block; color:#ff5555; border-color:rgba(255,85,85,0.3)';
                 initOutput.innerHTML = 'ALL FIELDS REQUIRED. SIGNAL INCOMPLETE.';
-                initOutput.style.color = '#ff4d4d';
-                initOutput.style.borderColor = 'rgba(255,77,77,0.3)';
                 return;
             }
 
             const role = assignRole(q3);
-            initOutput.style.display = 'block';
-            initOutput.style.color = '#00d0ff';
-            initOutput.style.borderColor = 'rgba(0,208,255,0.2)';
+            initOutput.style.cssText = 'display:block; color:#00d0ff; border-color:rgba(0,208,255,0.2)';
             initOutput.innerHTML = `IDENTITY COMPILED<br>ROLE: ${role}<br>SIGNAL ACCEPTED`;
 
             localStorage.setItem('neuromicon_role', role);
             localStorage.setItem('neuromicon_state', JSON.stringify({ q1, q2, q3 }));
 
-            // LOG INIT TO APPSCRIPT
+            // Fire-and-forget init log
             fetch(APPS_SCRIPT_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify({
-                    token:  SYSTEM_TOKEN,
-                    event:  'INIT',
-                    role:   role,
-                    state:  q1,
-                    vector: q2,
-                    energy: q3
+                    token: SYSTEM_TOKEN, event: 'INIT',
+                    role, state: q1, vector: q2, energy: q3
                 })
             }).catch(() => {});
 
@@ -1152,14 +1097,13 @@
                     document.body.style.overflow = '';
                     applyRole(role);
                     initOutput.style.display = 'none';
-                    document.getElementById('init-q1').value = '';
-                    document.getElementById('init-q2').value = '';
-                    document.getElementById('init-q3').value = '';
+                    ['init-q1','init-q2','init-q3'].forEach(id => {
+                        document.getElementById(id).value = '';
+                    });
                 }, 250);
             }, 1600);
         });
 
-        // Reset identity
         resetLink.addEventListener('click', () => {
             localStorage.removeItem('neuromicon_role');
             localStorage.removeItem('neuromicon_state');
@@ -1168,73 +1112,41 @@
             entryLayer.scrollIntoView({ behavior: 'smooth' });
         });
 
-        // Close init modal on backdrop
-        initModal.addEventListener('click', e => {
-            if (e.target === initModal) {
-                initModal.classList.add('closing');
-                setTimeout(() => {
-                    initModal.classList.remove('active', 'closing');
-                    document.body.style.overflow = '';
-                }, 250);
-            }
-        });
+        function closeInitModal() {
+            initModal.classList.add('closing');
+            setTimeout(() => {
+                initModal.classList.remove('active', 'closing');
+                document.body.style.overflow = '';
+            }, 250);
+        }
+        initModal.addEventListener('click', e => { if (e.target === initModal) closeInitModal(); });
 
         // ════════════════════════════════════════════════════════════
-        //  NODE MODAL ELEMENTS
+        //  NODE MODAL
         // ════════════════════════════════════════════════════════════
-        const nodeModal      = document.getElementById('node-modal');
-        const modalImg       = document.getElementById('modal-img');
-        const modalAudio     = document.getElementById('modal-audio');
-        const audioDot       = document.getElementById('audio-dot');
-        const audioStatusTxt = document.getElementById('audio-status-text');
-        const autoplayHint   = document.getElementById('autoplay-hint');
-        const modalTitle     = document.getElementById('modal-title');
-        const sectorInfo     = document.getElementById('sector-info');
-        const terminalOut    = document.getElementById('terminal-output');
-        const submitBtn      = document.getElementById('submit-btn');
-        const intentSuccess  = document.getElementById('intent-success');
+        const nodeModal        = document.getElementById('node-modal');
+        const modalIframe      = document.getElementById('modal-iframe');
+        const modalTitle       = document.getElementById('modal-title');
+        const sectorInfo       = document.getElementById('sector-info');
+        const terminalOut      = document.getElementById('terminal-output');
+        const submitBtn        = document.getElementById('submit-btn');
+        const intentSuccess    = document.getElementById('intent-success');
         const paymentFormInner = document.getElementById('payment-form-inner');
 
-        // ════════════════════════════════════════════════════════════
-        //  OPEN NODE
-        // ════════════════════════════════════════════════════════════
-        function openNode(node, sectorKey, imgPath) {
-            modalImg.style.opacity = '0';
-            modalImg.src = imgPath;
-            modalImg.onload = () => {
-                modalImg.style.transition = 'opacity 0.4s ease';
-                modalImg.style.opacity = '1';
-            };
-
-            sectorInfo.textContent = `SECTOR ${sectorKey.split('_')[0]}`;
-            modalTitle.textContent = `${node.id} — ${node.title.toUpperCase()}`;
-
-            const audioPath = encodeURI(`./Sector_${sectorKey}/${node.folder}/${node.file}.mp3`);
-            audioDot.classList.remove('inactive');
-            audioStatusTxt.textContent = 'CARRIER_WAVE · ACTIVE';
-            autoplayHint.classList.remove('visible');
-
-            modalAudio.src = audioPath;
-            modalAudio.load();
+        function openNode(node, sectorKey) {
+            sectorInfo.textContent  = `SECTOR ${sectorKey.split('_')[0]}`;
+            modalTitle.textContent  = `${node.id} — ${node.title.toUpperCase()}`;
+            modalIframe.src         = ytEmbed(YT[node.yt]);
 
             resetNodeForm();
             nodeModal.classList.remove('closing');
             nodeModal.classList.add('active');
             document.body.style.overflow = 'hidden';
-
-            modalAudio.play().catch(() => {
-                autoplayHint.classList.add('visible');
-            });
         }
 
-        // ════════════════════════════════════════════════════════════
-        //  CLOSE NODE MODAL
-        // ════════════════════════════════════════════════════════════
         function closeNodeModal() {
+            modalIframe.src = ''; // stop playback
             nodeModal.classList.add('closing');
-            modalAudio.pause();
-            modalAudio.currentTime = 0;
-            audioDot.classList.add('inactive');
             setTimeout(() => {
                 nodeModal.classList.remove('active', 'closing');
                 document.body.style.overflow = '';
@@ -1244,40 +1156,27 @@
 
         function resetNodeForm() {
             paymentFormInner.style.display = 'block';
-            intentSuccess.style.display = 'none';
+            intentSuccess.style.display    = 'none';
             submitBtn.disabled = false;
             submitBtn.querySelector('span').textContent = 'TRANSMIT INTENT';
             terminalOut.innerHTML = '';
             terminalOut.className = '';
-            document.getElementById('user-phone').value = '';
-            document.getElementById('user-amount').value = '';
-            document.getElementById('user-comment').value = '';
+            ['user-phone','user-amount','user-comment'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
         }
 
         document.getElementById('return-btn').addEventListener('click', closeNodeModal);
         nodeModal.addEventListener('click', e => { if (e.target === nodeModal) closeNodeModal(); });
 
         document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') {
-                if (nodeModal.classList.contains('active')) closeNodeModal();
-                if (initModal.classList.contains('active')) {
-                    initModal.classList.add('closing');
-                    setTimeout(() => {
-                        initModal.classList.remove('active', 'closing');
-                        document.body.style.overflow = '';
-                    }, 250);
-                }
-            }
-        });
-
-        modalAudio.addEventListener('error', () => {
-            audioDot.classList.add('inactive');
-            audioStatusTxt.textContent = 'CARRIER_WAVE · NOT FOUND';
-            autoplayHint.classList.remove('visible');
+            if (e.key !== 'Escape') return;
+            if (nodeModal.classList.contains('active')) closeNodeModal();
+            if (initModal.classList.contains('active')) closeInitModal();
         });
 
         // ════════════════════════════════════════════════════════════
-        //  INTENT FORM SUBMISSION
+        //  INTENT SUBMISSION
         // ════════════════════════════════════════════════════════════
         submitBtn.addEventListener('click', async () => {
             const phone   = document.getElementById('user-phone').value.trim();
@@ -1297,27 +1196,24 @@
             terminalOut.className = '';
             terminalOut.innerHTML = 'ESTABLISHING SECURE UPLINK...\nCOMPILING SIGNAL...';
 
-            // Timeout warning after TIMEOUT_MS
             const timeoutWarn = setTimeout(() => {
                 if (submitBtn.disabled) {
                     terminalOut.innerHTML += '\n\nNO RESPONSE FROM SERVER.\nCHECKING CONNECTION...';
                 }
             }, TIMEOUT_MS);
 
-            const payload = { token: SYSTEM_TOKEN, phone, amount, comment, nodeId, role };
-
             try {
-                const res    = await fetch(APPS_SCRIPT_URL, {
+                const res = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify({ token: SYSTEM_TOKEN, phone, amount, comment, nodeId, role })
                 });
                 clearTimeout(timeoutWarn);
                 const result = await res.json();
 
                 if (result.status === 'success') {
                     paymentFormInner.style.display = 'none';
-                    intentSuccess.style.display = 'block';
+                    intentSuccess.style.display    = 'block';
                     terminalOut.innerHTML = 'SIGNAL DELIVERED\nINTENT PERMANENTLY LOGGED';
                 } else {
                     throw new Error(result.message || 'Remote rejection');
