@@ -882,9 +882,8 @@
 
         // ════════════════════════════════════════════════════════════
         //  YOUTUBE IDs  — index matches node numeric id (1–25)
-        //  index 0 = reserved intro
         // ════════════════════════════════════════════════════════════
-        const YT = [
+        const YT =[
             "sYyh1uF87fo",  // 0  — intro/reserved
             "_Sjx2qfzwIg",  // 1  → 01 Purpose
             "J3fxxeuf33c",  // 2  → 02 Identity
@@ -913,61 +912,62 @@
             "cvvgNBQgzhU",  // 25 → 25 The Mirror
         ];
 
+        // ADDED AUTOPLAY: &autoplay=1
         function ytEmbed(videoId) {
-            return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&color=white`;
+            return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&color=white&autoplay=1`;
         }
 
         // ════════════════════════════════════════════════════════════
-        //  NODE DATABASE
+        //  NODE DATABASE (Локальные пути удалены, всё работает от YouTube)
         // ════════════════════════════════════════════════════════════
-        const SECTORS = [
+        const SECTORS =[
             {
                 key: "A_The_Source_Code",
                 label: "SECTOR A — THE SOURCE CODE",
-                nodes: [
-                    { id:"01", title:"Purpose",       folder:"01_Purpose",       file:"01_Purpose",       yt:1  },
-                    { id:"02", title:"Identity",      folder:"02_Identity",      file:"02_Identity",      yt:2  },
-                    { id:"03", title:"Legacy",        folder:"03_Legacy",        file:"03_Legacy",        yt:3  },
-                    { id:"04", title:"Connection",    folder:"04_Connection",    file:"04_Connection",    yt:4  },
-                    { id:"05", title:"Freedom",       folder:"05_Freedom",       file:"05_Freedom",       yt:5  },
-                    { id:"06", title:"Suffering",     folder:"06_Suffering",     file:"06_Suffering",     yt:6  },
-                    { id:"07", title:"Mortality",     folder:"07_Mortality",     file:"07_Mortality",     yt:7  },
-                    { id:"08", title:"Love",          folder:"08_Love",          file:"08_Love",          yt:8  },
-                    { id:"09", title:"Growth",        folder:"09_Growth",        file:"09_Growth",        yt:9  },
-                    { id:"10", title:"Transcendence", folder:"10_Transcendence", file:"10_Transcendence", yt:10 },
-                    { id:"11", title:"Action",        folder:"11_Action",        file:"11_Action",        yt:11 },
+                nodes:[
+                    { id:"01", title:"Purpose",       yt:1  },
+                    { id:"02", title:"Identity",      yt:2  },
+                    { id:"03", title:"Legacy",        yt:3  },
+                    { id:"04", title:"Connection",    yt:4  },
+                    { id:"05", title:"Freedom",       yt:5  },
+                    { id:"06", title:"Suffering",     yt:6  },
+                    { id:"07", title:"Mortality",     yt:7  },
+                    { id:"08", title:"Love",          yt:8  },
+                    { id:"09", title:"Growth",        yt:9  },
+                    { id:"10", title:"Transcendence", yt:10 },
+                    { id:"11", title:"Action",        yt:11 },
                 ]
             },
             {
                 key: "B_The_Operating_System",
                 label: "SECTOR B — THE OPERATING SYSTEM",
-                nodes: [
-                    { id:"12", title:"Solitude",       folder:"12_Solitude",       file:"12_Solitude",       yt:12 },
-                    { id:"13", title:"Meaning",        folder:"13_Meaning",        file:"13_Meaning",        yt:13 },
-                    { id:"14", title:"Authenticity",   folder:"14_Authenticity",   file:"14_Authenticity",   yt:14 },
-                    { id:"15", title:"Responsibility", folder:"15_Responsibility", file:"15_Responsibility", yt:15 },
-                    { id:"16", title:"Trust",          folder:"16_Trust",          file:"16_Trust",          yt:16 },
-                    { id:"17", title:"Creativity",     folder:"17_Creativity",     file:"17_Creativity",     yt:17 },
-                    { id:"18", title:"Play",           folder:"18_Play",           file:"18_Play",           yt:18 },
-                    { id:"19", title:"Algorithm",      folder:"19_Algorithm",      file:"19_Algorithm",      yt:19 },
+                nodes:[
+                    { id:"12", title:"Solitude",       yt:12 },
+                    { id:"13", title:"Meaning",        yt:13 },
+                    { id:"14", title:"Authenticity",   yt:14 },
+                    { id:"15", title:"Responsibility", yt:15 },
+                    { id:"16", title:"Trust",          yt:16 },
+                    { id:"17", title:"Creativity",     yt:17 },
+                    { id:"18", title:"Play",           yt:18 },
+                    { id:"19", title:"Algorithm",      yt:19 },
                 ]
             },
             {
                 key: "C_The_Upgrade",
                 label: "SECTOR C — THE UPGRADE",
-                nodes: [
-                    { id:"20", title:"Signal vs Noise", folder:"20_Signal_vs_Noise", file:"20_Signal_vs_Noise", yt:20 },
-                    { id:"21", title:"Upgrade",         folder:"21_Upgrade",         file:"21_Upgrade",         yt:21 },
-                    { id:"22", title:"Merge",           folder:"22_Merge",           file:"22_Merge",           yt:22 },
-                    { id:"23", title:"Witness",         folder:"23_Witness",         file:"23_Witness",         yt:23 },
-                    { id:"24", title:"Unity",           folder:"24_Unity",           file:"24_Unity",           yt:24 },
+                nodes:[
+                    { id:"20", title:"Signal vs Noise", yt:20 },
+                    { id:"21", title:"Upgrade",         yt:21 },
+                    { id:"22", title:"Merge",           yt:22 },
+                    { id:"23", title:"Witness",         yt:23 },
+                    { id:"24", title:"Unity",           yt:24 },
                 ]
             },
             {
                 key: "D_The_Mirror",
                 label: "SECTOR D — THE MIRROR",
-                nodes: [
-                    { id:"25", title:"The Mirror", folder:"25_The_Mirror", file:"25_The_Mirror", yt:25 },
+                nodes:[
+                    { id:"25", title:"The Mirror", yt:25 },
                 ]
             }
         ];
@@ -987,7 +987,10 @@
             grid.className = 'gallery-grid gallery-section';
 
             sector.nodes.forEach(node => {
-                const imgPath = encodeURI(`./Sector_${sector.key}/${node.folder}/${node.file}.jpg`);
+                // Прямая загрузка превью с серверов YouTube
+                const videoId = YT[node.yt];
+                const imgPath = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+                
                 const card = document.createElement('div');
                 card.className = 'node-card';
                 card.setAttribute('role', 'button');
@@ -999,13 +1002,6 @@
                 img.alt = `Node ${node.id}`;
                 img.src = imgPath;
                 img.onload = () => { img.classList.add('loaded'); card.classList.add('img-ready'); };
-                img.onerror = () => {
-                    // Fallback to YouTube thumbnail
-                    const thumb = `https://img.youtube.com/vi/${YT[node.yt]}/hqdefault.jpg`;
-                    img.src = thumb;
-                    img.onload  = () => { img.classList.add('loaded'); card.classList.add('img-ready'); };
-                    img.onerror = () => { card.classList.add('img-ready'); };
-                };
 
                 const badge = document.createElement('div');
                 badge.className = 'node-id';
@@ -1096,8 +1092,7 @@
                     initModal.classList.remove('active', 'closing');
                     document.body.style.overflow = '';
                     applyRole(role);
-                    initOutput.style.display = 'none';
-                    ['init-q1','init-q2','init-q3'].forEach(id => {
+                    initOutput.style.display = 'none';['init-q1','init-q2','init-q3'].forEach(id => {
                         document.getElementById(id).value = '';
                     });
                 }, 250);
