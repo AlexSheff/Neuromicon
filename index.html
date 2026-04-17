@@ -1105,6 +1105,20 @@
             localStorage.setItem('neuromicon_role', role);
             localStorage.setItem('neuromicon_state', JSON.stringify({ q1, q2, q3 }));
 
+            // LOG INIT TO APPSCRIPT
+            fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({
+                    token:  SYSTEM_TOKEN,
+                    event:  'INIT',
+                    role:   role,
+                    state:  q1,
+                    vector: q2,
+                    energy: q3
+                })
+            }).catch(() => {});
+
             setTimeout(() => {
                 initModal.classList.add('closing');
                 setTimeout(() => {
