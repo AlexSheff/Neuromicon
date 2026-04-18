@@ -9,13 +9,14 @@
     <style>
         :root {
             --bg:         #030303;
-            --panel-bg:   #0a0a0a;
-            --text:       #f0f0f0;
-            --muted:      #aaaaaa;
+            --panel-bg:   #0d0d0d;
+            --text:       #e8e8e8;
+            --muted:      #c0c0c0;
+            --dim:        #777777;
             --accent:     #00d0ff;
-            --accent-dim: rgba(0, 208, 255, 0.10);
-            --border:     #1e1e1e;
-            --input-bg:   #111111;
+            --accent-dim: rgba(0,208,255,0.10);
+            --border:     #242424;
+            --input-bg:   #141414;
             --mono:       'Courier New', Courier, monospace;
         }
 
@@ -33,7 +34,7 @@
 
         /* ─── HEADER ─────────────────────────────────────────────── */
         header {
-            padding: 48px 20px 32px;
+            padding: 44px 24px 0;
             border-bottom: 1px solid var(--border);
             text-align: center;
             background: #000;
@@ -43,7 +44,7 @@
         header::before {
             content: '';
             position: absolute; inset: 0;
-            background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(0,208,255,0.08) 0%, transparent 70%);
+            background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(0,208,255,0.08) 0%, transparent 70%);
             pointer-events: none;
         }
         header::after {
@@ -51,193 +52,195 @@
             position: absolute;
             bottom: 0; left: 0; right: 0; height: 1px;
             background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            opacity: 0.5;
+            opacity: 0.45;
         }
+
+        .header-eyebrow {
+            font-size: 0.68rem; font-weight: 700;
+            color: var(--accent); letter-spacing: 5px;
+            text-transform: uppercase; margin-bottom: 16px;
+            text-shadow: 0 0 12px var(--accent); position: relative;
+        }
+
         h1 {
-            font-size: clamp(1.8rem, 6vw, 2.8rem);
-            font-weight: 700;
-            letter-spacing: clamp(6px, 2vw, 14px);
-            color: #fff;
+            font-size: clamp(2rem, 7vw, 3.2rem); font-weight: 700;
+            letter-spacing: clamp(8px, 3vw, 16px); color: #ffffff;
             text-transform: uppercase;
-            text-shadow: 0 0 40px rgba(0,208,255,0.5);
-            position: relative;
+            text-shadow: 0 0 50px rgba(0,208,255,0.45), 0 2px 4px rgba(0,0,0,0.8);
+            position: relative; margin-bottom: 18px;
         }
-        .sys-text {
-            color: var(--accent);
-            font-size: clamp(0.8rem, 2.5vw, 0.95rem);
-            font-weight: 700;
-            letter-spacing: 4px;
-            margin-top: 14px;
-            text-shadow: 0 0 16px var(--accent);
-            position: relative;
+
+        .header-tagline {
+            font-size: clamp(0.82rem, 2.5vw, 0.98rem); font-weight: 600;
+            color: #e0e0e0; letter-spacing: 1px; line-height: 1.8;
+            margin-bottom: 18px; position: relative;
+            max-width: 600px; margin-left: auto; margin-right: auto;
         }
-        .log-text-header {
-            color: #bbb;
-            font-size: clamp(0.72rem, 2vw, 0.82rem);
-            font-weight: 600;
-            margin-top: 10px;
-            letter-spacing: 2px;
+
+        .header-meta {
+            display: flex; flex-wrap: wrap;
+            justify-content: center; gap: 8px 20px;
+            font-size: 0.72rem; font-weight: 700; color: var(--muted);
+            letter-spacing: 2px; margin-bottom: 20px; position: relative;
+        }
+        .header-meta-item { display: flex; align-items: center; gap: 6px; }
+        .header-meta-dot {
+            width: 5px; height: 5px; border-radius: 50%;
+            background: var(--accent); flex-shrink: 0;
+        }
+
+        .header-cta {
+            display: inline-block; position: relative;
+            background: rgba(0,208,255,0.07);
+            border: 1px solid rgba(0,208,255,0.35);
+            padding: 10px 24px; font-size: 0.76rem; font-weight: 700;
+            color: var(--accent); letter-spacing: 3px; text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: cta-pulse 3s ease-in-out infinite;
+        }
+        @keyframes cta-pulse {
+            0%,100% { border-color: rgba(0,208,255,0.35); box-shadow: none; }
+            50%      { border-color: rgba(0,208,255,0.65); box-shadow: 0 0 20px rgba(0,208,255,0.18); }
+        }
+
+        .header-sig {
+            font-size: 0.7rem; font-weight: 600; color: var(--dim);
+            letter-spacing: 3px; position: relative; margin-bottom: 20px;
+        }
+
+        /* ─── INTRO VIDEO in header ──────────────────────────────── */
+        .intro-video-wrap {
             position: relative;
+            max-width: 820px;
+            margin: 0 auto 0;
+            border-top: 1px solid var(--border);
+        }
+        .intro-video-ratio {
+            position: relative; width: 100%; padding-top: 56.25%;
+        }
+        .intro-video-ratio iframe {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            border: none; display: block;
+        }
+        .intro-video-label {
+            display: flex; align-items: center; gap: 8px;
+            padding: 9px 16px;
+            background: #050505;
+            border-top: 1px solid var(--border);
+            font-size: 0.68rem; font-weight: 700;
+            color: var(--dim); letter-spacing: 3px;
+        }
+        .intro-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--accent); box-shadow: 0 0 8px var(--accent);
+            animation: pulse 1.8s ease-in-out infinite; flex-shrink: 0;
         }
 
         /* ─── ROLE BADGE ─────────────────────────────────────────── */
-        #role-badge { display: none; margin-top: 18px; }
+        #role-badge { display: none; padding: 16px 0 0; position: relative; }
         #role-badge .badge-inner {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid rgba(0,208,255,0.5);
-            padding: 7px 22px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-            color: var(--accent);
-            background: rgba(0,208,255,0.07);
+            display: inline-flex; align-items: center; gap: 10px;
+            border: 1px solid rgba(0,208,255,0.45);
+            padding: 8px 24px; font-size: 0.78rem; font-weight: 700;
+            letter-spacing: 3px; color: var(--accent);
+            background: rgba(0,208,255,0.06);
         }
         #role-badge .badge-dot {
-            width: 7px; height: 7px;
-            border-radius: 50%;
-            background: var(--accent);
-            box-shadow: 0 0 10px var(--accent);
+            width: 7px; height: 7px; border-radius: 50%;
+            background: var(--accent); box-shadow: 0 0 10px var(--accent);
             animation: pulse 1.8s ease-in-out infinite;
         }
         #reset-link {
-            display: block;
-            margin-top: 8px;
-            font-size: 0.7rem;
-            color: #555;
-            cursor: pointer;
-            letter-spacing: 2px;
-            transition: color 0.2s;
+            display: block; margin-top: 8px; padding-bottom: 16px;
+            font-size: 0.68rem; color: var(--dim);
+            cursor: pointer; letter-spacing: 2px; transition: color 0.2s;
         }
         #reset-link:hover { color: var(--muted); }
 
         /* ─── ENTRY LAYER ────────────────────────────────────────── */
         #entry-layer {
-            padding: 64px 20px 56px;
-            text-align: center;
-            background: #000;
-            border-bottom: 1px solid var(--border);
-            position: relative;
-            overflow: hidden;
+            padding: 60px 24px 52px; text-align: center;
+            background: #000; border-bottom: 1px solid var(--border);
+            position: relative; overflow: hidden;
         }
         #entry-layer::before {
-            content: '';
-            position: absolute; inset: 0;
-            background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,208,255,0.05) 0%, transparent 70%);
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,208,255,0.04) 0%, transparent 70%);
             pointer-events: none;
         }
         .entry-tag {
-            color: var(--accent);
-            letter-spacing: 5px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            text-shadow: 0 0 12px var(--accent);
+            color: var(--accent); letter-spacing: 5px;
+            font-size: 0.7rem; font-weight: 700;
+            margin-bottom: 18px; text-shadow: 0 0 12px var(--accent);
         }
         .entry-title {
-            font-size: clamp(1.2rem, 4vw, 1.7rem);
-            font-weight: 700;
-            letter-spacing: 5px;
-            color: #fff;
-            margin-bottom: 28px;
+            font-size: clamp(1.2rem, 4vw, 1.6rem); font-weight: 700;
+            letter-spacing: 5px; color: #fff; margin-bottom: 28px;
             text-transform: uppercase;
-            text-shadow: 0 0 20px rgba(255,255,255,0.2);
         }
         .entry-what {
             display: inline-block;
-            background: rgba(0,208,255,0.04);
-            border: 1px solid #222;
+            background: rgba(0,208,255,0.04); border: 1px solid #282828;
             border-left: 3px solid rgba(0,208,255,0.4);
-            padding: 22px 28px;
-            margin: 0 auto 32px;
-            max-width: 620px;
-            text-align: left;
-            width: 100%;
+            padding: 22px 28px; margin: 0 auto 30px;
+            max-width: 600px; width: 100%; text-align: left;
         }
         .entry-what p {
-            font-size: clamp(0.82rem, 2.5vw, 0.9rem);
-            color: #ccc;
-            font-weight: 500;
-            line-height: 2;
-            margin-bottom: 6px;
+            font-size: clamp(0.84rem, 2.5vw, 0.9rem); color: #d8d8d8;
+            font-weight: 500; line-height: 2; margin-bottom: 4px;
         }
-        .entry-what p:last-child { margin-bottom: 0; color: #666; font-size: 0.78rem; }
+        .entry-what p:last-child { margin-bottom: 0; color: #888; font-size: 0.78rem; }
         .entry-desc {
-            color: #aaa;
-            font-size: clamp(0.82rem, 2.5vw, 0.9rem);
-            font-weight: 500;
-            line-height: 2;
-            max-width: 480px;
-            margin: 0 auto 32px;
+            color: #c0c0c0; font-size: 0.9rem; font-weight: 500;
+            line-height: 2; max-width: 440px; margin: 0 auto 30px;
         }
-        #start-btn { max-width: 320px; margin: 0 auto; }
+        #start-btn { max-width: 300px; margin: 0 auto; }
 
         /* ─── SECTOR DIVIDER ─────────────────────────────────────── */
         .sector-divider {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            padding: 22px 20px 14px;
-            background: #000;
+            display: flex; align-items: center; gap: 18px;
+            padding: 20px 20px 12px; background: #000;
             border-bottom: 1px solid var(--border);
         }
         .sector-divider::before,
-        .sector-divider::after {
-            content: ''; flex: 1; height: 1px;
-        }
+        .sector-divider::after { content: ''; flex: 1; height: 1px; }
         .sector-divider::before { background: linear-gradient(90deg, transparent, var(--border)); }
         .sector-divider::after  { background: linear-gradient(270deg, transparent, var(--border)); }
         .sector-label-tag {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--accent);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            white-space: nowrap;
+            font-size: 0.72rem; font-weight: 700; color: var(--accent);
+            letter-spacing: 3px; text-transform: uppercase; white-space: nowrap;
             text-shadow: 0 0 10px var(--accent);
         }
 
         /* ─── GALLERY ────────────────────────────────────────────── */
         .gallery-section { background: #000; }
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-        }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
         @media (min-width: 480px) {
             .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
         }
 
         /* ─── NODE CARD ──────────────────────────────────────────── */
         .node-card {
-            background: #050505;
-            cursor: pointer;
-            aspect-ratio: 1 / 1;
-            position: relative;
-            overflow: hidden;
-            border-right: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-            transition: border-color 0.3s ease;
-            z-index: 0;
+            background: #070707; cursor: pointer;
+            aspect-ratio: 1/1; position: relative; overflow: hidden;
+            border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+            transition: border-color 0.3s ease; z-index: 0;
         }
         .node-card:hover { border-color: var(--accent); z-index: 1; }
         .node-card img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            opacity: 0;
-            transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.23, 1, 0.32, 1);
-            display: block;
+            width: 100%; height: 100%; object-fit: cover;
+            opacity: 0; display: block;
+            transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.23,1,0.32,1);
         }
         .node-card img.loaded { opacity: 0.75; }
         .node-card:hover img { opacity: 1; transform: scale(1.08); }
         .node-card::before {
-            content: '';
-            position: absolute; inset: 0;
-            background: linear-gradient(135deg, #0a0a0a 25%, #141414 50%, #0a0a0a 75%);
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, #0a0a0a 25%, #161616 50%, #0a0a0a 75%);
             background-size: 200% 200%;
             animation: shimmer 1.6s infinite linear;
-            z-index: 0;
-            transition: opacity 0.4s ease;
+            z-index: 0; transition: opacity 0.4s ease;
         }
         .node-card.img-ready::before { opacity: 0; pointer-events: none; }
         @keyframes shimmer {
@@ -245,123 +248,83 @@
             100% { background-position: -200% 0; }
         }
         .node-card::after {
-            content: '';
-            position: absolute; inset: 0;
-            background: linear-gradient(135deg, transparent 60%, rgba(0,208,255,0.1) 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-            z-index: 2;
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, transparent 60%, rgba(0,208,255,0.10) 100%);
+            opacity: 0; transition: opacity 0.3s ease; pointer-events: none; z-index: 2;
         }
         .node-card:hover::after { opacity: 1; }
         .node-id {
-            position: absolute;
-            bottom: 10px; right: 10px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #fff;
-            background: rgba(0,0,0,0.88);
-            padding: 4px 10px;
-            border: 1px solid rgba(0,208,255,0.5);
-            letter-spacing: 1.5px;
-            z-index: 3;
-            transition: border-color 0.3s, box-shadow 0.3s;
+            position: absolute; bottom: 10px; right: 10px;
+            font-size: 0.78rem; font-weight: 700; color: #fff;
+            background: rgba(0,0,0,0.88); padding: 4px 10px;
+            border: 1px solid rgba(0,208,255,0.5); letter-spacing: 1.5px;
+            z-index: 3; transition: border-color 0.3s, box-shadow 0.3s;
         }
-        .node-card:hover .node-id {
-            border-color: var(--accent);
-            box-shadow: 0 0 12px rgba(0,208,255,0.4);
-        }
+        .node-card:hover .node-id { border-color: var(--accent); box-shadow: 0 0 12px rgba(0,208,255,0.35); }
 
-        /* ─── CONTACT SECTION ────────────────────────────────────── */
-        #contact-section {
-            background: #000;
-            border-top: 1px solid var(--border);
-            padding: 52px 20px 60px;
-            text-align: center;
-            position: relative;
+        /* ─── LINKS SECTION ──────────────────────────────────────── */
+        #links-section {
+            background: #000; border-top: 1px solid var(--border);
+            padding: 52px 24px 60px; text-align: center; position: relative;
         }
-        #contact-section::before {
-            content: '';
-            position: absolute;
+        #links-section::before {
+            content: ''; position: absolute;
             top: 0; left: 0; right: 0; height: 1px;
             background: linear-gradient(90deg, transparent, var(--accent), transparent);
             opacity: 0.3;
         }
-        .contact-tag {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--accent);
-            letter-spacing: 5px;
-            margin-bottom: 28px;
+        .links-tag {
+            font-size: 0.75rem; font-weight: 700; color: var(--accent);
+            letter-spacing: 5px; margin-bottom: 28px;
             text-shadow: 0 0 10px var(--accent);
         }
-        .contact-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 14px;
-            max-width: 720px;
-            margin: 0 auto 32px;
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 760px;
+            margin: 0 auto 36px;
         }
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            border: 1px solid #222;
-            padding: 16px 24px;
-            background: #050505;
-            color: #bbb;
-            letter-spacing: 1.5px;
-            transition: border-color 0.3s, color 0.3s, background 0.3s;
-            text-decoration: none;
-            min-width: 190px;
-            flex: 1;
-            max-width: 240px;
+        @media (max-width: 600px) { .links-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 380px) { .links-grid { grid-template-columns: 1fr; } }
+
+        .link-item {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 8px; padding: 18px 14px;
+            border: 1px solid #242424; background: #070707;
+            text-decoration: none; color: #d0d0d0;
+            transition: border-color 0.25s, color 0.25s, background 0.25s;
+            min-height: 80px;
         }
-        .contact-item:hover {
-            border-color: rgba(0,208,255,0.5);
-            color: #fff;
-            background: rgba(0,208,255,0.04);
+        .link-item:hover {
+            border-color: rgba(0,208,255,0.5); color: #fff;
+            background: rgba(0,208,255,0.05);
         }
-        .contact-icon { font-size: 1.1rem; opacity: 0.8; flex-shrink: 0; }
-        .contact-label {
-            font-size: 0.65rem;
-            font-weight: 700;
-            color: var(--accent);
-            letter-spacing: 3px;
-            display: block;
-            margin-bottom: 3px;
+        .link-label {
+            font-size: 0.62rem; font-weight: 700; color: var(--accent);
+            letter-spacing: 3px; display: block; text-transform: uppercase;
         }
-        .contact-value {
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: inherit;
+        .link-sub {
+            font-size: 0.75rem; font-weight: 600; color: inherit;
+            letter-spacing: 1px; word-break: break-all; text-align: center;
         }
+        .link-icon { font-size: 1.2rem; line-height: 1; }
+
         .footer-sig {
-            font-size: 0.72rem;
-            font-weight: 600;
-            color: #444;
-            letter-spacing: 3px;
-            margin-top: 8px;
+            font-size: 0.7rem; font-weight: 600; color: var(--dim);
+            letter-spacing: 3px; margin-top: 4px;
         }
 
         /* ─── MODALS BASE ────────────────────────────────────────── */
         .modal {
-            display: none;
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.94);
-            z-index: 10000;
-            align-items: flex-start;
-            justify-content: center;
-            padding: 3vh 12px;
-            overflow-y: auto;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.95); z-index: 10000;
+            align-items: flex-start; justify-content: center;
+            padding: 3vh 12px; overflow-y: auto;
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
         }
-        .modal.active {
-            display: flex;
-            animation: modal-in 0.3s ease forwards;
-        }
+        .modal.active { display: flex; animation: modal-in 0.3s ease forwards; }
         .modal.closing { animation: modal-out 0.25s ease forwards; }
         @keyframes modal-in  { from { opacity: 0; } to { opacity: 1; } }
         @keyframes modal-out { from { opacity: 1; } to { opacity: 0; } }
@@ -372,209 +335,152 @@
 
         /* ─── NODE MODAL ─────────────────────────────────────────── */
         #node-modal .modal-content {
-            background: var(--panel-bg);
-            border: 1px solid #2a2a2a;
-            max-width: 1060px;
-            width: 100%;
-            margin: auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.95), 0 0 0 1px rgba(0,208,255,0.1);
+            background: var(--panel-bg); border: 1px solid #2e2e2e;
+            max-width: 1060px; width: 100%; margin: auto;
+            display: grid; grid-template-columns: 1fr 1fr;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.97), 0 0 0 1px rgba(0,208,255,0.1);
             border-radius: 4px;
-            animation: content-in 0.35s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            animation: content-in 0.35s cubic-bezier(0.23,1,0.32,1) forwards;
             overflow: hidden;
         }
         @media (max-width: 760px) {
-            #node-modal .modal-content {
-                grid-template-columns: 1fr;
-                overflow-y: visible;
-            }
+            #node-modal .modal-content { grid-template-columns: 1fr; overflow-y: visible; }
         }
 
-        /* ─── YOUTUBE EMBED ──────────────────────────────────────── */
-        .video-display {
-            background: #000;
-            position: relative;
-        }
-        .video-ratio-box {
-            position: relative;
-            width: 100%;
-            padding-top: 100%; /* square on desktop */
-        }
-        @media (max-width: 760px) {
-            .video-ratio-box { padding-top: 56.25%; } /* 16:9 on mobile */
-        }
+        /* ─── VIDEO DISPLAY ──────────────────────────────────────── */
+        .video-display { background: #000; position: relative; display: flex; flex-direction: column; }
+        .video-ratio-box { position: relative; width: 100%; padding-top: 100%; }
+        @media (max-width: 760px) { .video-ratio-box { padding-top: 56.25%; } }
         .video-ratio-box iframe {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
+            position: absolute; inset: 0;
+            width: 100%; height: 100%; border: none; display: block;
         }
         .video-display::after {
-            content: '';
-            position: absolute; inset: 0;
-            background: repeating-linear-gradient(
-                0deg, transparent, transparent 3px,
-                rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 4px
-            );
-            pointer-events: none;
-            z-index: 1;
+            content: ''; position: absolute; inset: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 4px);
+            pointer-events: none; z-index: 1;
+        }
+
+        /* YouTube open button */
+        .yt-open-btn {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            width: 100%; background: #c00; border: none; color: #fff;
+            padding: 14px 20px; font-family: var(--mono); font-weight: 700;
+            font-size: 0.82rem; letter-spacing: 2.5px; text-decoration: none;
+            text-transform: uppercase; transition: background 0.2s; cursor: pointer;
+            position: relative; z-index: 2;
+        }
+        .yt-open-btn:hover { background: #a00; }
+        .yt-play-icon {
+            display: inline-block; width: 0; height: 0;
+            border-top: 7px solid transparent;
+            border-bottom: 7px solid transparent;
+            border-left: 12px solid #fff;
+            flex-shrink: 0;
         }
 
         /* ─── INTERACTION PANEL ──────────────────────────────────── */
         .interaction-panel {
-            padding: 32px 28px;
-            display: flex;
-            flex-direction: column;
-            gap: 22px;
-            overflow-y: auto;
+            padding: 30px 28px; display: flex;
+            flex-direction: column; gap: 20px; overflow-y: auto;
         }
         @media (max-width: 760px) {
-            .interaction-panel {
-                padding: 24px 18px;
-                overflow-y: visible;
-            }
+            .interaction-panel { padding: 22px 18px; overflow-y: visible; }
         }
 
-        /* ─── RETURN BTN ─────────────────────────────────────────── */
         .return-btn {
-            background: transparent;
-            border: 1px solid #333;
-            color: #aaa;
-            padding: 11px 18px;
-            font-family: var(--mono);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            letter-spacing: 2px;
-            font-size: 0.8rem;
-            align-self: flex-start;
-            border-radius: 2px;
+            background: transparent; border: 1px solid #3a3a3a; color: #c0c0c0;
+            padding: 11px 18px; font-family: var(--mono); font-weight: 700;
+            cursor: pointer; transition: all 0.3s ease;
+            letter-spacing: 2px; font-size: 0.8rem;
+            align-self: flex-start; border-radius: 2px;
         }
         .return-btn:hover {
-            border-color: var(--accent);
-            color: #fff;
-            background: var(--accent-dim);
-            box-shadow: 0 0 18px rgba(0,208,255,0.2);
+            border-color: var(--accent); color: #fff;
+            background: var(--accent-dim); box-shadow: 0 0 18px rgba(0,208,255,0.18);
         }
 
-        /* ─── NODE INFO ──────────────────────────────────────────── */
         .node-sector-tag {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--accent);
-            letter-spacing: 4px;
-            margin-bottom: 8px;
+            font-size: 0.72rem; font-weight: 700; color: var(--accent);
+            letter-spacing: 4px; margin-bottom: 7px;
             text-shadow: 0 0 10px var(--accent);
         }
         .node-title {
-            font-size: clamp(1.2rem, 3.5vw, 1.8rem);
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            line-height: 1.2;
-            text-shadow: 0 0 24px rgba(0,208,255,0.35);
+            font-size: clamp(1.2rem, 3.5vw, 1.8rem); font-weight: 700;
+            color: #ffffff; letter-spacing: 4px; text-transform: uppercase;
+            line-height: 1.2; text-shadow: 0 0 24px rgba(0,208,255,0.28);
         }
 
-        /* ─── VIDEO STATUS BAR ───────────────────────────────────── */
-        .video-status {
-            font-size: 0.72rem;
-            font-weight: 600;
-            color: #aaa;
-            letter-spacing: 2px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding-bottom: 18px;
-            border-bottom: 1px solid var(--border);
+        .signal-status {
+            font-size: 0.72rem; font-weight: 600; color: #c0c0c0;
+            letter-spacing: 2px; display: flex; align-items: center;
+            gap: 8px; padding-bottom: 16px; border-bottom: 1px solid var(--border);
         }
-        .video-dot {
-            width: 7px; height: 7px;
-            border-radius: 50%;
-            background: var(--accent);
-            box-shadow: 0 0 8px var(--accent);
-            animation: pulse 1.8s ease-in-out infinite;
-            flex-shrink: 0;
+        .signal-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: var(--accent); box-shadow: 0 0 8px var(--accent);
+            animation: pulse 1.8s ease-in-out infinite; flex-shrink: 0;
         }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50%       { opacity: 0.3; }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+        /* ─── AUCTION BLOCK ──────────────────────────────────────── */
+        .auction-intro {
+            border-left: 3px solid rgba(0,208,255,0.4);
+            padding-left: 14px;
+        }
+        .auction-intro .ai-tag {
+            font-size: 0.65rem; font-weight: 700; color: var(--accent);
+            letter-spacing: 4px; margin-bottom: 8px; display: block;
+            text-shadow: 0 0 8px var(--accent);
+        }
+        .auction-intro .ai-title {
+            font-size: 0.95rem; font-weight: 700; color: #ffffff;
+            letter-spacing: 2px; margin-bottom: 10px; line-height: 1.4;
+        }
+        .auction-intro .ai-body {
+            font-size: 0.8rem; font-weight: 500; color: #c8c8c8;
+            letter-spacing: 1px; line-height: 1.9;
+        }
+        .auction-intro .ai-note {
+            margin-top: 10px; font-size: 0.72rem; font-weight: 600;
+            color: var(--dim); letter-spacing: 1.5px; line-height: 1.7;
         }
 
         /* ─── FORM ───────────────────────────────────────────────── */
-        .form-intro {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #bbb;
-            letter-spacing: 1.5px;
-            line-height: 1.9;
-            border-left: 3px solid rgba(0,208,255,0.35);
-            padding-left: 14px;
-        }
         .form-group { margin-bottom: 16px; }
         .form-group label {
-            display: block;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 8px;
-            letter-spacing: 2.5px;
+            display: block; font-size: 0.68rem; font-weight: 700;
+            color: var(--accent); margin-bottom: 8px; letter-spacing: 2.5px;
         }
         input[type="text"],
         input[type="number"],
         textarea {
-            width: 100%;
-            background: var(--input-bg);
-            border: 1px solid #2a2a2a;
-            color: #fff;
-            font-family: var(--mono);
-            font-weight: 500;
-            padding: 13px 16px;
-            font-size: 0.95rem;
-            transition: all 0.25s ease;
-            border-radius: 2px;
+            width: 100%; background: var(--input-bg);
+            border: 1px solid #2e2e2e; color: #ffffff;
+            font-family: var(--mono); font-weight: 500;
+            padding: 13px 16px; font-size: 0.95rem;
+            transition: all 0.25s ease; border-radius: 2px;
         }
-        textarea {
-            resize: vertical;
-            min-height: 76px;
-            font-size: 0.88rem;
-            line-height: 1.6;
-        }
+        textarea { resize: vertical; min-height: 72px; font-size: 0.88rem; line-height: 1.6; }
         input:focus, textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-            background: #131313;
-            box-shadow: 0 0 0 3px rgba(0,208,255,0.10);
+            outline: none; border-color: var(--accent);
+            background: #181818; box-shadow: 0 0 0 3px rgba(0,208,255,0.10);
         }
-        input::placeholder, textarea::placeholder { color: #444; }
+        input::placeholder, textarea::placeholder { color: #484848; }
 
         /* ─── BUTTONS ────────────────────────────────────────────── */
         .submit-btn {
-            width: 100%;
-            background: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 16px 20px;
-            font-family: var(--mono);
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 0.9rem;
-            border-radius: 2px;
-            position: relative;
-            overflow: hidden;
+            width: 100%; background: transparent;
+            border: 1px solid var(--accent); color: var(--accent);
+            padding: 16px 20px; font-family: var(--mono); font-weight: 700;
+            cursor: pointer; transition: all 0.3s ease;
+            text-transform: uppercase; letter-spacing: 3px;
+            font-size: 0.88rem; border-radius: 2px;
+            position: relative; overflow: hidden;
         }
         .submit-btn::before {
-            content: '';
-            position: absolute; inset: 0;
-            background: var(--accent);
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
+            content: ''; position: absolute; inset: 0;
+            background: var(--accent); transform: translateX(-100%); transition: transform 0.3s ease;
         }
         .submit-btn:hover::before { transform: translateX(0); }
         .submit-btn:hover { color: #000; }
@@ -583,134 +489,101 @@
 
         /* ─── TERMINAL ───────────────────────────────────────────── */
         #terminal-output {
-            margin-top: 10px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: var(--accent);
-            min-height: 40px;
-            white-space: pre-wrap;
-            line-height: 1.7;
-            text-shadow: 0 0 6px rgba(0,208,255,0.4);
+            margin-top: 10px; font-size: 0.78rem; font-weight: 600;
+            color: var(--accent); min-height: 36px;
+            white-space: pre-wrap; line-height: 1.7;
+            text-shadow: 0 0 6px rgba(0,208,255,0.3);
         }
-        #terminal-output.error-state {
-            color: #ff5555;
-            text-shadow: 0 0 6px rgba(255,85,85,0.4);
-        }
+        #terminal-output.error-state { color: #ff6060; text-shadow: 0 0 6px rgba(255,96,96,0.35); }
 
         /* ─── SUCCESS ────────────────────────────────────────────── */
         #intent-success {
-            display: none;
-            padding: 28px 20px;
+            display: none; padding: 26px 20px;
             background: rgba(0,208,255,0.05);
-            border: 1px solid rgba(0,208,255,0.35);
-            text-align: center;
-            border-radius: 4px;
+            border: 1px solid rgba(0,208,255,0.3);
+            text-align: center; border-radius: 4px;
             animation: content-in 0.3s ease forwards;
         }
         #intent-success p {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #ddd;
-            line-height: 2;
-            letter-spacing: 1.5px;
+            font-size: 0.85rem; font-weight: 600; color: #e0e0e0;
+            line-height: 2; letter-spacing: 1.5px;
         }
         #intent-success .signal {
-            color: var(--accent);
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-            margin-top: 14px;
+            color: var(--accent); font-size: 1rem; font-weight: 700;
+            letter-spacing: 3px; margin-top: 14px;
             text-shadow: 0 0 14px var(--accent);
         }
 
         /* ─── INIT MODAL ─────────────────────────────────────────── */
         #init-modal .modal-content {
-            background: var(--panel-bg);
-            border: 1px solid #2a2a2a;
-            max-width: 560px;
-            width: 100%;
-            margin: auto;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.95), 0 0 0 1px rgba(0,208,255,0.1);
+            background: var(--panel-bg); border: 1px solid #2e2e2e;
+            max-width: 500px; width: 100%; margin: auto;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.97), 0 0 0 1px rgba(0,208,255,0.1);
             border-radius: 4px;
-            animation: content-in 0.35s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            animation: content-in 0.35s cubic-bezier(0.23,1,0.32,1) forwards;
             overflow: hidden;
         }
         #init-panel { padding: 40px 36px; }
         @media (max-width: 480px) { #init-panel { padding: 28px 20px; } }
 
-        .init-header { text-align: center; margin-bottom: 30px; }
+        .init-header { text-align: center; margin-bottom: 28px; }
         .init-tag {
-            font-size: 0.72rem;
-            font-weight: 700;
-            color: var(--accent);
-            letter-spacing: 5px;
-            margin-bottom: 14px;
-            text-shadow: 0 0 10px var(--accent);
+            font-size: 0.7rem; font-weight: 700; color: var(--accent);
+            letter-spacing: 5px; margin-bottom: 14px; text-shadow: 0 0 10px var(--accent);
         }
-        .init-title {
-            font-size: clamp(1.1rem, 4vw, 1.3rem);
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: 5px;
-        }
-        .init-sub {
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: #888;
-            letter-spacing: 1.5px;
-            margin-top: 10px;
-            line-height: 1.7;
-        }
+        .init-title { font-size: clamp(1.1rem,4vw,1.3rem); font-weight: 700; color: #fff; letter-spacing: 5px; margin-bottom: 10px; }
+        .init-sub { font-size: 0.82rem; font-weight: 500; color: #aaa; letter-spacing: 1.5px; line-height: 1.7; }
         #init-output {
-            margin-top: 20px;
-            padding: 16px;
+            margin-top: 20px; padding: 16px;
             background: rgba(0,208,255,0.05);
             border: 1px solid rgba(0,208,255,0.2);
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--accent);
-            letter-spacing: 2px;
-            line-height: 1.9;
-            text-align: center;
-            display: none;
+            font-size: 0.85rem; font-weight: 700; color: var(--accent);
+            letter-spacing: 2px; line-height: 1.9; text-align: center; display: none;
         }
-        .role-map {
-            margin-top: 26px;
-            padding-top: 22px;
-            border-top: 1px solid var(--border);
-        }
-        .role-map-title {
-            font-size: 0.65rem;
-            font-weight: 700;
-            color: #555;
-            letter-spacing: 3px;
-            margin-bottom: 12px;
-        }
-        .role-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-            font-size: 0.73rem;
-            font-weight: 600;
-            letter-spacing: 1.5px;
-        }
-        .role-row .rr-val   { color: #777; min-width: 60px; }
-        .role-row .rr-arrow { color: #444; }
-        .role-row .rr-name  { color: #999; }
     </style>
 </head>
 <body>
 
     <!-- ═══════════ HEADER ═══════════ -->
     <header>
+        <div class="header-eyebrow">VIRTUAL GALLERY &nbsp;·&nbsp; SEALED BID AUCTION</div>
         <h1>NEUROMICON 25</h1>
-        <div class="sys-text">EVOLUTION_PROTOCOL: ACTIVE</div>
-        <div class="log-text-header">E = M × C² &nbsp;•&nbsp; YOU ARE THE CARRIER &nbsp;•&nbsp; 1149</div>
+
+        <p class="header-tagline">
+            25 media nodes. 4 sectors. Philosophy, video art, and sound.<br>
+            A virtual archive of transformation — you decide its value.
+        </p>
+
+        <div class="header-meta">
+            <span class="header-meta-item"><span class="header-meta-dot"></span>25 NODES / 4 SECTORS</span>
+            <span class="header-meta-item"><span class="header-meta-dot"></span>VIDEO ART + CONCEPT</span>
+            <span class="header-meta-item"><span class="header-meta-dot"></span>PAY WHAT YOU FEEL</span>
+        </div>
+
+        <div class="header-cta">↓ &nbsp; TAP ANY NODE TO ENTER &nbsp; ↓</div>
+
+        <div class="header-sig">E = M × C² &nbsp;•&nbsp; YOU ARE THE CARRIER &nbsp;•&nbsp; 1149</div>
+
+        <!-- INTRO VIDEO -->
+        <div class="intro-video-wrap">
+            <div class="intro-video-ratio">
+                <iframe
+                    src="https://www.youtube-nocookie.com/embed/sYyh1uF87fo?rel=0&modestbranding=1&color=white"
+                    allow="autoplay; encrypted-media; picture-in-picture"
+                    allowfullscreen
+                    title="NEUROMICON — Introduction">
+                </iframe>
+            </div>
+            <div class="intro-video-label">
+                <span class="intro-dot"></span>
+                SIGNAL_00 &nbsp;·&nbsp; INTRO &nbsp;·&nbsp; NEUROMICON 25
+            </div>
+        </div>
+
         <div id="role-badge">
             <div class="badge-inner">
                 <span class="badge-dot"></span>
-                <span id="badge-role-text">ROLE: OBSERVER</span>
+                <span id="badge-role-text">SIGNAL: —</span>
             </div>
             <span id="reset-link">[ RESET IDENTITY ]</span>
         </div>
@@ -719,18 +592,18 @@
     <!-- ═══════════ ENTRY LAYER ═══════════ -->
     <section id="entry-layer">
         <div class="entry-tag">ENTRY PROTOCOL</div>
-        <h2 class="entry-title">WHAT IS NEUROMICON?</h2>
+        <h2 class="entry-title">BEFORE YOU ENTER</h2>
         <div class="entry-what">
-            <p>A system for transforming intent into signal.</p>
-            <p>25 nodes. 4 sectors. Each node is a question you have not yet asked yourself.</p>
-            <p>You are not browsing. You are entering.</p>
-            <p>↳ Click a node → watch → declare your value → transmit.</p>
+            <p>This is not a website. This is an archive of transformation.</p>
+            <p>25 questions you have never asked yourself — each sealed in a node.</p>
+            <p>Open a node → watch → feel its value → place your bid.</p>
+            <p>↳ No fixed price. No obligation. Just signal and intent.</p>
         </div>
         <p class="entry-desc">
-            Before you access the archive,<br>
-            the system needs to know who you are.
+            To access the archive,<br>
+            the system needs to identify you.
         </p>
-        <button id="start-btn" class="submit-btn" style="max-width:320px; margin:0 auto;">
+        <button id="start-btn" class="submit-btn" style="max-width:300px; margin:0 auto;">
             <span>INITIALIZE</span>
         </button>
     </section>
@@ -738,66 +611,72 @@
     <!-- ═══════════ GALLERY ═══════════ -->
     <div id="gallery-root"></div>
 
-      <!-- ═══════════ CONTACT SECTION ═══════════ -->
-    <section id="contact-section">
-        <div class="contact-tag">SIGNAL RELAY NODES</div>
-        
-        <div class="subscribe-banner">
-            <span class="subscribe-icon">◈</span>
-            <span class="subscribe-text">Subscribe now and return to the signal:</span>
-            <a class="subscribe-link" href="https://youtube.com/@Neuromicon" target="_blank" rel="noopener">youtube.com/@Neuromicon</a>
+    <!-- ═══════════ LINKS SECTION ═══════════ -->
+    <section id="links-section">
+        <div class="links-tag">SIGNAL NETWORK</div>
+        <div class="links-grid">
+
+            <a class="link-item" href="https://alexsheff.github.io/Neuromicon/" target="_blank" rel="noopener">
+                <span class="link-icon">◈</span>
+                <span class="link-label">Virtual Gallery</span>
+                <span class="link-sub">alexsheff.github.io</span>
+            </a>
+
+            <a class="link-item" href="https://youtube.com/@Neuromicon" target="_blank" rel="noopener">
+                <span class="link-icon">▶</span>
+                <span class="link-label">YouTube</span>
+                <span class="link-sub">@Neuromicon</span>
+            </a>
+
+            <a class="link-item" href="https://www.patreon.com/c/worldunited" target="_blank" rel="noopener">
+                <span class="link-icon">◉</span>
+                <span class="link-label">Support</span>
+                <span class="link-sub">Patreon</span>
+            </a>
+
+            <a class="link-item" href="https://artists.spotify.com/c/artist/0qMUiGG0CSSEW7RTceyO4G" target="_blank" rel="noopener">
+                <span class="link-icon">♫</span>
+                <span class="link-label">Spotify</span>
+                <span class="link-sub">Artist Profile</span>
+            </a>
+
+            <a class="link-item" href="https://music.apple.com/gb/album/neuromicon/1822331930" target="_blank" rel="noopener">
+                <span class="link-icon">♫</span>
+                <span class="link-label">Apple Music</span>
+                <span class="link-sub">NEUROMICON</span>
+            </a>
+
+            <a class="link-item" href="https://push.fm/fl/hcrvzuus" target="_blank" rel="noopener">
+                <span class="link-icon">◈</span>
+                <span class="link-label">Push.fm</span>
+                <span class="link-sub">All Platforms</span>
+            </a>
+
+            <a class="link-item" href="https://web.facebook.com/neromicon" target="_blank" rel="noopener">
+                <span class="link-icon">◈</span>
+                <span class="link-label">Facebook</span>
+                <span class="link-sub">fb/neromicon</span>
+            </a>
+
+            <a class="link-item" href="https://t.me/the_neuromicon" target="_blank" rel="noopener">
+                <span class="link-icon">◈</span>
+                <span class="link-label">Telegram</span>
+                <span class="link-sub">@the_neuromicon</span>
+            </a>
+
+            <a class="link-item" href="https://sites.google.com/view/neuromicon/home" target="_blank" rel="noopener">
+                <span class="link-icon">◈</span>
+                <span class="link-label">Hub</span>
+                <span class="link-sub">Google Sites</span>
+            </a>
+
+            <a class="link-item" href="https://github.com/AlexSheff/Neuromicon" target="_blank" rel="noopener">
+                <span class="link-icon">◈</span>
+                <span class="link-label">Repository</span>
+                <span class="link-sub">GitHub</span>
+            </a>
+
         </div>
-        
-        <div class="contact-grid">
-            <a class="contact-item" href="https://web.facebook.com/neromicon" target="_blank" rel="noopener">
-                <span class="contact-icon">◈</span>
-                <div>
-                    <span class="contact-label">FACEBOOK</span>
-                    <span class="contact-value">/neromicon</span>
-                </div>
-            </a>
-            
-            <a class="contact-item" href="https://push.fm/fl/hcrvzuus" target="_blank" rel="noopener">
-                <span class="contact-icon">◈</span>
-                <div>
-                    <span class="contact-label">PUSH.FM</span>
-                    <span class="contact-value">/fl/hcrvzuus</span>
-                </div>
-            </a>
-            
-            <a class="contact-item" href="https://artists.spotify.com/c/artist/0qMUiGG0CSSEW7RTceyO4G" target="_blank" rel="noopener">
-                <span class="contact-icon">◈</span>
-                <div>
-                    <span class="contact-label">SPOTIFY</span>
-                    <span class="contact-value">Artist Portal</span>
-                </div>
-            </a>
-            
-            <a class="contact-item" href="https://music.apple.com/gb/album/neuromicon/1822331930?at=11l65W&ct=push" target="_blank" rel="noopener">
-                <span class="contact-icon">◈</span>
-                <div>
-                    <span class="contact-label">APPLE MUSIC</span>
-                    <span class="contact-value">Album Archive</span>
-                </div>
-            </a>
-            
-            <a class="contact-item" href="https://sites.google.com/view/neuromicon/home" target="_blank" rel="noopener">
-                <span class="contact-icon">◈</span>
-                <div>
-                    <span class="contact-label">HUB</span>
-                    <span class="contact-value">sites.google.com/neuromicon</span>
-                </div>
-            </a>
-            
-            <a class="contact-item" href="https://github.com/AlexSheff/Neuromicon" target="_blank" rel="noopener">
-                <span class="contact-icon">◈</span>
-                <div>
-                    <span class="contact-label">REPOSITORY</span>
-                    <span class="contact-value">github.com/AlexSheff/Neuromicon</span>
-                </div>
-            </a>
-        </div>
-        
         <div class="footer-sig">NEUROMICON 25 &nbsp;•&nbsp; 1149 &nbsp;•&nbsp; THE SIGNAL LIVES</div>
     </section>
 
@@ -807,14 +686,15 @@
 
             <div class="video-display">
                 <div class="video-ratio-box">
-                    <iframe
-                        id="modal-iframe"
-                        src=""
+                    <iframe id="modal-iframe" src=""
                         allow="autoplay; encrypted-media; picture-in-picture"
-                        allowfullscreen
-                        title="Node signal">
+                        allowfullscreen title="Node signal">
                     </iframe>
                 </div>
+                <a id="yt-open-btn" class="yt-open-btn" href="#" target="_blank" rel="noopener">
+                    <span class="yt-play-icon"></span>
+                    OPEN ON YOUTUBE
+                </a>
             </div>
 
             <div class="interaction-panel">
@@ -825,40 +705,52 @@
                     <h2 class="node-title" id="modal-title">NODE TITLE</h2>
                 </div>
 
-                <div class="video-status">
-                    <span class="video-dot"></span>
-                    <span>SIGNAL_STREAM · ACTIVE</span>
+                <div class="signal-status">
+                    <span class="signal-dot"></span>
+                    <span>SIGNAL_STREAM · LIVE</span>
                 </div>
 
-                <p class="form-intro">
-                    DECLARE YOUR INTENT.<br>
-                    VALUE IS SUBJECTIVE.<br>
-                    THE SIGNAL WILL BE LOGGED.
-                </p>
+                <!-- AUCTION BLOCK -->
+                <div class="auction-intro">
+                    <span class="ai-tag">SEALED BID AUCTION</span>
+                    <div class="ai-title">Name Your Price. Own the Signal.</div>
+                    <div class="ai-body">
+                        This is a Vickrey-style auction. Every node in the archive has a value —
+                        but only you can determine what it is. Leave your contact and your bid.
+                        No transaction happens here. This is a declaration of intent.
+                    </div>
+                    <div class="ai-note">
+                        ↳ The highest sincere bid becomes the price.<br>
+                        ↳ No obligation until you are contacted directly.<br>
+                        ↳ Becoming a patron means the signal reaches further.
+                    </div>
+                </div>
 
                 <div id="payment-form-inner">
                     <div class="form-group">
-                        <label for="user-phone">IDENTIFIER [PHONE / EMAIL/ TELEGRAM]</label>
-                        <input type="text" id="user-phone" placeholder="63 912 345 6789 or @username" autocomplete="off">
+                        <label for="user-phone">YOUR CONTACT [TELEGRAM / EMAIL / PHONE]</label>
+                        <input type="text" id="user-phone"
+                            placeholder="@username / email / +63..." autocomplete="off">
                     </div>
                     <div class="form-group">
-                        <label for="user-amount">INTENT [DECLARED VALUE]</label>
+                        <label for="user-amount">YOUR BID [DECLARED VALUE]</label>
                         <input type="number" id="user-amount" placeholder="0.00" min="0" step="0.01">
                     </div>
                     <div class="form-group">
-                        <label for="user-comment">SIGNAL [MESSAGE / COMMENT]</label>
-                        <textarea id="user-comment" placeholder="Leave a message, thought, or signal..."></textarea>
+                        <label for="user-comment">MESSAGE [OPTIONAL]</label>
+                        <textarea id="user-comment"
+                            placeholder="A thought, a signal, a reason..."></textarea>
                     </div>
-                    <button class="submit-btn" id="submit-btn"><span>TRANSMIT INTENT</span></button>
+                    <button class="submit-btn" id="submit-btn"><span>SUBMIT BID</span></button>
                 </div>
 
                 <div id="terminal-output"></div>
 
                 <div id="intent-success">
                     <p>
-                        TRANSMISSION COMPLETE<br>
-                        YOUR INTENT HAS BEEN SAVED<br>
-                        YOU ARE NOW PART OF THE ARCHIVE
+                        BID RECEIVED.<br>
+                        YOUR INTENT HAS BEEN LOGGED.<br>
+                        YOU ARE NOW PART OF THE ARCHIVE.
                     </p>
                     <div class="signal">THE SIGNAL LIVES.</div>
                 </div>
@@ -873,29 +765,22 @@
                 <div class="init-header">
                     <div class="init-tag">INITIALIZATION SEQUENCE</div>
                     <h2 class="init-title">WHO ARE YOU?</h2>
-                    <p class="init-sub">Answer three questions. The system will assign your role.</p>
+                    <p class="init-sub">Two signals. The archive remembers you.</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="init-q1">YOUR NAME [HANDLE / CALLSIGN]</label>
+                    <input type="text" id="init-q1"
+                        placeholder="Name, alias, or signal..." autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label for="init-q1">DEFINE YOUR STATE [ WHO ARE YOU? ]</label>
-                    <input type="text" id="init-q1" placeholder="I am..." autocomplete="off">
+                    <label for="init-q2">YOUR STATE [HOW ARE YOU RIGHT NOW?]</label>
+                    <input type="text" id="init-q2"
+                        placeholder="One word or phrase..." autocomplete="off">
                 </div>
-                <div class="form-group">
-                    <label for="init-q2">DEFINE YOUR VECTOR [ WHAT DO YOU SEEK? ]</label>
-                    <input type="text" id="init-q2" placeholder="I seek..." autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <label for="init-q3">DEFINE YOUR ENERGY [ NUMERIC VALUE ]</label>
-                    <input type="number" id="init-q3" placeholder="0 – 999" min="0" max="999" step="1">
-                </div>
-                <button class="submit-btn" id="init-submit"><span>COMPILE IDENTITY</span></button>
+
+                <button class="submit-btn" id="init-submit"><span>ENTER THE ARCHIVE</span></button>
                 <div id="init-output"></div>
-                <div class="role-map">
-                    <div class="role-map-title">ROLE ASSIGNMENT MAP</div>
-                    <div class="role-row"><span class="rr-val">0 – 10</span><span class="rr-arrow">→</span><span class="rr-name">OBSERVER</span></div>
-                    <div class="role-row"><span class="rr-val">11 – 50</span><span class="rr-arrow">→</span><span class="rr-name">INITIATE</span></div>
-                    <div class="role-row"><span class="rr-val">51 – 100</span><span class="rr-arrow">→</span><span class="rr-name">NODE</span></div>
-                    <div class="role-row"><span class="rr-val">101+</span><span class="rr-arrow">→</span><span class="rr-name">ARCHITECT</span></div>
-                </div>
             </div>
         </div>
     </div>
@@ -915,10 +800,10 @@
         }
 
         // ════════════════════════════════════════════════════════════
-        //  YOUTUBE IDs  — index matches node numeric id (1–25)
+        //  YOUTUBE IDs  (index = node id 1–25, 0 = intro/reserved)
         // ════════════════════════════════════════════════════════════
-        const YT =[
-            "sYyh1uF87fo",  // 0  — intro/reserved
+        const YT = [
+            "sYyh1uF87fo",  // 0 — intro (in header)
             "_Sjx2qfzwIg",  // 1  → 01 Purpose
             "J3fxxeuf33c",  // 2  → 02 Identity
             "0ySTdJ_DP_8",  // 3  → 03 Legacy
@@ -946,62 +831,56 @@
             "cvvgNBQgzhU",  // 25 → 25 The Mirror
         ];
 
-        // ADDED AUTOPLAY: &autoplay=1
-        function ytEmbed(videoId) {
-            return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&color=white&autoplay=1`;
-        }
+        const ytEmbed = id => `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&color=white`;
+        const ytWatch = id => `https://www.youtube.com/watch?v=${id}`;
 
         // ════════════════════════════════════════════════════════════
-        //  NODE DATABASE (Локальные пути удалены, всё работает от YouTube)
+        //  NODE DATABASE
         // ════════════════════════════════════════════════════════════
-        const SECTORS =[
+        const SECTORS = [
             {
-                key: "A_The_Source_Code",
-                label: "SECTOR A — THE SOURCE CODE",
-                nodes:[
-                    { id:"01", title:"Purpose",       yt:1  },
-                    { id:"02", title:"Identity",      yt:2  },
-                    { id:"03", title:"Legacy",        yt:3  },
-                    { id:"04", title:"Connection",    yt:4  },
-                    { id:"05", title:"Freedom",       yt:5  },
-                    { id:"06", title:"Suffering",     yt:6  },
-                    { id:"07", title:"Mortality",     yt:7  },
-                    { id:"08", title:"Love",          yt:8  },
-                    { id:"09", title:"Growth",        yt:9  },
-                    { id:"10", title:"Transcendence", yt:10 },
-                    { id:"11", title:"Action",        yt:11 },
+                key: "A_The_Source_Code", label: "SECTOR A — THE SOURCE CODE",
+                nodes: [
+                    { id:"01", title:"Purpose",       folder:"01_Purpose",       file:"01_Purpose",       yt:1  },
+                    { id:"02", title:"Identity",      folder:"02_Identity",      file:"02_Identity",      yt:2  },
+                    { id:"03", title:"Legacy",        folder:"03_Legacy",        file:"03_Legacy",        yt:3  },
+                    { id:"04", title:"Connection",    folder:"04_Connection",    file:"04_Connection",    yt:4  },
+                    { id:"05", title:"Freedom",       folder:"05_Freedom",       file:"05_Freedom",       yt:5  },
+                    { id:"06", title:"Suffering",     folder:"06_Suffering",     file:"06_Suffering",     yt:6  },
+                    { id:"07", title:"Mortality",     folder:"07_Mortality",     file:"07_Mortality",     yt:7  },
+                    { id:"08", title:"Love",          folder:"08_Love",          file:"08_Love",          yt:8  },
+                    { id:"09", title:"Growth",        folder:"09_Growth",        file:"09_Growth",        yt:9  },
+                    { id:"10", title:"Transcendence", folder:"10_Transcendence", file:"10_Transcendence", yt:10 },
+                    { id:"11", title:"Action",        folder:"11_Action",        file:"11_Action",        yt:11 },
                 ]
             },
             {
-                key: "B_The_Operating_System",
-                label: "SECTOR B — THE OPERATING SYSTEM",
-                nodes:[
-                    { id:"12", title:"Solitude",       yt:12 },
-                    { id:"13", title:"Meaning",        yt:13 },
-                    { id:"14", title:"Authenticity",   yt:14 },
-                    { id:"15", title:"Responsibility", yt:15 },
-                    { id:"16", title:"Trust",          yt:16 },
-                    { id:"17", title:"Creativity",     yt:17 },
-                    { id:"18", title:"Play",           yt:18 },
-                    { id:"19", title:"Algorithm",      yt:19 },
+                key: "B_The_Operating_System", label: "SECTOR B — THE OPERATING SYSTEM",
+                nodes: [
+                    { id:"12", title:"Solitude",       folder:"12_Solitude",       file:"12_Solitude",       yt:12 },
+                    { id:"13", title:"Meaning",        folder:"13_Meaning",        file:"13_Meaning",        yt:13 },
+                    { id:"14", title:"Authenticity",   folder:"14_Authenticity",   file:"14_Authenticity",   yt:14 },
+                    { id:"15", title:"Responsibility", folder:"15_Responsibility", file:"15_Responsibility", yt:15 },
+                    { id:"16", title:"Trust",          folder:"16_Trust",          file:"16_Trust",          yt:16 },
+                    { id:"17", title:"Creativity",     folder:"17_Creativity",     file:"17_Creativity",     yt:17 },
+                    { id:"18", title:"Play",           folder:"18_Play",           file:"18_Play",           yt:18 },
+                    { id:"19", title:"Algorithm",      folder:"19_Algorithm",      file:"19_Algorithm",      yt:19 },
                 ]
             },
             {
-                key: "C_The_Upgrade",
-                label: "SECTOR C — THE UPGRADE",
-                nodes:[
-                    { id:"20", title:"Signal vs Noise", yt:20 },
-                    { id:"21", title:"Upgrade",         yt:21 },
-                    { id:"22", title:"Merge",           yt:22 },
-                    { id:"23", title:"Witness",         yt:23 },
-                    { id:"24", title:"Unity",           yt:24 },
+                key: "C_The_Upgrade", label: "SECTOR C — THE UPGRADE",
+                nodes: [
+                    { id:"20", title:"Signal vs Noise", folder:"20_Signal_vs_Noise", file:"20_Signal_vs_Noise", yt:20 },
+                    { id:"21", title:"Upgrade",         folder:"21_Upgrade",         file:"21_Upgrade",         yt:21 },
+                    { id:"22", title:"Merge",           folder:"22_Merge",           file:"22_Merge",           yt:22 },
+                    { id:"23", title:"Witness",         folder:"23_Witness",         file:"23_Witness",         yt:23 },
+                    { id:"24", title:"Unity",           folder:"24_Unity",           file:"24_Unity",           yt:24 },
                 ]
             },
             {
-                key: "D_The_Mirror",
-                label: "SECTOR D — THE MIRROR",
-                nodes:[
-                    { id:"25", title:"The Mirror", yt:25 },
+                key: "D_The_Mirror", label: "SECTOR D — THE MIRROR",
+                nodes: [
+                    { id:"25", title:"The Mirror", folder:"25_The_Mirror", file:"25_The_Mirror", yt:25 },
                 ]
             }
         ];
@@ -1021,10 +900,7 @@
             grid.className = 'gallery-grid gallery-section';
 
             sector.nodes.forEach(node => {
-                // Прямая загрузка превью с серверов YouTube
-                const videoId = YT[node.yt];
-                const imgPath = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-                
+                const imgPath = encodeURI(`./Sector_${sector.key}/${node.folder}/${node.file}.jpg`);
                 const card = document.createElement('div');
                 card.className = 'node-card';
                 card.setAttribute('role', 'button');
@@ -1036,6 +912,11 @@
                 img.alt = `Node ${node.id}`;
                 img.src = imgPath;
                 img.onload = () => { img.classList.add('loaded'); card.classList.add('img-ready'); };
+                img.onerror = () => {
+                    img.src = `https://img.youtube.com/vi/${YT[node.yt]}/hqdefault.jpg`;
+                    img.onload  = () => { img.classList.add('loaded'); card.classList.add('img-ready'); };
+                    img.onerror = () => { card.classList.add('img-ready'); };
+                };
 
                 const badge = document.createElement('div');
                 badge.className = 'node-id';
@@ -1066,23 +947,15 @@
         const badgeText  = document.getElementById('badge-role-text');
         const resetLink  = document.getElementById('reset-link');
 
-        function assignRole(energy) {
-            const n = parseFloat(energy) || 0;
-            if (n > 100) return 'ARCHITECT';
-            if (n > 50)  return 'NODE';
-            if (n > 10)  return 'INITIATE';
-            return 'OBSERVER';
-        }
-
-        function applyRole(role) {
-            badgeText.textContent = `ROLE: ${role}`;
+        function applyIdentity(name) {
+            badgeText.textContent = `SIGNAL: ${name.toUpperCase()}`;
             roleBadge.style.display = 'block';
             entryLayer.style.display = 'none';
         }
 
         window.addEventListener('load', () => {
-            const saved = localStorage.getItem('neuromicon_role');
-            if (saved) applyRole(saved);
+            const saved = localStorage.getItem('neuromicon_name');
+            if (saved) applyIdentity(saved);
         });
 
         startBtn.addEventListener('click', () => {
@@ -1093,30 +966,28 @@
         });
 
         initSubmit.addEventListener('click', () => {
-            const q1 = document.getElementById('init-q1').value.trim();
-            const q2 = document.getElementById('init-q2').value.trim();
-            const q3 = document.getElementById('init-q3').value;
+            const name  = document.getElementById('init-q1').value.trim();
+            const state = document.getElementById('init-q2').value.trim();
 
-            if (!q1 || !q2 || !q3) {
-                initOutput.style.cssText = 'display:block; color:#ff5555; border-color:rgba(255,85,85,0.3)';
-                initOutput.innerHTML = 'ALL FIELDS REQUIRED. SIGNAL INCOMPLETE.';
+            if (!name || !state) {
+                initOutput.style.cssText = 'display:block; color:#ff6060; border-color:rgba(255,96,96,0.3)';
+                initOutput.innerHTML = 'BOTH FIELDS REQUIRED. SIGNAL INCOMPLETE.';
                 return;
             }
 
-            const role = assignRole(q3);
             initOutput.style.cssText = 'display:block; color:#00d0ff; border-color:rgba(0,208,255,0.2)';
-            initOutput.innerHTML = `IDENTITY COMPILED<br>ROLE: ${role}<br>SIGNAL ACCEPTED`;
+            initOutput.innerHTML = `WELCOME, ${name.toUpperCase()}<br>STATE: ${state.toUpperCase()}<br>ARCHIVE UNLOCKED`;
 
-            localStorage.setItem('neuromicon_role', role);
-            localStorage.setItem('neuromicon_state', JSON.stringify({ q1, q2, q3 }));
+            localStorage.setItem('neuromicon_name',  name);
+            localStorage.setItem('neuromicon_state', state);
 
-            // Fire-and-forget init log
+            // Log to AppScript
             fetch(APPS_SCRIPT_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify({
                     token: SYSTEM_TOKEN, event: 'INIT',
-                    role, state: q1, vector: q2, energy: q3
+                    name, state
                 })
             }).catch(() => {});
 
@@ -1125,16 +996,16 @@
                 setTimeout(() => {
                     initModal.classList.remove('active', 'closing');
                     document.body.style.overflow = '';
-                    applyRole(role);
-                    initOutput.style.display = 'none';['init-q1','init-q2','init-q3'].forEach(id => {
-                        document.getElementById(id).value = '';
-                    });
+                    applyIdentity(name);
+                    initOutput.style.display = 'none';
+                    document.getElementById('init-q1').value = '';
+                    document.getElementById('init-q2').value = '';
                 }, 250);
-            }, 1600);
+            }, 1800);
         });
 
         resetLink.addEventListener('click', () => {
-            localStorage.removeItem('neuromicon_role');
+            localStorage.removeItem('neuromicon_name');
             localStorage.removeItem('neuromicon_state');
             roleBadge.style.display = 'none';
             entryLayer.style.display = 'block';
@@ -1155,6 +1026,7 @@
         // ════════════════════════════════════════════════════════════
         const nodeModal        = document.getElementById('node-modal');
         const modalIframe      = document.getElementById('modal-iframe');
+        const ytOpenBtn        = document.getElementById('yt-open-btn');
         const modalTitle       = document.getElementById('modal-title');
         const sectorInfo       = document.getElementById('sector-info');
         const terminalOut      = document.getElementById('terminal-output');
@@ -1163,9 +1035,11 @@
         const paymentFormInner = document.getElementById('payment-form-inner');
 
         function openNode(node, sectorKey) {
-            sectorInfo.textContent  = `SECTOR ${sectorKey.split('_')[0]}`;
-            modalTitle.textContent  = `${node.id} — ${node.title.toUpperCase()}`;
-            modalIframe.src         = ytEmbed(YT[node.yt]);
+            const vid = YT[node.yt];
+            sectorInfo.textContent = `SECTOR ${sectorKey.split('_')[0]}`;
+            modalTitle.textContent = `${node.id} — ${node.title.toUpperCase()}`;
+            modalIframe.src        = ytEmbed(vid);
+            ytOpenBtn.href         = ytWatch(vid);
 
             resetNodeForm();
             nodeModal.classList.remove('closing');
@@ -1174,7 +1048,7 @@
         }
 
         function closeNodeModal() {
-            modalIframe.src = ''; // stop playback
+            modalIframe.src = '';
             nodeModal.classList.add('closing');
             setTimeout(() => {
                 nodeModal.classList.remove('active', 'closing');
@@ -1187,7 +1061,7 @@
             paymentFormInner.style.display = 'block';
             intentSuccess.style.display    = 'none';
             submitBtn.disabled = false;
-            submitBtn.querySelector('span').textContent = 'TRANSMIT INTENT';
+            submitBtn.querySelector('span').textContent = 'SUBMIT BID';
             terminalOut.innerHTML = '';
             terminalOut.className = '';
             ['user-phone','user-amount','user-comment'].forEach(id => {
@@ -1197,7 +1071,6 @@
 
         document.getElementById('return-btn').addEventListener('click', closeNodeModal);
         nodeModal.addEventListener('click', e => { if (e.target === nodeModal) closeNodeModal(); });
-
         document.addEventListener('keydown', e => {
             if (e.key !== 'Escape') return;
             if (nodeModal.classList.contains('active')) closeNodeModal();
@@ -1205,18 +1078,18 @@
         });
 
         // ════════════════════════════════════════════════════════════
-        //  INTENT SUBMISSION
+        //  BID SUBMISSION
         // ════════════════════════════════════════════════════════════
         submitBtn.addEventListener('click', async () => {
             const phone   = document.getElementById('user-phone').value.trim();
             const amount  = document.getElementById('user-amount').value.trim();
             const comment = document.getElementById('user-comment').value.trim();
             const nodeId  = modalTitle.textContent;
-            const role    = localStorage.getItem('neuromicon_role') || 'ANONYMOUS';
+            const name    = localStorage.getItem('neuromicon_name') || 'ANONYMOUS';
 
             if (!phone || !amount) {
                 terminalOut.className = 'error-state';
-                terminalOut.innerHTML = 'SIGNAL INCOMPLETE\nIDENTIFIER AND VALUE ARE REQUIRED';
+                terminalOut.innerHTML = 'SIGNAL INCOMPLETE\nCONTACT AND BID AMOUNT ARE REQUIRED';
                 return;
             }
 
@@ -1226,16 +1099,18 @@
             terminalOut.innerHTML = 'ESTABLISHING SECURE UPLINK...\nCOMPILING SIGNAL...';
 
             const timeoutWarn = setTimeout(() => {
-                if (submitBtn.disabled) {
+                if (submitBtn.disabled)
                     terminalOut.innerHTML += '\n\nNO RESPONSE FROM SERVER.\nCHECKING CONNECTION...';
-                }
             }, TIMEOUT_MS);
 
             try {
                 const res = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ token: SYSTEM_TOKEN, phone, amount, comment, nodeId, role })
+                    body: JSON.stringify({
+                        token: SYSTEM_TOKEN,
+                        phone, amount, comment, nodeId, name
+                    })
                 });
                 clearTimeout(timeoutWarn);
                 const result = await res.json();
@@ -1243,7 +1118,7 @@
                 if (result.status === 'success') {
                     paymentFormInner.style.display = 'none';
                     intentSuccess.style.display    = 'block';
-                    terminalOut.innerHTML = 'SIGNAL DELIVERED\nINTENT PERMANENTLY LOGGED';
+                    terminalOut.innerHTML = 'BID LOGGED\nYOU WILL BE CONTACTED IF YOURS IS THE HIGHEST';
                 } else {
                     throw new Error(result.message || 'Remote rejection');
                 }
@@ -1252,7 +1127,7 @@
                 terminalOut.className = 'error-state';
                 terminalOut.innerHTML = `TRANSMISSION FAILED\n${err.message}`;
                 submitBtn.disabled = false;
-                submitBtn.querySelector('span').textContent = 'RETRY TRANSMISSION';
+                submitBtn.querySelector('span').textContent = 'RETRY';
             }
         });
     </script>
