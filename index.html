@@ -540,9 +540,140 @@
             font-size: 0.85rem; font-weight: 700; color: var(--accent);
             letter-spacing: 2px; line-height: 1.9; text-align: center; display: none;
         }
+
+        /* ─── AUCTION TIMER BAR ──────────────────────────────────── */
+        #auction-timer-bar {
+            position: sticky;
+            top: 0;
+            z-index: 9000;
+            background: #000;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 0 20px;
+            height: 48px;
+            overflow: hidden;
+        }
+        #auction-timer-bar::before {
+            content: '';
+            position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,208,255,0.25), transparent);
+        }
+
+        .timer-epoch {
+            display: flex; align-items: center; gap: 8px;
+            flex-shrink: 0;
+        }
+        .timer-epoch-label {
+            font-size: 0.6rem; font-weight: 700; color: var(--dim);
+            letter-spacing: 3px; text-transform: uppercase;
+        }
+        .timer-epoch-num {
+            font-size: 0.78rem; font-weight: 700; color: var(--accent);
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--accent);
+        }
+
+        .timer-divider {
+            width: 1px; height: 22px; background: var(--border); flex-shrink: 0;
+        }
+
+        .timer-label {
+            font-size: 0.6rem; font-weight: 700; color: var(--dim);
+            letter-spacing: 3px; text-transform: uppercase; flex-shrink: 0;
+        }
+
+        .timer-countdown {
+            display: flex; align-items: center; gap: 4px; flex-shrink: 0;
+        }
+        .timer-unit {
+            display: flex; flex-direction: column; align-items: center; gap: 1px;
+        }
+        .timer-digits {
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            font-weight: 700; color: #fff;
+            letter-spacing: 2px; line-height: 1;
+            font-variant-numeric: tabular-nums;
+            min-width: 2ch; text-align: center;
+        }
+        .timer-unit-label {
+            font-size: 0.48rem; font-weight: 700; color: var(--dim);
+            letter-spacing: 2px; text-transform: uppercase;
+        }
+        .timer-sep {
+            font-size: 1rem; font-weight: 700; color: #333;
+            margin-bottom: 6px; line-height: 1;
+        }
+
+        .timer-progress-wrap {
+            flex: 1; height: 2px; background: #1a1a1a;
+            border-radius: 1px; overflow: hidden; min-width: 40px;
+        }
+        .timer-progress-bar {
+            height: 100%; background: var(--accent);
+            box-shadow: 0 0 6px var(--accent);
+            transition: width 1s linear;
+            border-radius: 1px;
+        }
+
+        .timer-reset-note {
+            font-size: 0.56rem; font-weight: 600; color: #444;
+            letter-spacing: 2px; white-space: nowrap; flex-shrink: 0;
+        }
+
+        @media (max-width: 540px) {
+            .timer-reset-note { display: none; }
+            .timer-label { display: none; }
+        }
+        @media (max-width: 380px) {
+            .timer-epoch-label { display: none; }
+            .timer-unit-label  { display: none; }
+        }
     </style>
 </head>
 <body>
+
+    <!-- ═══════════ AUCTION TIMER BAR ═══════════ -->
+    <div id="auction-timer-bar">
+        <div class="timer-epoch">
+            <span class="timer-epoch-label">EPOCH</span>
+            <span class="timer-epoch-num" id="epoch-num">#—</span>
+        </div>
+
+        <div class="timer-divider"></div>
+
+        <span class="timer-label">ROUND CLOSES IN</span>
+
+        <div class="timer-countdown">
+            <div class="timer-unit">
+                <span class="timer-digits" id="t-days">—</span>
+                <span class="timer-unit-label">days</span>
+            </div>
+            <span class="timer-sep">:</span>
+            <div class="timer-unit">
+                <span class="timer-digits" id="t-hours">——</span>
+                <span class="timer-unit-label">hrs</span>
+            </div>
+            <span class="timer-sep">:</span>
+            <div class="timer-unit">
+                <span class="timer-digits" id="t-min">——</span>
+                <span class="timer-unit-label">min</span>
+            </div>
+            <span class="timer-sep">:</span>
+            <div class="timer-unit">
+                <span class="timer-digits" id="t-sec">——</span>
+                <span class="timer-unit-label">sec</span>
+            </div>
+        </div>
+
+        <div class="timer-progress-wrap">
+            <div class="timer-progress-bar" id="timer-bar" style="width:0%"></div>
+        </div>
+
+        <span class="timer-reset-note">RESETS SUN 00:00</span>
+    </div>
 
     <!-- ═══════════ HEADER ═══════════ -->
     <header>
@@ -1130,6 +1261,73 @@
                 submitBtn.querySelector('span').textContent = 'RETRY';
             }
         });
+    </script>
+
+    <script>
+        // ════════════════════════════════════════════════════════════
+        //  VICKREY AUCTION TIMER
+        //  - Epoch 1 started Sunday 2025-01-05 00:00:00 UTC
+        //  - Countdown resets every Sunday 00:00 local time
+        //  - Progress bar: full week = 100%, drains to 0 at Sunday
+        // ════════════════════════════════════════════════════════════
+        const EPOCH_ORIGIN = new Date('2025-01-05T00:00:00'); // Sun, local
+        const WEEK_MS      = 7 * 24 * 60 * 60 * 1000;
+
+        function pad(n, w) { return String(n).padStart(w, '0'); }
+
+        function getNextSunday() {
+            const now  = new Date();
+            const day  = now.getDay(); // 0=Sun
+            const diff = day === 0
+                ? (now.getHours() === 0 && now.getMinutes() === 0 && now.getSeconds() === 0 ? 7 : 0)
+                : (7 - day);
+            const next = new Date(now);
+            next.setDate(now.getDate() + diff);
+            next.setHours(0, 0, 0, 0);
+            return next;
+        }
+
+        function getEpoch() {
+            const now     = Date.now();
+            const origin  = EPOCH_ORIGIN.getTime();
+            const elapsed = now - origin;
+            if (elapsed < 0) return 1;
+            return Math.floor(elapsed / WEEK_MS) + 1;
+        }
+
+        function updateTimer() {
+            const now    = Date.now();
+            const next   = getNextSunday().getTime();
+            const diff   = Math.max(0, next - now);
+
+            const totalSecs = Math.floor(diff / 1000);
+            const days  = Math.floor(totalSecs / 86400);
+            const hrs   = Math.floor((totalSecs % 86400) / 3600);
+            const mins  = Math.floor((totalSecs % 3600)  / 60);
+            const secs  = totalSecs % 60;
+
+            document.getElementById('t-days').textContent  = days;
+            document.getElementById('t-hours').textContent = pad(hrs, 2);
+            document.getElementById('t-min').textContent   = pad(mins, 2);
+            document.getElementById('t-sec').textContent   = pad(secs, 2);
+            document.getElementById('epoch-num').textContent = '#' + getEpoch();
+
+            // Progress bar: percentage of week elapsed (goes 0→100 Mon–Sun)
+            const prevSun   = next - WEEK_MS;
+            const weekElapsed = now - prevSun;
+            const pct = Math.min(100, Math.max(0, (weekElapsed / WEEK_MS) * 100));
+            document.getElementById('timer-bar').style.width = pct.toFixed(2) + '%';
+
+            // Pulse accent red in last hour
+            const bar = document.getElementById('auction-timer-bar');
+            if (diff < 3600000) {
+                bar.style.setProperty('--accent', '#ff4444');
+                document.getElementById('timer-bar').style.boxShadow = '0 0 6px #ff4444';
+            }
+        }
+
+        updateTimer();
+        setInterval(updateTimer, 1000);
     </script>
 </body>
 </html>
