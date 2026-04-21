@@ -254,13 +254,27 @@
         }
         .node-card:hover::after { opacity: 1; }
         .node-id {
-            position: absolute; bottom: 10px; right: 10px;
-            font-size: 0.78rem; font-weight: 700; color: #fff;
-            background: rgba(0,0,0,0.88); padding: 4px 10px;
-            border: 1px solid rgba(0,208,255,0.5); letter-spacing: 1.5px;
-            z-index: 3; transition: border-color 0.3s, box-shadow 0.3s;
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 8px 10px;
+            background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.6) 60%, transparent 100%);
+            z-index: 3;
+            pointer-events: none;
         }
-        .node-card:hover .node-id { border-color: var(--accent); box-shadow: 0 0 12px rgba(0,208,255,0.35); }
+        .node-id .nid-num {
+            font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.5);
+            letter-spacing: 2px; line-height: 1; margin-bottom: 4px;
+        }
+        .node-id .nid-title {
+            font-size: 0.72rem; font-weight: 700; color: #fff;
+            letter-spacing: 2.5px; text-transform: uppercase; line-height: 1;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+        }
+        .node-card:hover .node-id .nid-num  { color: var(--accent); }
+        .node-card:hover .node-id .nid-title { color: var(--accent); text-shadow: 0 0 10px rgba(0,208,255,0.5); }
 
         /* ─── LINKS SECTION ──────────────────────────────────────── */
         #links-section {
@@ -1050,8 +1064,11 @@
                 };
 
                 const badge = document.createElement('div');
-                badge.className = 'node-id';
-                badge.textContent = `[${node.id}]`;
+                    badge.className = 'node-id';
+                    badge.innerHTML = `
+                        <span class="nid-num">[${node.id}]</span>
+                        <span class="nid-title">${node.title}</span>
+                    `;
 
                 card.appendChild(img);
                 card.appendChild(badge);
